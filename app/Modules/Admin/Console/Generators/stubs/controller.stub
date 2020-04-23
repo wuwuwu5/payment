@@ -1,0 +1,12 @@
+<?php
+
+namespace DummyNamespace;
+
+use App\Http\Controllers\Controller;
+
+class DummyClass extends Controller
+{
+     public $model = DummyModelClass;
+
+     public $view_prefix_path = ViewPrefix;
+}
