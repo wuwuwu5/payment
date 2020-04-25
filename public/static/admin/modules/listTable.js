@@ -133,6 +133,18 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
         handelTopListenTable();
     }
 
+    // 下划线转换驼峰
+    function toCamel(str) {
+        if (str.indexOf('_') <= 0) {
+            return str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
+        }
+
+        return str.replace(/([^_])(?:_+([^_]))/g, function ($0, $1, $2) {
+            return $1 + $2.toUpperCase();
+        });
+    }
+
+
     /**
      * 监听编辑
      */
@@ -140,86 +152,26 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
         //监听表操作
         table.on('tool(LAY-list-table)', function (obj) {
             var data = obj.data;  //获得当前行数据
-            var del_url = listConfig.restful ? listConfig.index_url + '/' + data.id : listConfig.del_url;
+            //var del_url = listConfig.restful ? listConfig.index_url + '/' + data.id : listConfig.del_url;
 
+            var w = ($(this).data('w') == null || $(this).data('w') == undefined) ? '90%' : $(this).data('w');
+            var h = ($(this).data('h') == null || $(this).data('h') == undefined) ? '90%' : $(this).data('h');
 
-            // 监听事件里面的编辑事件
-            if (obj.event === 'edit') {
-                layerOpen.edit(data.edit_url, data.update_url, {
-                    w: ($(this).data('w') == null || $(this).data('w') == undefined) ? '90%' : $(this).data('w'),
-                    h: ($(this).data('h') == null || $(this).data('h') == undefined) ? '90%' : $(this).data('h'),
-                    title: '编辑' + listConfig.page_name,
-                }, callFun);
+            switch (obj.event) {
+                case 'edit':
+                    listTableEditEvent(obj, data, extendFun, callFun, w, h);
+                    break;
+                case 'del':
+                    listTableDeLEvent(obj, data, extendFun, callFun);
+                    break;
+                case 'reset_password':
+                    listTableResetPasswordEvent(obj, data, extendFun, callFun);
+                    break;
+                case 'show_img':
+                    listTableShowImgEvent(obj, $(this), data, extendFun, callFun);
+                    break;
             }
 
-
-            // var add_child_question_url =  listConfig.restful ?  listConfig.create_url+'/'+data.id : listConfig.del_url;
-            //监听表格事件里面的删除
-            if (obj.event === 'del') {
-                layer.msg('确定删除吗?', {
-                    time: 0,
-                    btn: ['确定', '取消'],
-                    yes: function (index) {
-                        var field = {
-                            ids: data.id,
-                            type_id: 'id',
-                            handle_str: '删除' + listConfig.page_name,
-                            _method: "DELETE"
-                        };
-                        req.post(del_url, field, function (res) {
-                            layer.msg(res.msg);
-                            if (res.code == 200) {
-                                obj.del();
-                                layer.close(index);
-                                table.reload('LAY-list-table');
-                            }
-                            callFun && callFun(res)
-                        });
-                    }
-                });
-
-            }
-
-            //监听表格事件里面的重置密码
-            if (obj.event === 'reset_password') {
-
-                var url = data.update_url + '/password'
-
-                layer.msg('确定重置密吗?', {
-                    time: 0,
-                    btn: ['确定', '取消'],
-                    yes: function (index) {
-                        req.post(url, {'_method': 'patch'}, function (res) {
-                            if (res.code == 200) {
-                                layer.msg('重置密码成功!')
-                                layer.close(index);
-                                table.reload('LAY-list-table');
-                            }
-                            callFun && callFun(res)
-                        });
-                    }
-                });
-            }
-
-
-            //查看图片
-            if (obj.event === 'show_img') {
-                var src = $(this).data('src');
-                src = src || $(this).attr('src');
-
-                layer.photos({
-                    photos: {
-                        "title": "查看"
-                        ,
-                        "data": [{
-                            "src": src
-                        }]
-                    },
-                    shade: 0.01,
-                    closeBtn: 1,
-                    anim: 5
-                });
-            }
 
             //打开openLayer
             if (obj.event === 'open_layer') {
@@ -240,24 +192,6 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
                 layerOpen.show(url, config, yesFun);
             }
 
-            //打开openLayer
-            if (obj.event === 'open_paper_layer') {
-
-                w = $(this).data('w');
-                h = $(this).data('h');
-                title = $(this).data('title');
-                url = $(this).data('url');
-                var config = {
-                    title: title,
-                    h: h,
-                    w: w
-                };
-
-                yesFun = function (layero, index) {
-                    layer.close(index); //关闭弹层
-                }
-                layerOpen.openPaperEditShow(url, config, yesFun);
-            }
 
             //打开openLayer操作提交数据
             if (obj.event === 'open_layer_post') {
@@ -329,222 +263,13 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
                 })
             }
 
-            //监听事件里面的编辑事件
-            if (obj.event === 'add_child_question') {
-                const url = listConfig.index_url + '?pid=' + data.id
-                // /**
-                //  * 快速编辑监听操作
-                //  */
-                // layerOpen.open(url, update_url, {
-                //     w: listConfig.open_width,
-                //     h: listConfig.open_height,
-                //     title: '编辑' + listConfig.page_name,
-                // }, callFun);
-
-                layerOpen.open({
-                    title: '子题',
-                    type: 2,
-                    url: url,
-                    w: ($(this).data('w') == null || $(this).data('w') == undefined) ? '90%' : $(this).data('w'),
-                    h: ($(this).data('h') == null || $(this).data('h') == undefined) ? '90%' : $(this).data('h'),
-                    btn: ['确定选择', '关闭']
-                }, function (layero, index) {
-                    callFun && callFun(layero, index);
-                })
-            }
-
-            //监听事件里面的编辑事件
-            if (obj.event === 'show_exam_users') {
-                const url = listConfig.index_url + '/' + data.id
-                // /**
-                //  * 快速编辑监听操作
-                //  */
-                // layerOpen.open(url, update_url, {
-                //     w: listConfig.open_width,
-                //     h: listConfig.open_height,
-                //     title: '编辑' + listConfig.page_name,
-                // }, callFun);
-
-                layerOpen.open({
-                    title: '考试人员',
-                    type: 2,
-                    url: url,
-                    w: ($(this).data('w') == null || $(this).data('w') == undefined) ? '90%' : $(this).data('w'),
-                    h: ($(this).data('h') == null || $(this).data('h') == undefined) ? '90%' : $(this).data('h'),
-                    btn: ['关闭'],
-                    yes: function (index, layero) {
-                        top.layer.close(index); //关闭弹层
-                    }
-                }, function (layero, index) {
-                    top.layer.close(index);
-                    callFun && callFun(layero, index);
-                })
-            }
-
-            //监听事件里面的编辑事件
-            if (obj.event === 'show_invigilate_users') {
-                const url = listConfig.index_url + '/' + data.id
-                // /**
-                //  * 快速编辑监听操作
-                //  */
-                // layerOpen.open(url, update_url, {
-                //     w: listConfig.open_width,
-                //     h: listConfig.open_height,
-                //     title: '编辑' + listConfig.page_name,
-                // }, callFun);
-
-                layerOpen.open({
-                    title: '考试人员',
-                    type: 2,
-                    url: url,
-                    w: ($(this).data('w') == null || $(this).data('w') == undefined) ? '90%' : $(this).data('w'),
-                    h: ($(this).data('h') == null || $(this).data('h') == undefined) ? '90%' : $(this).data('h'),
-                    btn: ['关闭'],
-                    yes: function (index, layero) {
-                        top.layer.close(index); //关闭弹层
-                    }
-                }, function (layero, index) {
-                    top.layer.close(index);
-                    callFun && callFun(layero, index);
-                })
-            }
-
-            //监听事件里面的编辑事件
-            if (obj.event === 'join_marking') {
-                const url = listConfig.index_url + '/' + data.id + '/marking'
-                // /**
-                //  * 快速编辑监听操作
-                //  */
-                // layerOpen.open(url, update_url, {
-                //     w: listConfig.open_width,
-                //     h: listConfig.open_height,
-                //     title: '编辑' + listConfig.page_name,
-                // }, callFun);
-
-                window.open(url);
-
-            }
-
-            //监听事件里面的编辑事件
-            if (obj.event === 'show_achievement_users') {
-                const url = listConfig.list_url + '/' + data.id + '/users'
-                layerOpen.open({
-                    title: '详情',
-                    type: 2,
-                    url: url,
-                    w: ($(this).data('w') == null || $(this).data('w') == undefined) ? '90%' : $(this).data('w'),
-                    h: ($(this).data('h') == null || $(this).data('h') == undefined) ? '90%' : $(this).data('h'),
-                    btn: ['关闭'],
-                    yes: function (index, layero) {
-                        top.layer.close(index); //关闭弹层
-                    }
-                }, function (layero, index) {
-                    layer.close(index);
-                    callFun && callFun(layero, index);
-                })
-            }
-
-            //监听事件里面的编辑事件
-            if (obj.event === 'show_achievement_analysis') {
-                const url = listConfig.list_url + '/' + data.id + '/analysis'
-                layerOpen.open({
-                    title: '分析',
-                    type: 2,
-                    url: url,
-                    w: ($(this).data('w') == null || $(this).data('w') == undefined) ? '90%' : $(this).data('w'),
-                    h: ($(this).data('h') == null || $(this).data('h') == undefined) ? '90%' : $(this).data('h'),
-                    btn: ['关闭'],
-                    yes: function (index, layero) {
-                        top.layer.close(index); //关闭弹层
-                    }
-                }, function (layero, index) {
-                    layer.close(index);
-                    callFun && callFun(layero, index);
-                })
-            }
-
-            //监听事件里面的编辑事件
-            if (obj.event === 'add_exam') {
-                layerOpen.edit('/admin/exam/exams-make?id=' + data.id, '/admin/exam/exams', {
-                    w: ($(this).data('w') == null || $(this).data('w') == undefined) ? '90%' : $(this).data('w'),
-                    h: ($(this).data('h') == null || $(this).data('h') == undefined) ? '90%' : $(this).data('h'),
-                    title: '补考',
-                }, callFun);
-            }
-
-            //监听事件里面的编辑事件
-            if (obj.event === 'delayed') {
-                layer.open({
-                    type: 1,
-                    title: '延时操作',
-                    content: '<div class="layui-form " style="padding: 30px 20px;margin-right: 100px">' +
-
-                        '<div class="layui-form-item">' +
-                        '<label class="layui-form-label"><strong class="item-required">*</strong>时间</label>' +
-                        '    <div class="layui-input-block ">' +
-                        '        <input style="width: 94%;display: inline-block;"' +
-                        '            id="length" ' +
-                        '            type="text" ' +
-                        '            name="length" ' +
-                        '            value="1" ' +
-                        '            placeholder="分钟" ' +
-                        '            autocomplete="off" class="layui-input "' +
-                        '        /><span style="margin-left: 5px;">分钟</span>' +
-                        '<input type="hidden" name="id" value="' + data.id + '"/>' +
-                        '    </div>' +
-                        '</div></div>',
-                    btn: ['提交', '取消'],
-                    area: ['800px', '250px'],
-                    yes: function (index, layero) {
-                        var length = $('input[name="length"]').val();
-
-                        if (length < 1 || length === "" || length === null || length === undefined) {
-                            return false;
-                        }
-
-                        var loading = layer.load(1);
-
-                        req.post('/admin/exam/exams/' + data.id + '/delayed', {length: length}, function (res) {
-                            layer.close(loading);
-                            layer.msg(res.msg);
-                            if (res.code == 200) {
-                                layer.close(index); //关闭弹层
-                            }
-                        });
-                    },
-                    success: function (index, layero) {
-
-                    },
-                    cancel: function (index, layero) {
-
-                    }
-                });
-            }
-
-            if (obj.event === 'review') {
-                req.get('/admin/exam/papers/' + data.id + '/review', {}, function (res) {
-                    layer.msg(res.msg);
-                    if (res.code == 200) {
-                        window.open('/admin/exam/papers/' + data.id + '/review')
-                    }
-                });
-            }
-
-            if (obj.event === 'exam_option') {
-                var status = $($(this)[0]).data('value');
-                layer.confirm('确定操作吗？', function (index) {
-                    req.post('/admin/exam/exam-invigilate/' + data.id + '/option', {status}, function (res) {
-                        layer.msg(res.msg);
-                    });
-                });
-            }
 
             //附加监听表
             if (typeof (extendFun) == "function") {
                 return extendFun(obj, $(this));
             }
-
         });
+
         //监听单元格编辑
         table.on('edit(LAY-list-table)', function (obj) {
             var value = obj.value //得到修改后的值
@@ -852,6 +577,81 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
             layer.msg(res.msg);
         });
     });
+
+
+    // 列表编辑事件
+    function listTableEditEvent(obj, data, extendFun, callFun, w, h) {
+        console.log(listConfig)
+        layerOpen.edit(data.edit_url, data.update_url, {
+            w: ($(this).data('w') == null || $(this).data('w') == undefined) ? '90%' : $(this).data('w'),
+            h: ($(this).data('h') == null || $(this).data('h') == undefined) ? '90%' : $(this).data('h'),
+            title: '编辑' + listConfig.page_name,
+        }, callFun);
+    }
+
+    // 列表删除事件
+    function listTableDeLEvent(obj, data, extendFun, callFun) {
+        layer.msg('确定删除吗?', {
+            time: 0,
+            btn: ['确定', '取消'],
+            yes: function (index) {
+                var field = {
+                    ids: data.id,
+                    type_id: 'id',
+                    handle_str: '删除' + listConfig.page_name,
+                    _method: "DELETE"
+                };
+                req.post(del_url, field, function (res) {
+                    layer.msg(res.msg);
+                    if (res.code == 200) {
+                        obj.del();
+                        layer.close(index);
+                        table.reload('LAY-list-table');
+                    }
+                    callFun && callFun(res)
+                });
+            }
+        });
+    }
+
+    // 列表重置密码
+    function listTableResetPasswordEvent(obj, data, extendFun, callFun) {
+        var url = data.update_url + '/password'
+        layer.msg('确定重置密吗?', {
+            time: 0,
+            btn: ['确定', '取消'],
+            yes: function (index) {
+                req.post(url, {'_method': 'patch'}, function (res) {
+                    if (res.code == 200) {
+                        layer.msg('重置密码成功!')
+                        layer.close(index);
+                        table.reload('LAY-list-table');
+                    }
+                    callFun && callFun(res)
+                });
+            }
+        });
+    }
+
+    // 列表显示图片
+    function listTableShowImgEvent(obj, that, data, extendFun, callFun) {
+        var src = that.data('src');
+        src = src || that.attr('src');
+
+        layer.photos({
+            photos: {
+                "title": "查看"
+                ,
+                "data": [{
+                    "src": src
+                }]
+            },
+            shade: 0.01,
+            closeBtn: 1,
+            anim: 5
+        });
+    }
+
 
     exports('listTable', listTable);
 });

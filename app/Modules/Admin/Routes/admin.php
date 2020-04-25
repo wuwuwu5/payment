@@ -7,4 +7,7 @@ Route::name('admin.')->group(function () {
     Route::resource('/users', 'UsersController');
     // 重置密码
     Route::patch('/users/{user}/password', 'UsersController@resetPassword')->name('users.reset.password');
+
+    // 权限
+    Route::resource('/permissions', 'PermissionsController');
 });

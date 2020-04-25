@@ -15,6 +15,7 @@ layui.define(['layer', 'request', 'table','listTable','layerOpen'], function (ex
             if (!treetable.checkParam(param)) {
                 return;
             }
+
             // 获取数据
             if (param.data) {
                 treetable.init(param, param.data);
@@ -242,4 +243,4 @@ layui.define(['layer', 'request', 'table','listTable','layerOpen'], function (ex
     });
 
     exports('treetable', treetable);
-})
+});

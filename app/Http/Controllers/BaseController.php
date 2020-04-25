@@ -22,7 +22,7 @@ class BaseController extends Controller
     /**
      * @var string 页面名称
      */
-    public $page_name = "用户";
+    public $page_name = "";
 
     /**
      * @var
@@ -150,9 +150,10 @@ class BaseController extends Controller
     /**
      * 创建
      *
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
+    public function create(Request $request)
     {
         return $this->display();
     }
@@ -393,7 +394,16 @@ class BaseController extends Controller
     {
         switch ($request->method()) {
             case 'GET':
-                return ['message' => 'required'];
+                return [];
+                break;
+            case 'POST':
+                return [];
+                break;
+            case 'PUT':
+                return [];
+                break;
+            case 'PATCH':
+                return [];
                 break;
         }
         return [];

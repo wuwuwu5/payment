@@ -14,6 +14,7 @@ class UsersController extends BaseController
 
     public $view_prefix_path = "admin::admin.";
 
+    public $page_name = '用户';
 
     /**
      * 更新
