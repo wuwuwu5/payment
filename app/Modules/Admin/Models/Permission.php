@@ -4,11 +4,16 @@ namespace App\Modules\Admin\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Jedrzej\Pimpable\PimpableTrait;
+use Spatie\Permission\Exceptions\PermissionAlreadyExists;
+use Spatie\Permission\Guard;
 
 class Permission extends \Spatie\Permission\Models\Permission
 {
     use PimpableTrait;
 
+    protected $fillable = [
+        'parent_id', 'name', 'cn_name', 'icon', 'guard_name', 'sort', 'path', 'top_id'
+    ];
     /**
      * 默认排序
      *
@@ -33,4 +38,14 @@ class Permission extends \Spatie\Permission\Models\Permission
     public $searchableModels = [
 
     ];
+
+    /**
+     * 上级
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function parent()
+    {
+        return $this->belongsTo(Permission::class, 'parent_id', 'id');
+    }
 }

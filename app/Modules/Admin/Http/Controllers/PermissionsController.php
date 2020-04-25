@@ -5,6 +5,7 @@ namespace App\Modules\Admin\Http\Controllers;
 use App\Http\Controllers\BaseController;
 use App\Modules\Admin\Models\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class PermissionsController extends BaseController
@@ -14,6 +15,46 @@ class PermissionsController extends BaseController
     public $view_prefix_path = "admin::admin.";
 
     public $page_name = '权限';
+
+
+    /**
+     * 保存
+     *
+     * @param Request $request
+     * @return array|\Illuminate\Http\JsonResponse
+     */
+    public function store(Request $request)
+    {
+        $parent_id = $request->input('parent_id');
+
+        $parent = null;
+        $path = null;
+        $top_id = 0;
+
+        if (!empty($parent_id)) {
+            $parent = $this->getQuery()->findOrFail($parent_id);
+
+            if ($parent->parent_id == 0) {
+                $top_id = $parent->id;
+                $path = $parent->id;
+            } else {
+                $top_id = $parent->top_id;
+                $path = $parent->path . ',' . $parent->id;
+            }
+        }
+
+        Permission::create([
+            'path' => $path,
+            'top_id' => $top_id,
+            'parent_id' => $parent_id,
+            'icon' => $request->input('icon'),
+            'name' => $request->input('name'),
+            'cn_name' => $request->input('cn_name'),
+        ]);
+
+        return $this->returnOkApi();
+    }
+
 
     /**
      * 修改
@@ -41,7 +82,48 @@ class PermissionsController extends BaseController
     {
         $permissions = Permission::query()->latest()->get()->toArray();
 
-        return view('admin::admin.permission.create_or_edit', compact( 'permissions'));
+        return view('admin::admin.permission.create_or_edit', compact('permissions'));
+    }
+
+    /**
+     * 删除
+     *
+     * @param $id
+     * @param Request $request
+     * @return array|\Illuminate\Http\JsonResponse
+     */
+    public function destroy($id, Request $request)
+    {
+        $permission = Permission::query()->findOrFail($id);
+
+        try {
+
+            DB::beginTransaction();
+
+            // 路径
+            $path = $permission->path . ',' . $permission->id;
+            // 顶级ID
+            $top_id = $permission->top_id;
+
+            // 路径为空表示为顶级元素
+            if (empty($permission->path)) {
+                $path = $permission->id;
+                $top_id = $permission->id;
+            }
+ 
+            // 删除
+            Permission::query()->where('top_id', $top_id)->where('path', 'like', $path . '%')->delete();
+
+            $permission->delete();
+
+            DB::commit();
+
+            return $this->returnOkApi();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            report($exception);
+            return $this->returnErrorApi();
+        }
     }
 
 

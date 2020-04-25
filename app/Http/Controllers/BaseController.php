@@ -147,6 +147,23 @@ class BaseController extends Controller
         return $this->returnOkApi();
     }
 
+
+    /**
+     * 删除
+     *
+     * @param $id
+     * @param Request $request
+     * @return array|\Illuminate\Http\JsonResponse
+     */
+    public function destroy($id, Request $request)
+    {
+        $data = $this->getQuery()->findOrFail($id);
+
+        $data->delete();
+
+        return $this->returnOkApi();
+    }
+
     /**
      * 创建
      *

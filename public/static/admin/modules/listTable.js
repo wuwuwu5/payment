@@ -591,6 +591,8 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
 
     // 列表删除事件
     function listTableDeLEvent(obj, data, extendFun, callFun) {
+        var del_url = data.destory_url;
+
         layer.msg('确定删除吗?', {
             time: 0,
             btn: ['确定', '取消'],
