@@ -89,7 +89,7 @@
                 class="layui-icon layui-icon-delete"></i>删除</a>
         {{# } }}
     </script>
-    <script type="text/html" id="tpl-user-create-edit">
+    <script type="text/html" id="tpl-admin-user-options">
         {{# if(d.btns){ }}
         <p>
             {{#  layui.each(d.btns, function(index, item){ }}
@@ -242,7 +242,7 @@
             text = text || '是|否';
             true_value = true_value || 0;
             false_value = false_value || 1;
-            return '<input type="checkbox" data-true_value="' + true_value + '" data-false_value="' + false_value + '"  lay-skin="switch" lay-text="' + text + '" lay-filter="table-user-checked" ' +
+            return '<input type="checkbox" data-true_value="' + true_value + '" data-false_value="' + false_value + '"  lay-skin="switch" lay-text="' + text + '" lay-filter="table-checked" ' +
                 'value="' + d[field] + '" data-id="' + d.id + '"  data-field="' + field + '" ' + (d[field] == 0 ? 'checked' : '') + '>';
         }
 

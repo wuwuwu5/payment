@@ -141,6 +141,18 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
         table.on('tool(LAY-list-table)', function (obj) {
             var data = obj.data;  //获得当前行数据
             var del_url = listConfig.restful ? listConfig.index_url + '/' + data.id : listConfig.del_url;
+
+
+            // 监听事件里面的编辑事件
+            if (obj.event === 'edit') {
+                layerOpen.edit(data.edit_url, data.update_url, {
+                    w: ($(this).data('w') == null || $(this).data('w') == undefined) ? '90%' : $(this).data('w'),
+                    h: ($(this).data('h') == null || $(this).data('h') == undefined) ? '90%' : $(this).data('h'),
+                    title: '编辑' + listConfig.page_name,
+                }, callFun);
+            }
+
+
             // var add_child_question_url =  listConfig.restful ?  listConfig.create_url+'/'+data.id : listConfig.del_url;
             //监听表格事件里面的删除
             if (obj.event === 'del') {
@@ -168,15 +180,16 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
 
             }
 
-            //监听表格事件里面的删除
+            //监听表格事件里面的重置密码
             if (obj.event === 'reset_password') {
-                var url = data.edit_post_url + '/reset';
+
+                var url = data.update_url + '/password'
 
                 layer.msg('确定重置密吗?', {
                     time: 0,
                     btn: ['确定', '取消'],
                     yes: function (index) {
-                        req.post(url, {}, function (res) {
+                        req.post(url, {'_method': 'patch'}, function (res) {
                             if (res.code == 200) {
                                 layer.msg('重置密码成功!')
                                 layer.close(index);
@@ -186,61 +199,9 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
                         });
                     }
                 });
-
             }
-            ;
 
-            //监听表格事件里面的删除
-            if (obj.event === 'user_show') {
-                var url = data.edit_post_url;
 
-                var config = {
-                    title: '用户详情',
-                    h: '90%',
-                    w: '90%'
-                };
-
-                yesFun = function (layero, index) {
-                    layer.close(index); //关闭弹层
-                }
-
-                layerOpen.show(url, config, yesFun);
-
-            }
-            //监听表格事件里面的拷贝事件
-            if (obj.event === 'copy') {
-                var copy_url = data.copy_url;
-                console.log(data);
-                var field = {
-                    id: data.id,
-                };
-                layer.confirm('确定复制吗？', function (index) {
-                    req.post(copy_url, field, function (res) {
-                        layer.msg(res.msg);
-                        if (res.code == 200) {
-                            table.reload('LAY-list-table');
-                            layer.close(index); //关闭弹层
-                        }
-                        callFun && callFun(res)
-                    });
-                });
-            }
-            ;
-            //监听事件里面的编辑事件
-            if (obj.event === 'edit') {
-                var edit_url = data.edit_url;
-                var update_url = data.edit_post_url;
-
-                /**
-                 * 快速编辑监听操作
-                 */
-                layerOpen.edit(edit_url, update_url, {
-                    w: ($(this).data('w') == null || $(this).data('w') == undefined) ? '90%' : $(this).data('w'),
-                    h: ($(this).data('h') == null || $(this).data('h') == undefined) ? '90%' : $(this).data('h'),
-                    title: '编辑' + listConfig.page_name,
-                }, callFun);
-
-            }
             //查看图片
             if (obj.event === 'show_img') {
                 var src = $(this).data('src');
@@ -748,9 +709,10 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
      * 顶部添加
      */
     function topAdd(callFun) {
-        let create_url = listConfig.create_url;
-        let stroe_url = listConfig.restful ? listConfig.index_url : listConfig.stroe_url;
-        layerOpen.edit(create_url, stroe_url, {
+        var w = $(this).data('w') ? $(this).data('w') : '90%';
+        var h = $(this).data('h') ? $(this).data('h') : '90%';
+
+        layerOpen.edit(listConfig.create_url, listConfig.stroe_url, {
             w: listConfig.open_width,
             h: listConfig.open_height,
             title: '添加' + listConfig.page_name,
@@ -777,21 +739,6 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
         }, callFun);
     }
 
-    /**
-     * 导入数据
-     */
-    function importHandle(callFun) {
-        var del = $(this).data('del');
-        del = del || '';
-        var url = g_import_url + '?table=' + listConfig.table_name + '&del=' + del;
-        var ajax_url = g_import_post_url;
-        layerOpen.edit(url, ajax_url, {
-            h: '500px',
-            w: '750px',
-            title: '导入数据',
-        }, callFun);
-
-    }
 
     /**
      * 顶部自定义添加
@@ -818,31 +765,6 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
         }
     }
 
-    /**
-     * 顶部自定义添加
-     */
-    function paperCreate(callFun) {
-        var url = $(this).data('url');
-        var post_url = $(this).data('post_url');
-        var w = $(this).data('w') ? $(this).data('w') : '100%';
-        var h = $(this).data('h') ? $(this).data('h') : '100%';
-
-        title = $(this).data('title');
-        if ($(this).data('show') == 1) {
-            layerOpen.paperCreateShow(url, {
-                h: h,
-                w: w,
-                title: title,
-            }, callFun)
-        } else {
-            layerOpen.paperEditLayer(url, post_url, {
-                h: h,
-                w: w,
-                title: title
-            }, callFun);
-        }
-    }
-
 
     function handelTopListenTable(callFun) {
 
@@ -850,11 +772,10 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
             all_del: topDel,
             add: topAdd,
             diy_add: topCreate,
-            paper_add: paperCreate,
             select_add: select_add,
-            import: importHandle,
             handel: doHandel
         };
+
         $('.layui-btn.wkcms').on('click', function () {
             var type = $(this).data('type');
             active[type] ? active[type].call(this, callFun) : '';
@@ -912,31 +833,8 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
         });
     }
 
-
     //监听列表其他组件事件,开关设置
     form.on('switch(table-checked)', function (obj) {
-
-        var field = $(this).data('field');
-        var true_value = $(this).data('true_value') || 1;
-        var false_value = $(this).data('false_value') || 0;
-        var value = obj.elem.checked ? true_value : false_value;
-        var id = $(this).data('id');
-        field = field || 'is_checked';
-        //ajax操作
-        var data = {
-            field: field,
-            field_value: value,
-            ids: id
-        };
-
-
-        req.post(listConfig.edit_field_url, data, function (res) {
-            layer.msg(res.msg);
-        })
-    });
-
-    //监听列表其他组件事件,开关设置
-    form.on('switch(table-user-checked)', function (obj) {
         var field = $(this).data('field');
         var value = obj.elem.checked ? 0 : 1;
         var id = $(this).data('id');
@@ -946,8 +844,8 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
         var data = {};
 
         // 赋值
-        data[field] = value
-        data['_method'] = 'PUT'
+        data[field] = value;
+        data['_method'] = 'PUT';
 
         // 更新
         req.post(url, data, function (res) {

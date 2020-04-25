@@ -10,12 +10,17 @@ class User extends Model
     use PimpableTrait;
 
     /**
+     * string 默认密码
+     */
+    const DEFAULT_PASSWORD = '123456';
+
+    /**
      * 可填充字段
      *
      * @var array
      */
     protected $fillable = [
-        'locked'
+        'nickname', 'username', 'email', 'mobile', 'id_card', 'password', 'locked'
     ];
 
     /**
@@ -42,4 +47,15 @@ class User extends Model
         'nickname' => '%field%',
         'username' => '%field%',
     ];
+
+    /**
+     * 设置密码
+     *
+     * @param $value
+     * @return string
+     */
+    public function setPasswordAttribute($value)
+    {
+        return bcrypt($value);
+    }
 }

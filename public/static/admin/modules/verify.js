@@ -4,7 +4,13 @@ layui.define(['form'], function (exports) {
 
     form.verify({
         phone: [/(^$)|^1\d{10}$/, '请输入正确的手机号'],
-        email: [/(^$)|^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/, '邮箱格式不正确'],
+        email: function (value, item) {
+            if (!value) {
+                if (!new RegExp("^([a-zA-Z0-9_\\.\\-])+\\@(([a-zA-Z0-9\\-])+\\.)+([a-zA-Z0-9]{2,4})+$").test(value)) {
+                    return '邮箱格式不正确';
+                }
+            }
+        },
         url: [/(^$)|(^#)|(^http(s*):\/\/[^\s]+\.[^\s]+)/, '链接格式不正确'],
         number: [/(^$)|^\d+$/, '只能填写数字'],
         date: [/(^$)|^(\d{4})[-\/](\d{1}|0\d{1}|1[0-2])([-\/](\d{1}|0\d{1}|[1-2][0-9]|3[0-1]))*$/, '日期格式不正确'],
@@ -185,19 +191,19 @@ layui.define(['form'], function (exports) {
             }
         },
         select_whites: function (value, item) {
-          var val = $('input[name="type"]:checked').val();
-          console.log(val)
+            var val = $('input[name="type"]:checked').val();
+            console.log(val)
 
-          if (val == 1) {
-              var select = $(item).attr('ts-selected')
-              if (select === undefined || select === null || select === '') {
-                  return '必填考生'
-              }
+            if (val == 1) {
+                var select = $(item).attr('ts-selected')
+                if (select === undefined || select === null || select === '') {
+                    return '必填考生'
+                }
 
-              if ($("input[name^='white_lists']").length <= 0) {
-                  return '必填考生'
-              }
-          }
+                if ($("input[name^='white_lists']").length <= 0) {
+                    return '必填考生'
+                }
+            }
         },
         id_card: function (value, item) {
             const regIdCard = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;

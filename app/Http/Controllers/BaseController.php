@@ -20,6 +20,11 @@ class BaseController extends Controller
     public $model;
 
     /**
+     * @var string 页面名称
+     */
+    public $page_name = "用户";
+
+    /**
      * @var
      */
     private $query;
@@ -288,7 +293,7 @@ class BaseController extends Controller
         $data['update_url'] = $this->getUpdateUrl();
         $data['destroy_url'] = $this->getDestroyUrl();
         $data['table_name'] = empty($this->getQuery()) ? '' : $this->getQuery()->getTable();
-        $data['page_name'] = '';
+        $data['page_name'] = $this->page_name;
 
         return $data;
     }

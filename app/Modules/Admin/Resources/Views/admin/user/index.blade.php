@@ -27,6 +27,11 @@
                         </button>
                     </div>
                 </div>
+                <div class="layui-form-item ">
+                    <div class="layui-inline">
+                        <button class="layui-btn layui-btn-normal wkcms" data-type="add" data-w="90%" data-h="90%">+ 添加</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -44,12 +49,13 @@
                 {field: 'nickname', title: '用户姓名'},
                 {field: 'email', title: '邮箱'},
                 {field: 'mobile', title: '手机号'},
-                {field: 'locked', title: '禁用', width: 100, templet:
+                {
+                    field: 'locked', title: '禁用', width: 100, templet:
                         function (d) {
                             return layui_switch('locked', d, '启用|禁用');
                         }
                 },
-                {title: '操作', width: 250, align: 'center', toolbar: '#tpl-user-create-edit'}
+                {title: '操作', width: 250, align: 'center', toolbar: '#tpl-admin-user-options'}
             ]];
 
             //渲染

@@ -35,18 +35,18 @@
                  'name'=>'email',
                  'title'=>'邮箱',
                  'tips'=>'',
-                 'rq'=>'email',
+                 'rq'=>'rq|email',
                  'value'=>$show->email
             ])
         }}
-{{--        {{   Form::LayText([--}}
-{{--                 'name'=>'mobile',--}}
-{{--                 'title'=>'手机号',--}}
-{{--                 'tips'=>'',--}}
-{{--                 'rq'=>'phone',--}}
-{{--                 'value'=>$show->phone--}}
-{{--            ])--}}
-{{--        }}--}}
+        {{--        {{   Form::LayText([--}}
+        {{--                 'name'=>'mobile',--}}
+        {{--                 'title'=>'手机号',--}}
+        {{--                 'tips'=>'',--}}
+        {{--                 'rq'=>'phone',--}}
+        {{--                 'value'=>$show->phone--}}
+        {{--            ])--}}
+        {{--        }}--}}
 
         {{Form::LayText([
          'name'=>'password',
@@ -57,101 +57,44 @@
          'value'=>'',
          'mark'=>'不填表示不更新密码'
         ])}}
-        {{Form::LayRadio([
-                'name'=>'is_admin',
-                'title'=>'超级管理员',
-                'tips'=>'',
-                'rq'=>'',
-                'on_id'=>$show->is_admin,
-                'list'=>[
-                     ['id'=>1,'name'=>'是'],
-                     ['id'=>0,'name'=>'否']
-                ]
-        ])}}
+        {{--        {{Form::LayRadio([--}}
+        {{--                'name'=>'is_admin',--}}
+        {{--                'title'=>'超级管理员',--}}
+        {{--                'tips'=>'',--}}
+        {{--                'rq'=>'',--}}
+        {{--                'on_id'=>$show->is_admin,--}}
+        {{--                'list'=>[--}}
+        {{--                     ['id'=>1,'name'=>'是'],--}}
+        {{--                     ['id'=>0,'name'=>'否']--}}
+        {{--                ]--}}
+        {{--        ])}}--}}
 
-        {{
-        Form::LayCheckbox([
-                    'name'=>'roles',
-                    'title'=>'角色',
-                    'filter'=>'role',
-                    'tips'=>'',
-                    'on_id'=>$show->roles->pluck('id')->toArray(),
-                    'rq'=>'rq',
-                    'list'=>$role??[]
-            ])
-    }}
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                部门
-            </label>
-            <div class="layui-input-block">
-                <div id="groupset" title="选择部门"></div>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                数据部门
-            </label>
-            <div class="layui-input-block">
-                <div id="data_groupset" title="选择部门"></div>
-            </div>
-        </div>
-
-{{--        <div class="layui-form-item">--}}
-{{--            <label class="layui-form-label">权限选择</label>--}}
-{{--            <div class="layui-input-block" style="">--}}
-{{--                @include('admin::role.permission')--}}
-{{--            </div>--}}
-{{--        </div>--}}
+        {{--        {{--}}
+        {{--        Form::LayCheckbox([--}}
+        {{--                    'name'=>'roles',--}}
+        {{--                    'title'=>'角色',--}}
+        {{--                    'filter'=>'role',--}}
+        {{--                    'tips'=>'',--}}
+        {{--                    'on_id'=>$show->roles->pluck('id')->toArray(),--}}
+        {{--                    'rq'=>'rq',--}}
+        {{--                    'list'=>$role??[]--}}
+        {{--            ])--}}
+        {{--    }}--}}
+        {{--        <div class="layui-form-item">--}}
+        {{--            <label class="layui-form-label">权限选择</label>--}}
+        {{--            <div class="layui-input-block" style="">--}}
+        {{--                @include('admin::role.permission')--}}
+        {{--            </div>--}}
+        {{--        </div>--}}
 
         {{   Form::LaySubmit()}}
     </div>
 @endsection
 @push('scripts')
     <script>
-        layui.use(['index', 'uploader', 'xmSelect', 'myXmSelect',  'form'], function () {
-            var uploader = layui.uploader;
-            var xmSelect = layui.xmSelect;
-            var myXmSelect = layui.myXmSelect;
+        layui.use(['index', 'uploader', 'form'], function () {
             var form = layui.form;
             var $ = layui.$;
-
-            uploader.one("#thumbUpload");
-            //部门所选
-            var groupset_lists = myXmSelect.render({
-                el: '#groupset',
-                tips: '选择部门',
-                radio: true,
-                autoRow: true,
-                name: 'groupset_lists',
-                tree: {
-                    show: true,
-                    strict: false,
-                    expandedKeys: [-1],
-                },
-                data: @json(examCategories('groupset'))
-            });
-
-            groupset_lists.setValue(@json(userHasGroupset($show)))
-
-            //部门所选
-            var data = myXmSelect.render({
-                el: '#data_groupset',
-                tips: '选择部门',
-                checkbox: true,
-                autoRow: true,
-                name: 'data_groupset',
-                tree: {
-                    show: true,
-                    strict: false,
-                    expandedKeys: [-1],
-                },
-                data: @json(examCategories('groupset'))
-            });
-
-            data.setValue(@json(userHasPermissionGroupset($show)))
 
             form.on('checkbox(permission)', function (data) {
                 var check = data.elem.checked;//是否选中
