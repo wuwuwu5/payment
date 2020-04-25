@@ -440,7 +440,7 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
                     h: ($(this).data('h') == null || $(this).data('h') == undefined) ? '90%' : $(this).data('h'),
                     btn: ['关闭'],
                     yes: function (index, layero) {
-                       top.layer.close(index); //关闭弹层
+                        top.layer.close(index); //关闭弹层
                     }
                 }, function (layero, index) {
                     top.layer.close(index);
@@ -884,7 +884,7 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
     function listSearch() {
         form.on('submit(LAY-list-search)', function (data) {
             var field = data.field;
-            // field.page=1;
+
             for (let key in field) {
                 if (field[key] === '') {
                     delete field[key]
@@ -937,24 +937,22 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
 
     //监听列表其他组件事件,开关设置
     form.on('switch(table-user-checked)', function (obj) {
-
         var field = $(this).data('field');
         var value = obj.elem.checked ? 0 : 1;
         var id = $(this).data('id');
-        field = field || 'is_checked';
-        //ajax操作
-        var data = {
-            field: field,
-            field_value: value,
-            ids: id
-        };
+        var url = (listConfig.update_field_url).replace('@', id);
 
+        // 文件数据
+        var data = {};
 
-        req.post(listConfig.edit_field_url, data, function (res) {
+        // 赋值
+        data[field] = value
+        data['_method'] = 'PUT'
+
+        // 更新
+        req.post(url, data, function (res) {
             layer.msg(res.msg);
-        })
-
-
+        });
     });
 
     exports('listTable', listTable);

@@ -10,6 +10,15 @@ class DummyClass extends Model
     use PimpableTrait;
 
     /**
+     * 可填充字段
+     *
+     * @var array
+     */
+    protected $fillable = [
+
+    ];
+
+    /**
      * 默认排序
      *
      * @var array

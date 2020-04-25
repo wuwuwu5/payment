@@ -12,44 +12,6 @@
         @include('admin::layout.style')
     @show
     @stack('styles')
-    <style>
-        .layui-laypage .layui-laypage-curr .layui-laypage-em {
-            position: absolute;
-            left: -1px;
-            top: -1px;
-            padding: 1px;
-            width: 100%;
-            height: 100%;
-            background-color: #1E9FFF;
-        }
-
-        .layui-table-cell, .layui-table-tool-panel li {
-            white-space: normal !important;
-        }
-
-        .layui-form-select dl dd.layui-this {
-            background-color: #1E9FFF !important;
-        }
-
-        .layui-table-view .layui-table th {
-            font-weight: 800 !important;
-        }
-
-        /*选择试卷弹窗样式*/
-        .tableSelectBar > form > #paper_category {
-            border: 0;
-        }
-        .tableSelectBar > form > #paper_type {
-            margin-left: 20px;
-            border: 0;
-        }
-        .tableSelectBar > form > input {
-            margin-left: 20px;
-        }
-        .tableSelectBar > form > button {
-            margin-left: 20px;
-        }
-    </style>
 </head>
 <body>
 @section('layui_fluid')
@@ -62,17 +24,10 @@
         </div>
     </div>
 @show
-@section('script')
-    @include('admin::layout.script')
-    <script>
-        //每个页面都初始化表单数据和检验表单
-        layui.use(['index', 'form', 'verify', 'custorm'], function () {
-            var $ = layui.$
-                , form = layui.form;
 
-        });
-    </script>
-@show
+@include('admin::layout.script')
+
 @stack('scripts')
+
 </body>
 </html>

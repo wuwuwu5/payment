@@ -30,6 +30,7 @@ class ModuleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->app->register(FormGroupServiceProvider::class);
         $this->app->register(GeneratorServiceProvider::class);
     }
 }

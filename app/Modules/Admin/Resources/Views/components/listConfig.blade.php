@@ -5,7 +5,7 @@
         restful:true,
         index_url: "{!! url()->current() !!}", // 删除操作时会自动拼接 数据 ID
         list_url: "{{$list_url}}",
-        edit_field_url: "{{$edit_url}}",
+        update_field_url: "{{$update_url}}",
         create_url: '{{$create_url}}',
         stroe_url: "{{$store_url}}",
         checked_url: '',

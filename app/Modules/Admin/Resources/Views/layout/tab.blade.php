@@ -16,7 +16,7 @@
     </div>
     <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
         <ul class="layui-tab-title" id="LAY_app_tabsheader">
-            <li lay-id="{{route('admin.console')}}" lay-attr="{{route('admin.console')}}" class="layui-this"><i class="layui-icon layui-icon-home"></i>后台首页</li>
+            <li lay-id="" lay-attr="" class="layui-this"><i class="layui-icon layui-icon-home"></i>后台首页</li>
         </ul>
     </div>
 </div>

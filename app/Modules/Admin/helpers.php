@@ -27,15 +27,19 @@ if (!function_exists('cms_config')) {
     }
 }
 
-if (!function_exists('res')) {
+if (!function_exists('admin_asset')) {
     /**
      * 资源加载 res
      * @param $path
      * @return string
      */
-    function res($path)
+    function admin_asset($path)
     {
-        return asset('/admin/' . $path);
+        if (!empty($path) && $path[0] == '/') {
+            $path = substr($path, 1);
+        }
+
+        return asset('/static/admin/' . $path);
     }
 }
 
@@ -56,7 +60,7 @@ if (!function_exists('user')) {
 if (!function_exists('admin')) {
     function admin()
     {
-        return \App\Modules\Admin\Models\User::where('id', user()->id)->first();
+        return \App\Modules\Admin\Models\User::where('id', 1)->first();
 
     }
 }
@@ -442,5 +446,48 @@ if (!function_exists('is_mobile')) {
     {
         $agent = new Jenssegers\Agent\Agent();
         return $agent->isMobile();
+    }
+}
+
+
+if (!function_exists('toBlade')) {
+    /**
+     * 路径/ 转换为.
+     *
+     * @param $path
+     * @return string
+     */
+    function toBlade($path)
+    {
+        return strtolower(implode(".", explode("\\", $path)));
+    }
+}
+
+
+if (!function_exists('linux_path')) {
+    /**
+     * 转换成linux路径
+     * @param $path
+     * @return mixed
+     */
+    function linux_path($path)
+    {
+        return str_replace("\\", "/", $path);
+    }
+}
+
+if (!function_exists('nroute')) {
+    /**
+     * 转换成linux路径
+     * @param $path
+     * @return mixed
+     */
+    function nroute($name, $para = [])
+    {
+        try {
+            return route($name, $para);
+        } catch (Exception $exception) {
+            return $exception->getMessage();
+        }
     }
 }

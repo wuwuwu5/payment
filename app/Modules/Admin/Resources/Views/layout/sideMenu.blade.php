@@ -9,13 +9,6 @@
                     @else
                     @cms('system_name')
                     @endif
-
-{{--                @if(!empty(cms_config('site')['logo']))--}}
-{{--                    <img src="{{render_cover(cms_config('site')['logo'])}}">--}}
-{{--                    @else--}}
-{{--                    @cms('system_name')--}}
-{{--                    @endif--}}
-
             </span>
         </div>
         <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">

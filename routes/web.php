@@ -17,4 +17,3 @@ use Illuminate\Support\Facades\Route;
 //    return view('welcome');
 //});
 
-Route::resource('/users', '\App\Modules\Admin\Http\Controllers\UsersController');

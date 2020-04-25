@@ -10,6 +10,15 @@ class User extends Model
     use PimpableTrait;
 
     /**
+     * 可填充字段
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'locked'
+    ];
+
+    /**
      * 默认排序
      *
      * @var array
@@ -21,7 +30,7 @@ class User extends Model
      *
      * @var array
      */
-    public $searchable = [];
+    public $searchable = ['nickname', 'username'];
 
 
     /**
@@ -30,8 +39,7 @@ class User extends Model
      * @var array
      */
     public $searchableModels = [
-        'nickname' => '%field%'
+        'nickname' => '%field%',
+        'username' => '%field%',
     ];
-
-
 }

@@ -240,29 +240,12 @@
         //回调函数
         function layui_switch(field, d, text, true_value, false_value) {
             text = text || '是|否';
-            true_value = true_value || 1;
-            false_value = false_value || 0;
-            return '<input type="checkbox" data-true_value="' + true_value + '" data-false_value="' + false_value + '"  lay-skin="switch" lay-text="' + text + '" lay-filter="table-checked" ' +
-                'value="' + d[field] + '" data-id="' + d.id + '"  data-field="' + field + '" ' + (d[field] == true_value ? 'checked' : '') + '>';
-        }
-
-        //回调函数
-        function layui_user_switch(field, d, text, true_value, false_value) {
-            text = text || '是|否';
             true_value = true_value || 0;
             false_value = false_value || 1;
-            return '<input type="checkbox" data-true_value="0" data-false_value="1"  lay-skin="switch" lay-text="启用|禁用" lay-filter="table-user-checked" ' +
+            return '<input type="checkbox" data-true_value="' + true_value + '" data-false_value="' + false_value + '"  lay-skin="switch" lay-text="' + text + '" lay-filter="table-user-checked" ' +
                 'value="' + d[field] + '" data-id="' + d.id + '"  data-field="' + field + '" ' + (d[field] == 0 ? 'checked' : '') + '>';
         }
 
-        //回调函数
-        function layui_status_switch(field, d, text, true_value, false_value) {
-            text = text || '是|否';
-            true_value = true_value || 0;
-            false_value = false_value || 1;
-            return '<input type="checkbox" data-true_value="1" data-false_value="0"  lay-skin="switch" lay-text="启用|禁用" lay-filter="table-status-checked" ' +
-                'value="' + d[field] + '" data-id="' + d.id + '"  data-field="' + field + '" ' + (d[field] == 1 ? 'checked' : '') + '>';
-        }
 
         function layui_pic(img) {
             if (img) {
@@ -407,7 +390,7 @@
         {{# if(!d.no_edit_btn){  }}
         <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" data-w="70%"
            data-h="95%"><i
-                class="layui-icon layui-icon-edit" ></i>编辑</a>
+                class="layui-icon layui-icon-edit"></i>编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i
                 class="layui-icon layui-icon-delete"></i>删除</a>
         {{# if(d.type == "offspring"){ }}
@@ -511,7 +494,8 @@
         </p>
         {{#  }; }}
         {{# if(!d.no_edit_btn){  }}
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="show_exam_users" data-w="90%"  data-h="90%">进入评卷</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="show_exam_users" data-w="90%"
+           data-h="90%">进入评卷</a>
         {{# } }}
     </script>
     <script type="text/html" id="tpl-exam-show-users">
@@ -607,8 +591,10 @@
         </p>
         {{#  }; }}
         {{# if(!d.no_edit_btn){  }}
-        <a class="layui-btn layui-btn layui-btn-xs" lay-event="show_achievement_users" data-h="90%" data-w="90%">查看详情</a>
-        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="show_achievement_analysis" data-h="90%" data-w="90%">考试分析</a>
+        <a class="layui-btn layui-btn layui-btn-xs" lay-event="show_achievement_users" data-h="90%"
+           data-w="90%">查看详情</a>
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="show_achievement_analysis" data-h="90%"
+           data-w="90%">考试分析</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="add_exam" data-h="90%" data-w="90%">安排补考</a>
         {{# } }}
     </script>
@@ -805,7 +791,7 @@
         {{#  }; }}
         {{# if(!d.no_edit_btn){  }}
         <a class="layui-btn layui-btn-xs" lay-event="copy">复制</a>
-        <a class="layui-btn layui-btn-normal  layui-btn-xs"  data-w="60%" data-h="95%" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-normal  layui-btn-xs" data-w="60%" data-h="95%" lay-event="edit">编辑</a>
         <a class="layui-btn layui-btn-danger  layui-btn-xs" lay-event="del">删除</a>
         {{# } }}
     </script>

@@ -39,7 +39,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapApiRoutes();
 
-        //
+        $this->mapAdminRoutes();
     }
 
     /**
@@ -74,6 +74,23 @@ class RouteServiceProvider extends ServiceProvider
             'prefix'     => 'api',
         ], function ($router) {
             require module_path('admin', 'Routes/api.php', 'app');
+        });
+    }
+
+    /**
+     * Define the "api" routes for the module.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapAdminRoutes()
+    {
+        Route::group([
+            'namespace'  => $this->namespace,
+            'prefix'     => 'admin',
+        ], function ($router) {
+            require module_path('admin', 'Routes/admin.php', 'app');
         });
     }
 }
