@@ -11,10 +11,10 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     // 登录成功跳转
-    protected $redirectTo = '/admin/index';
+    public $redirectTo = '/admin/index';
 
     // 展示登录页面
-    protected $show_login_path = 'admin::admin.login.showLoginForm';
+    public $show_login_path = 'admin::admin.login.showLoginForm';
 
 
     /**
@@ -24,9 +24,8 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest:admin')->except('logout');
     }
-
 
     /**
      * 登录页面展示
@@ -79,9 +78,9 @@ class LoginController extends Controller
         // 登录逻辑
         if ($this->attemptLogin($request)) {
 
-            $user = \auth()->user();
+            $user = \auth()->guard('admin')->user();
 
-            $user->session_token = \auth()->guard()->getSession()->getId();
+            $user->session_token = \auth()->guard('admin')->getSession()->getId();
             $user->last_ip = $request->ip();
             $user->login_numbers = $user->login_numbers + 1;
             $user->save();

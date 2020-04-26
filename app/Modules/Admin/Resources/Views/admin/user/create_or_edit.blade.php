@@ -2,23 +2,24 @@
 @section('content')
     <div class="layui-form " id="layuiadmin-form" style="background-color: #fff">
         @csrf
-        @method('PUT')
+        @if(isset($show))
+            @method('PUT')
+        @endif
 
         {{Form::LayText([
            'name'=>'username',
-           'title'=>'登录名',
+           'title'=>'用户名',
            'tips'=>'',
-           'value'=> $show->username,
-           'rq'=>'rq'
+           'value'=> $show->username ?? '',
+           'rq'=>'rq|length[2,20]'
        ])}}
-
 
         {{Form::LayText([
             'name'=>'nickname',
-            'title'=>'用户姓名',
+            'title'=>'昵称',
             'tips'=>'',
-            'rq'=>'rq',
-            'value'=>$show->nickname
+            'rq'=>'rq|length[2,20]',
+            'value'=>$show->nickname ?? '',
         ])}}
 
 
@@ -27,7 +28,7 @@
                'title'=>'证件号码',
                'tips'=>'',
                'rq'=>'rq|identity',
-               'value'=>$show->id_card
+               'value'=>$show->id_card?? '',
             ])
        }}
 
@@ -35,64 +36,54 @@
                  'name'=>'email',
                  'title'=>'邮箱',
                  'tips'=>'',
-                 'rq'=>'rq|email',
-                 'value'=>$show->email
+                 'rq'=>'email',
+                 'value'=>$show->email?? '',
             ])
         }}
-        {{--        {{   Form::LayText([--}}
-        {{--                 'name'=>'mobile',--}}
-        {{--                 'title'=>'手机号',--}}
-        {{--                 'tips'=>'',--}}
-        {{--                 'rq'=>'phone',--}}
-        {{--                 'value'=>$show->phone--}}
-        {{--            ])--}}
-        {{--        }}--}}
+        {{   Form::LayText([
+                 'name'=>'mobile',
+                 'title'=>'手机号',
+                 'tips'=>'',
+                 'rq'=>'phone',
+                 'value'=>$show->phone ?? '',
+            ])
+        }}
 
-        {{Form::LayText([
+        @if(isset($show))
+            {{Form::LayText([
+             'name'=>'password',
+             'title'=>'密码',
+             'type' => 'password',
+             'rq'=>'',
+             'value'=>'',
+             'tips'=>'为空标识不更新密码'
+            ])}}
+        @else
+            {{Form::LayText([
          'name'=>'password',
          'title'=>'密码',
          'type' => 'password',
-         'tips'=>'',
-         'rq'=>'',
+         'rq'=>'rq|length[6,20]',
          'value'=>'',
-         'mark'=>'不填表示不更新密码'
         ])}}
-        {{--        {{Form::LayRadio([--}}
-        {{--                'name'=>'is_admin',--}}
-        {{--                'title'=>'超级管理员',--}}
-        {{--                'tips'=>'',--}}
-        {{--                'rq'=>'',--}}
-        {{--                'on_id'=>$show->is_admin,--}}
-        {{--                'list'=>[--}}
-        {{--                     ['id'=>1,'name'=>'是'],--}}
-        {{--                     ['id'=>0,'name'=>'否']--}}
-        {{--                ]--}}
-        {{--        ])}}--}}
+        @endif
 
-        {{--        {{--}}
-        {{--        Form::LayCheckbox([--}}
-        {{--                    'name'=>'roles',--}}
-        {{--                    'title'=>'角色',--}}
-        {{--                    'filter'=>'role',--}}
-        {{--                    'tips'=>'',--}}
-        {{--                    'on_id'=>$show->roles->pluck('id')->toArray(),--}}
-        {{--                    'rq'=>'rq',--}}
-        {{--                    'list'=>$role??[]--}}
-        {{--            ])--}}
-        {{--    }}--}}
-        {{--        <div class="layui-form-item">--}}
-        {{--            <label class="layui-form-label">权限选择</label>--}}
-        {{--            <div class="layui-input-block" style="">--}}
-        {{--                @include('admin::role.permission')--}}
-        {{--            </div>--}}
-        {{--        </div>--}}
-
+        {{
+            Form::LayCheckbox([
+                                    'name'=>'roles',
+                                    'title'=>'角色',
+                                    'filter'=>'role',
+                                    'tips'=>'',
+                                    'on_id'=>$user_has_roles ?? [],
+                                    'list'=>$roles ?? []
+                            ])
+            }}
         {{   Form::LaySubmit()}}
     </div>
 @endsection
 @push('scripts')
     <script>
-        layui.use(['index', 'uploader', 'form'], function () {
+        layui.use(['index', 'uploader', 'form', 'verify'], function () {
             var form = layui.form;
             var $ = layui.$;
 

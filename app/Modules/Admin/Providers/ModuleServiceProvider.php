@@ -22,8 +22,8 @@ class ModuleServiceProvider extends ServiceProvider
         }
         $this->loadFactoriesFrom(module_path('admin', 'Database/Factories', 'app'));
 
-        Blade::directive('cms', function($name) {
-            return  "<?php echo config('copyright.'.$name)?>";
+        Blade::directive('cms', function ($name) {
+            return "<?php echo config('copyright.'.$name)?>";
         });
     }
 
@@ -37,5 +37,6 @@ class ModuleServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(FormGroupServiceProvider::class);
         $this->app->register(GeneratorServiceProvider::class);
+        $this->app->register(ValidatorServiceProvider::class);
     }
 }

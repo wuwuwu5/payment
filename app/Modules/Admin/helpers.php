@@ -490,3 +490,18 @@ if (!function_exists('nroute')) {
         }
     }
 }
+
+
+if (!function_exists('admin_user')) {
+    /**
+     * 转换成linux路径
+     * @param $path
+     * @return mixed
+     */
+    function admin_user()
+    {
+        return auth()->guard('admin')->user();
+    }
+}
+
+

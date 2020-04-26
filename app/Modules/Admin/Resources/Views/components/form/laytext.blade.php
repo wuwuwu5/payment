@@ -8,7 +8,7 @@
             name="{{ array_get($params,'name') }}"
             value="{{ array_get($params,'value','') }}"
             placeholder="{{ array_get($params,'tips',array_get($params,'title'))}}"
-            lay-verify="{{array_get($params,'rq','')}}"
+            lay-verify="{{array_get($params,'rq', '')}}"
             style="{{array_get($params,'style','')}}"
             autocomplete="off" class="layui-input "
         />

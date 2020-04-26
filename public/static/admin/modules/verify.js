@@ -1,20 +1,71 @@
 layui.define(['form'], function (exports) {
     var $ = layui.$,
         form = layui.form;
-
     form.verify({
         phone: [/(^$)|^1\d{10}$/, '请输入正确的手机号'],
-        email: function (value, item) {
-            if (!value) {
-                if (!new RegExp("^([a-zA-Z0-9_\\.\\-])+\\@(([a-zA-Z0-9\\-])+\\.)+([a-zA-Z0-9]{2,4})+$").test(value)) {
-                    return '邮箱格式不正确';
-                }
-            }
-        },
+        email: [/(^$)|^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/, '邮箱格式不正确'],
         url: [/(^$)|(^#)|(^http(s*):\/\/[^\s]+\.[^\s]+)/, '链接格式不正确'],
         number: [/(^$)|^\d+$/, '只能填写数字'],
         date: [/(^$)|^(\d{4})[-\/](\d{1}|0\d{1}|1[0-2])([-\/](\d{1}|0\d{1}|[1-2][0-9]|3[0-1]))*$/, '日期格式不正确'],
         identity: [/(^$)|(^\d{15}$)|(^\d{17}(x|X|\d)$)/, '请输入正确的身份证号'],
+        length: function (value, item, params) {
+            if (value == undefined || value == null || value == '') return false;
+            if (params == undefined || params.length == 0) throw 'length校验规则至少需要1个整型参数';
+            if (params.length == 1 && value.length != params[0]) return '长度只能为' + params[0];
+
+            var title = $(item).data('title');
+            if (!title) {
+                title = $(item).parents('.layui-form-item').find('.layui-form-label').text();
+                if (!title) {
+                    title = $(item).parents('.layui-form-item').find('.layui-form-label').text();
+                }
+                if (!title) {
+
+                }
+                if (!title) {
+                    title = $(item).attr('tips');
+                }
+            }
+
+            if (value.length < params[0]) return title + '长度不能小于' + params[0];
+            if (value.length > params[1]) return title + '长度不能大于' + params[1];
+        },
+        minlength: function (value, item, params) {
+            if (value == undefined || value == null || value == '') return false;
+            if (params == undefined || params.length == 0) throw 'minlength校验规则需要1个整型参数';
+            var title = $(item).data('title');
+            if (!title) {
+                title = $(item).parents('.layui-form-item').find('.layui-form-label').text();
+                if (!title) {
+                    title = $(item).parents('.layui-form-item').find('.layui-form-label').text();
+                }
+                if (!title) {
+
+                }
+                if (!title) {
+                    title = $(item).attr('tips');
+                }
+            }
+            if (value.length < params[0]) return title + '长度不能小于' + params[0];
+        },
+        maxlength: function (value, item, params) {
+            if (value == undefined || value == null || value == '') return false;
+            if (params == undefined || params.length == 0) throw 'maxlength校验规则需要1个整型参数';
+            var title = $(item).data('title');
+            if (!title) {
+                title = $(item).parents('.layui-form-item').find('.layui-form-label').text();
+                if (!title) {
+                    title = $(item).parents('.layui-form-item').find('.layui-form-label').text();
+                }
+                if (!title) {
+
+                }
+                if (!title) {
+                    title = $(item).attr('tips');
+                }
+            }
+            if (value.length > params[0]) return title + '长度不能大于' + params[0];
+        },
         en_string: function (value, item) { //value：表单的值、item：表单的DOM对象
             if (!new RegExp("^[a-zA-Z][a-zA-Z0-9_]*$").test(value)) {
                 return '字母开头,使用字母、数字、_组成';
@@ -36,8 +87,6 @@ layui.define(['form'], function (exports) {
                 if (!title) {
                     title = $(item).attr('tips');
                 }
-
-
             }
 
             if (!value) {
