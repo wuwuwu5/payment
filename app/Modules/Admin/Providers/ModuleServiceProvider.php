@@ -3,6 +3,7 @@
 namespace App\Modules\Admin\Providers;
 
 use Caffeinated\Modules\Support\ServiceProvider;
+use Illuminate\Support\Facades\Blade;
 
 class ModuleServiceProvider extends ServiceProvider
 {
@@ -20,6 +21,10 @@ class ModuleServiceProvider extends ServiceProvider
             $this->loadConfigsFrom(module_path('admin', 'Config', 'app'));
         }
         $this->loadFactoriesFrom(module_path('admin', 'Database/Factories', 'app'));
+
+        Blade::directive('cms', function($name) {
+            return  "<?php echo config('copyright.'.$name)?>";
+        });
     }
 
     /**

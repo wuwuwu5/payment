@@ -13,8 +13,14 @@
                         if (!e || isNaN(e)) return "只能填写数字"
                     },
                     date: [/^(\d{4})[-\/](\d{1}|0\d{1}|1[0-2])([-\/](\d{1}|0\d{1}|[1-2][0-9]|3[0-1]))*$/, "日期格式不正确"],
-                    identity: [/(^\d{15}$)|(^\d{17}(x|X|\d)$)/, "请输入正确的身份证号"]
-                }
+                    identity: [/(^\d{15}$)|(^\d{17}(x|X|\d)$)/, "请输入正确的身份证号"],
+                    en_string: function (value, item) { //value：表单的值、item：表单的DOM对象
+                        if (!new RegExp("^[a-zA-Z][a-zA-Z0-9_]*$").test(value)) {
+                            return '请使用字母、数字、_组成';
+                        }
+                    },
+                },
+
             }
         };
     u.prototype.set = function (e) {

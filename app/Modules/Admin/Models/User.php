@@ -3,11 +3,14 @@
 namespace App\Modules\Admin\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Jedrzej\Pimpable\PimpableTrait;
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Model
+class User extends Authenticatable
 {
     use PimpableTrait;
+    use HasRoles;
 
     /**
      * string 默认密码

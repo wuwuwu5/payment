@@ -24,8 +24,13 @@
         </div>
     </div>
 @show
-
 @include('admin::layout.script')
+
+<script>
+    layui.use(['index', 'verify', 'form'], function () {
+
+    });
+</script>
 
 @stack('scripts')
 

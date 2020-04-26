@@ -22,9 +22,13 @@ class PermissionsController extends BaseController
      *
      * @param Request $request
      * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\JsonValidatorException
+     * @throws \App\Exceptions\WebValidatorException
      */
     public function store(Request $request)
     {
+        $this->validateData($request);
+
         $parent_id = $request->input('parent_id');
 
         $parent = null;
@@ -50,6 +54,7 @@ class PermissionsController extends BaseController
             'icon' => $request->input('icon'),
             'name' => $request->input('name'),
             'cn_name' => $request->input('cn_name'),
+            'guard_name' => 'admin',
         ]);
 
         return $this->returnOkApi();
@@ -110,7 +115,7 @@ class PermissionsController extends BaseController
                 $path = $permission->id;
                 $top_id = $permission->id;
             }
- 
+
             // 删除
             Permission::query()->where('top_id', $top_id)->where('path', 'like', $path . '%')->delete();
 

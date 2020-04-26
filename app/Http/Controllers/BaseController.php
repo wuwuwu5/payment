@@ -373,7 +373,6 @@ class BaseController extends Controller
         }
     }
 
-
     /**
      * 验证数据
      *
@@ -382,7 +381,7 @@ class BaseController extends Controller
      * @throws JsonValidatorException
      * @throws WebValidatorException
      */
-    private function validateData(Request $request)
+    public function validateData(Request $request)
     {
         $validator = \Validator::make($request->all(), $this->rules($request), $this->ruleMessages(), $this->customAttributes());
 

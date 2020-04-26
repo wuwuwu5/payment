@@ -284,19 +284,18 @@ if (!function_exists('is_admin')) {
 
     function is_admin()
     {
-        $admin = admin();
-        if ($admin['is_admin']) {
+        $admin = auth()->user();
+
+        if ($admin['is_admin'] == 1) {
             return true;
         }
 
         // 超级管理员
-        if ($admin->hasRole(['super_admin', 'admin', 'default'])) {
+        if ($admin->hasRole(['super_admin'])) {
             return true;
         }
 
-
         return false;
-
     }
 }
 

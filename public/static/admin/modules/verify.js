@@ -15,9 +15,9 @@ layui.define(['form'], function (exports) {
         number: [/(^$)|^\d+$/, '只能填写数字'],
         date: [/(^$)|^(\d{4})[-\/](\d{1}|0\d{1}|1[0-2])([-\/](\d{1}|0\d{1}|[1-2][0-9]|3[0-1]))*$/, '日期格式不正确'],
         identity: [/(^$)|(^\d{15}$)|(^\d{17}(x|X|\d)$)/, '请输入正确的身份证号'],
-        ename: function (value, item) { //value：表单的值、item：表单的DOM对象
+        en_string: function (value, item) { //value：表单的值、item：表单的DOM对象
             if (!new RegExp("^[a-zA-Z][a-zA-Z0-9_]*$").test(value)) {
-                return '请使用英文字母开头字符';
+                return '字母开头,使用字母、数字、_组成';
             }
         },
         rq: function (value, item) { //value：表单的值、item：表单的DOM对象
