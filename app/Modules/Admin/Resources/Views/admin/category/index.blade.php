@@ -3,6 +3,11 @@
     <link rel="stylesheet" href="{{ admin_asset('/modules/treetable-lay/treetable.css') }}">
 @endpush
 @section('content')
+    <div class="layui-card panel">
+        <div class="layui-list-btn">
+            <button class="layui-btn layui-btn-normal wkcms" data-type="add" style="margin-left: 15px;">+ 添加</button>
+        </div>
+    </div>
     @include('admin::components.table_tree')
 @endsection
 @push('scripts')
@@ -17,7 +22,7 @@
 
             // 渲染表格
             layer.load(2);
-            
+
             var table_id = "#LAY-list-table";
 
             function treeTableRender() {

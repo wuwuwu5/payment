@@ -582,7 +582,6 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
 
     // 列表编辑事件
     function listTableEditEvent(obj, data, extendFun, callFun, w, h) {
-        console.log(listConfig)
         layerOpen.edit(data.edit_url, data.update_url, {
             w: ($(this).data('w') == null || $(this).data('w') == undefined) ? '90%' : $(this).data('w'),
             h: ($(this).data('h') == null || $(this).data('h') == undefined) ? '90%' : $(this).data('h'),

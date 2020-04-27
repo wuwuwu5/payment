@@ -10,6 +10,16 @@ class CategoryGroup extends Model
     use PimpableTrait;
 
     /**
+     * 目录
+     */
+    const MENU = 'menu';
+
+    // 注释
+    const NAMES = [
+        'menu' => '目录'
+    ];
+
+    /**
      * 可填充字段
      *
      * @var array

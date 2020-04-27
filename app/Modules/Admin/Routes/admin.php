@@ -39,6 +39,8 @@ Route::name('admin.')->group(function () {
         Route::resource('/categories', 'CategoriesController');
         // 更新状态
         Route::patch('/categories/{category}/status', 'CategoriesController@updateStatus')->name('categories.status');
-    });
 
+        // 图标
+        Route::get('/icon', 'IconController@index')->name('icon.index');
+    });
 });

@@ -241,11 +241,7 @@ class BaseController extends Controller
      */
     private function formatPaginateResponse($data)
     {
-        foreach ($data as $item) {
-            $item->edit_url = $this->getEditUrl([$item->id]);
-            $item->update_url = $this->getUpdateUrl([$item->id]);
-            $item->destory_url = $this->getDestroyUrl([$item->id]);
-        }
+        $data = $this->setDataItemUrl($data);
 
         $json = [
             'code' => 200,
@@ -257,6 +253,20 @@ class BaseController extends Controller
         return response()->json($json);
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function setDataItemUrl($data)
+    {
+        foreach ($data as $item) {
+            $item->edit_url = $this->getEditUrl([$item->id]);
+            $item->update_url = $this->getUpdateUrl([$item->id]);
+            $item->destory_url = $this->getDestroyUrl([$item->id]);
+        }
+
+        return $data;
+    }
 
     /**
      * 页面返回

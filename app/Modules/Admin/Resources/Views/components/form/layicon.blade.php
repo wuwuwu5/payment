@@ -1,5 +1,5 @@
 <div class="layui-form-item">
-   @include('admin::components.form.label',['params'=>$params])
+    @include('admin::components.form.label',['params'=>$params])
     <div class="layui-input-block" id="{{ md5(array_get($params,'name','name'))}}">
         <input  type="hidden"
                 name="{{ array_get($params,'name','name') }}"
@@ -13,5 +13,3 @@
         <button class="layui-btn layui-btn-xs layui-btn-info" kq-event="icon" data-more="0" data-obj="{{ md5(array_get($params,'name','name')) }}">文件库选择</button>
     </div>
 </div>
-
-{{--{{ Form::LayIcon(['name'=>'icon','title'=>'图标']) }}--}}

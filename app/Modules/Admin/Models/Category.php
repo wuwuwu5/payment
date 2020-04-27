@@ -15,7 +15,7 @@ class Category extends Model
      * @var array
      */
     protected $fillable = [
-
+        'name', 'nickname', 'pid', 'value', 'image', 'category_group_id'
     ];
 
     /**
@@ -53,5 +53,15 @@ class Category extends Model
     public function children()
     {
         return $this->hasMany(Category::class, 'pid', 'id');
+    }
+
+    /**
+     * 分组
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function categoryGroup()
+    {
+        return $this->belongsTo(CategoryGroup::class);
     }
 }

@@ -521,3 +521,74 @@ if (!function_exists('admin_user')) {
 }
 
 
+if (!function_exists('treeCategories')) {
+    /**
+     * @param string $name
+     * @return array|\Illuminate\Http\JsonResponse
+     */
+    function treeCategories($name = 'menu')
+    {
+
+        $category_group = \App\Modules\Admin\Models\CategoryGroup::where('name', $name)
+            ->with(['categories' => function ($query) {
+                $query
+                    ->where('status', 1)
+                    ->select('id', 'nickname as name', 'pid', 'category_group_id')
+                    ->orderBy('weigh', 'desc')->orderBy('created_at', 'desc')
+                    ->orderBy('id', 'desc');
+            }])
+            ->first();
+
+        $categories = generateCategoriesTree($category_group->categories->toArray());
+
+        return $categories;
+    }
+}
+
+
+if (!function_exists('generateCategoriesTree')) {
+    /**
+     * 树形结构
+     *
+     * @param array $list
+     * @return array
+     */
+    function generateCategoriesTree(array $list)
+    {
+        if (count($list) == 0) {
+            return [];
+        }
+        // 创建Tree
+        $tree = [];
+
+        // 创建基于主键的数组引用
+        $refer = [];
+        foreach ($list as $key => $data) {
+            $refer[$data['id']] =& $list[$key];
+        }
+
+        //转出ID对内容
+        foreach ($list as $key => $data) {
+            // 判断是否存在parent
+            $parentId = $data['pid'];
+            if (0 == $parentId) {
+                $list[$key]['value'] = $list[$key]['id'];
+                $tree[] =& $list[$key];
+
+            } else {
+
+                if (isset($refer[$parentId])) {
+
+                    $parent =& $refer[$parentId];
+                    $list[$key]['value'] = $list[$key]['id'];
+                    $parent['children'][] =& $list[$key];
+                } else {
+                    $list[$key]['value'] = $list[$key]['id'];
+                    $tree[] =& $list[$key];
+                }
+            }
+        }
+
+        return $tree;
+    }
+}

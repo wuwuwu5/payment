@@ -8,11 +8,12 @@ trait PaperUrlTrait
      * 设置请求数据的路由
      *
      * @param $as
-     * @return \App\Base\Traits\PaperUrlTrait
+     * @param array $data
+     * @return $this
      */
-    public function setListUrl($as)
+    public function setListUrl($as, $data = [])
     {
-        $this->list_url = $as;
+        $this->list_url = $this->checkRoute($as, $data);
 
         return $this;
     }
@@ -21,11 +22,12 @@ trait PaperUrlTrait
      * 设置创建路由
      *
      * @param $as
+     * @param array $data
      * @return $this
      */
-    public function setCreateUrl($as)
+    public function setCreateUrl($as, $data = [])
     {
-        $this->create_url = $as;
+        $this->create_url = $this->checkRoute($as, $data);
 
         return $this;
     }
@@ -34,11 +36,12 @@ trait PaperUrlTrait
      * 设置储存数据的路由
      *
      * @param $as
+     * @param array $data
      * @return $this
      */
-    public function setStoreUrl($as)
+    public function setStoreUrl($as, $data = [])
     {
-        $this->store_url = $as;
+        $this->store_url = $this->checkRoute($as, $data);
 
         return $this;
     }
@@ -47,11 +50,12 @@ trait PaperUrlTrait
      * setEditUrl
      *
      * @param $as
+     * @param array $data
      * @return $this
      */
-    public function setEditUrl($as)
+    public function setEditUrl($as, $data = [])
     {
-        $this->edit_url = $as;
+        $this->edit_url = $this->checkRoute($as, $data);
 
         return $this;
     }
@@ -60,11 +64,12 @@ trait PaperUrlTrait
      * setUpdateUrl
      *
      * @param string $as 别名
+     * @param array $data
      * @return $this
      */
-    public function setUpdateUrl($as)
+    public function setUpdateUrl($as, $data = [])
     {
-        $this->update_url = $as;
+        $this->update_url = $this->checkRoute($as, $data);
 
         return $this;
     }
@@ -73,11 +78,12 @@ trait PaperUrlTrait
      * setDestroyUrl
      *
      * @param $as
+     * @param array $data
      * @return $this
      */
-    public function setDestroyUrl($as)
+    public function setDestroyUrl($as, $data = [])
     {
-        $this->destroy_url = $as;
+        $this->destroy_url = $this->checkRoute($as, $data);
 
         return $this;
     }
@@ -98,10 +104,10 @@ trait PaperUrlTrait
 
             $as = implode('.', $as);
 
-            $this->setListUrl($as);
+            $this->setListUrl($as, $data);
         }
 
-        return $this->checkRoute($this->list_url, $data);
+        return $this->list_url;
     }
 
 
@@ -121,10 +127,10 @@ trait PaperUrlTrait
 
             $as = implode('.', $as);
 
-            $this->setCreateUrl($as);
+            $this->setCreateUrl($as, $data);
         }
 
-        return $this->checkRoute($this->create_url, $data);
+        return $this->create_url;
     }
 
     /**
@@ -143,10 +149,10 @@ trait PaperUrlTrait
 
             $as = implode('.', $as);
 
-            $this->setStoreUrl($as);
+            $this->setStoreUrl($as, $data);
         }
 
-        return $this->checkRoute($this->store_url, $data);
+        return $this->store_url;
     }
 
     /**
@@ -165,10 +171,10 @@ trait PaperUrlTrait
 
             $as = implode('.', $as);
 
-            $this->setEditUrl($as);
+            $this->setEditUrl($as, $data);
         }
 
-        return $this->checkRoute($this->edit_url, $data);
+        return $this->edit_url;
     }
 
     /**
@@ -187,10 +193,10 @@ trait PaperUrlTrait
 
             $as = implode('.', $as);
 
-            $this->setUpdateUrl($as);
+            $this->setUpdateUrl($as, $data);
         }
 
-        return $this->checkRoute($this->update_url, $data);
+        return $this->update_url;
     }
 
     /**
@@ -209,10 +215,10 @@ trait PaperUrlTrait
 
             $as = implode('.', $as);
 
-            $this->setDestroyUrl($as);
+            $this->setDestroyUrl($as, $data);
         }
 
-        return $this->checkRoute($this->destroy_url, $data);
+        return $this->destroy_url;
     }
 
 
