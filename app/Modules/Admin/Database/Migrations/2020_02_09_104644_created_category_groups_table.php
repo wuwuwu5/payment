@@ -18,7 +18,7 @@ class CreatedCategoryGroupsTable extends Migration
             $table->string('title')->comment('名称');
             $table->string('name')->comment('编码');
             $table->integer('depth')->default(0)->comment('允许最大层级数');
-            $table->string('is_show')->default(0)->comment('是否展示');
+            $table->string('is_show')->default(1)->comment('是否展示 1 展示 0 不展示');
             $table->timestamps();
             // 索引
             $table->index('name');

@@ -33,7 +33,7 @@ class CreateUsersTable extends Migration
             $table->integer('score')->unsigned()->default(0)->comment('积分');
             $table->integer('login_numbers')->default(0)->comment('登录次数');
             $table->string('session_token')->default('')->comment('登录session_token');
-            $table->boolean('locked')->default(false)->comment('是否禁用');
+            $table->boolean('locked')->default(1)->comment('是否禁用 0启用 1禁用 ');
             $table->boolean('is_email_verified')->default(false)->comment('邮箱是否为已验证');
             $table->boolean('is_phone_verified')->default(false)->comment('手机号是否为已验证');
             $table->string('registered_ip', 64)->nullable()->comment('注册IP');

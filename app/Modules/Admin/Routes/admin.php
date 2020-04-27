@@ -14,6 +14,8 @@ Route::name('admin.')->group(function () {
 
         // 用户管理
         Route::resource('/users', 'UsersController');
+        // 更新用户状态
+        Route::patch('/users/{user}/status', 'UsersController@updateStatus')->name('users.status');
 
         // 重置密码
         Route::patch('/users/{user}/password', 'UsersController@resetPassword')->name('users.reset.password');
@@ -32,6 +34,11 @@ Route::name('admin.')->group(function () {
 
         // upload
         Route::post('/upload', 'FileUploadController@store')->name('upload');
+
+        // 分类|目录等
+        Route::resource('/categories', 'CategoriesController');
+        // 更新状态
+        Route::patch('/categories/{category}/status', 'CategoriesController@updateStatus')->name('categories.status');
     });
 
 });

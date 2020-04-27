@@ -54,7 +54,7 @@
                 {
                     field: 'locked', title: '禁用', templet:
                         function (d) {
-                            return layui_switch('locked', d, '启用|禁用');
+                            return layui_switch('locked', d, '启用|禁用', 0, 1, '/admin/users/' + d.id + '/status');
                         }
                 },
                 {title: '操作', align: 'center', toolbar: '#tpl-admin-user-options'}

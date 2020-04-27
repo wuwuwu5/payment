@@ -176,6 +176,23 @@ class UsersController extends BaseController
     }
 
     /**
+     * 更新状态
+     *
+     * @param  $user
+     * @param Request $request
+     * @return array|\Illuminate\Http\JsonResponse
+     */
+    public function updateStatus($user, Request $request)
+    {
+        $user = User::query()->findOrFail($user);
+
+        $user->fill($request->all());
+        $user->save();
+
+        return $this->returnOkApi();
+    }
+
+    /**
      * 字段
      *
      * @return array

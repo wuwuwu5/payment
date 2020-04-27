@@ -134,10 +134,12 @@
         </p>
         {{#  }; }}
         {{# if(!d.no_edit_btn){  }}
+        {{# if(d.id != 1){  }}
         <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i
                 class="layui-icon layui-icon-edit"></i>编辑</a>
         <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="reset_password"><i
                 class="layui-icon"></i>重置密码</a>
+        {{# } }}
         {{# } }}
     </script>
 
@@ -239,12 +241,17 @@
         }
 
         //回调函数
-        function layui_switch(field, d, text, true_value, false_value) {
+        function layui_switch(field, d, text, true_value, false_value, url) {
             text = text || '是|否';
-            true_value = true_value || 0;
-            false_value = false_value || 1;
-            return '<input type="checkbox" data-true_value="' + true_value + '" data-false_value="' + false_value + '"  lay-skin="switch" lay-text="' + text + '" lay-filter="table-checked" ' +
-                'value="' + d[field] + '" data-id="' + d.id + '"  data-field="' + field + '" ' + (d[field] == 0 ? 'checked' : '') + '>';
+            return '<input type="checkbox" data-url="' + url + '" data-true_value="' + true_value + '" data-false_value="' + false_value + '"  lay-skin="switch" lay-text="' + text + '" lay-filter="table-checked" ' +
+                'value="' + d[field] + '" data-id="' + d.id + '"  data-field="' + field + '" ' + (d[field] == true_value ? 'checked' : '') + '>';
+        }
+
+        //回调函数
+        function layui_category_switch(field, d, text, true_value, false_value, url) {
+            text = text || '是|否';
+            return '<input type="checkbox" data-url="' + url + '" data-true_value="' + true_value + '" data-false_value="' + false_value + '"  lay-skin="switch" lay-text="' + text + '" lay-filter="table-category-checked" ' +
+                'value="' + d[field] + '" data-id="' + d.id + '"  data-field="' + field + '" ' + (d[field] == true_value ? 'checked' : '') + '>';
         }
 
 

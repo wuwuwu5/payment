@@ -561,22 +561,23 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
     //监听列表其他组件事件,开关设置
     form.on('switch(table-checked)', function (obj) {
         var field = $(this).data('field');
-        var value = obj.elem.checked ? 0 : 1;
+        var value = obj.elem.checked ? 0: 1;
         var id = $(this).data('id');
-        var url = (listConfig.update_field_url).replace('@', id);
+        var url = $(this).data('url');
 
         // 文件数据
         var data = {};
 
         // 赋值
         data[field] = value;
-        data['_method'] = 'PUT';
+        data['_method'] = 'patch';
 
         // 更新
         req.post(url, data, function (res) {
             layer.msg(res.msg);
         });
     });
+
 
 
     // 列表编辑事件

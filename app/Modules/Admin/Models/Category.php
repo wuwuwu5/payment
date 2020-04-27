@@ -44,4 +44,14 @@ class Category extends Model
     ];
 
     public $casts = ['value' => 'array'];
+
+    /**
+     * 子类
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'pid', 'id');
+    }
 }

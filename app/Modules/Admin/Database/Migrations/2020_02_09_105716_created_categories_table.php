@@ -26,7 +26,7 @@ class CreatedCategoriesTable extends Migration
             $table->string('keywords')->default('')->comment('关键字');
             $table->string('description')->default('')->comment('描述');
             $table->integer('weigh')->default(0)->comment('权重');
-            $table->string('status', 30)->default('1')->comment('状态');
+            $table->unsignedTinyInteger('status')->default(1)->comment('状态 0 禁用 1 启用');
             $table->json('value')->comment('JSON,自定义扩展');
             $table->timestamps();
             $table->softDeletes();
@@ -34,6 +34,8 @@ class CreatedCategoriesTable extends Migration
             $table->index(['weigh', 'id'], 'weigh');
             $table->index('category_group_id');
             $table->index('pid');
+            $table->index('top_id');
+            $table->index('path');
             $table->index('name');
         });
     }

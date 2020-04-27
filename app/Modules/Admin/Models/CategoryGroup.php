@@ -15,7 +15,7 @@ class CategoryGroup extends Model
      * @var array
      */
     protected $fillable = [
-
+        'title', 'name', 'depth', 'is_show'
     ];
 
     /**

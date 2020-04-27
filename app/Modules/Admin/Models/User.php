@@ -12,6 +12,8 @@ class User extends Authenticatable
     use PimpableTrait;
     use HasRoles;
 
+    public $primaryKey = 'id';
+
     /**
      * string 默认密码
      */
