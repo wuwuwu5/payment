@@ -54,6 +54,9 @@
                 {
                     field: 'locked', title: '禁用', templet:
                         function (d) {
+                            if (d.id == '{{\App\Modules\Admin\Models\User::SUPER_ADMIN_ID}}') {
+                                return ''
+                            }
                             return layui_switch('locked', d, '启用|禁用', 0, 1, '/admin/users/' + d.id + '/status');
                         }
                 },

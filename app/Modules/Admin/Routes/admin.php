@@ -9,6 +9,10 @@ Route::name('admin.')->group(function () {
     Route::get('/captcha', 'LoginController@captcha')->name('captcha');
 
     Route::middleware(['auth:admin'])->group(function () {
+
+        // 退出登录
+        Route::post('/logout', 'LoginController@logout')->name('logout');
+
         // 首页
         Route::get('/index', 'HomeController@index')->name('home');
 

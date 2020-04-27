@@ -75,6 +75,10 @@ class UsersController extends BaseController
      */
     public function edit($id, Request $request)
     {
+        if ($id == \App\Modules\Admin\Models\User::SUPER_ADMIN_ID) {
+            return abort(404);
+        }
+
         $show = User::query()->findOrFail($id);
 
         $user_has_roles = $show->roles()->pluck('id')->toArray();
@@ -184,6 +188,10 @@ class UsersController extends BaseController
      */
     public function updateStatus($user, Request $request)
     {
+        if ($user == \App\Modules\Admin\Models\User::SUPER_ADMIN_ID) {
+            return $this->returnErrorApi();
+        }
+
         $user = User::query()->findOrFail($user);
 
         $user->fill($request->all());

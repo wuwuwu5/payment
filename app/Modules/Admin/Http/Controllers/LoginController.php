@@ -86,7 +86,8 @@ class LoginController extends Controller
             $user->save();
 
             if ($request->wantsJson()) {
-                $url = session('url.intended') ?? $this->redirectTo;
+//                $url = session('url.intended') ?? $this->redirectTo;
+                $url = $this->redirectTo;
                 return response()->json(['code' => 200, 'msg' => '登录成功!', 'redirect' => $url]);
             }
 
@@ -110,10 +111,10 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        \Auth::guard('web')->logout();
+        \Auth::guard('admin')->logout();
 
         session()->invalidate();
 
-        return redirect('/exam/home');
+        return redirect('/admin/login');
     }
 }

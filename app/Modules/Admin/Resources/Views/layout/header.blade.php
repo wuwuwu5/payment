@@ -25,12 +25,13 @@
         </li>
         <li class="layui-nav-item" lay-unselect>
             <a href="javascript:;">
-                <cite>{{ user('username') }}</cite>
+                <cite>{{ admin_user()->nickname }}</cite>
             </a>
             <dl class="layui-nav-child">
-                <dd><a href="" onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">退出</a>
-                    <form id="logout-form" action="" method="POST" class="hidden">
+                <dd>
+                    <a href="javaScript:"
+                       onclick="event.preventDefault();  document.getElementById('logout-form').submit();">退出</a>
+                    <form id="logout-form" action="{{route('admin.logout')}}" method="POST" class="hidden">
                         {{ csrf_field() }}
                     </form>
                 </dd>

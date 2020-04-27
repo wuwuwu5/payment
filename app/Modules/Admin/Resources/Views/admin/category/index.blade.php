@@ -50,7 +50,7 @@
                                     return layui_category_switch('status', d, '启用|禁用', 1, 0, '/admin/categories/' + d.id + '/status');
                                 }
                         },
-                        {title: '操作', width: 200, align: 'center', toolbar: '#tpl-create-edit'}
+                        {title: '操作', width: 200, align: 'center', toolbar: '#tpl-edit'}
                     ]],
                     done: function () {
                         layer.closeAll('loading');

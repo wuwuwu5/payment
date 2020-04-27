@@ -12,6 +12,8 @@ class User extends Authenticatable
     use PimpableTrait;
     use HasRoles;
 
+    const SUPER_ADMIN_ID = 1;
+
     public $primaryKey = 'id';
 
     /**
