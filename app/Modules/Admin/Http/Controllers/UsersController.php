@@ -123,7 +123,6 @@ class UsersController extends BaseController
         } catch (\Exception $exception) {
             DB::rollBack();
             report($exception);
-            dd($exception);
             return $this->returnErrorApi();
         }
     }
