@@ -2,36 +2,49 @@
 
 namespace App\Modules\Admin\Models;
 
-use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Model;
 use Jedrzej\Pimpable\PimpableTrait;
 
 class CategoryGroup extends Model
 {
     use PimpableTrait;
-//    use Cachable;
-    /**
-     * @var string 分类群组
-     */
-    protected $table = 'category_groups';
 
     /**
+     * 可填充字段
+     *
      * @var array
      */
-    public $sortable = ['name', 'title'];
+    protected $fillable = [
+
+    ];
 
     /**
+     * 默认排序
+     *
      * @var array
      */
-    public $searchable = ['name', 'title'];
+    protected $defaultSortCriteria = ['created_at,desc'];
 
     /**
+     * 可查询字段
+     *
      * @var array
      */
-    protected $fillable = ['name', 'title'];
+    public $searchable = [];
 
     /**
-     * 分类
+     * 查询字段模式
+     *
+     *  nickname => '%field%' 模糊查询
+     *  created_at= (ge)field
+     * @var array
+     */
+    public $searchableModels = [
+
+    ];
+
+    /**
+     * 子分类
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -39,5 +52,4 @@ class CategoryGroup extends Model
     {
         return $this->hasMany(Category::class);
     }
-
 }

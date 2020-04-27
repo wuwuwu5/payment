@@ -23,6 +23,15 @@ Route::name('admin.')->group(function () {
 
         // 角色
         Route::resource('/roles', 'RolesController');
+
+        // 基础设置
+        Route::resource('/settings', 'SettingsController');
+
+        // upload token
+        Route::get('/upload_token', 'FileUploadController@token')->name('upload.token');
+
+        // upload
+        Route::post('/upload', 'FileUploadController@store')->name('upload');
     });
 
 });

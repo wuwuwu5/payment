@@ -2,26 +2,46 @@
 
 namespace App\Modules\Admin\Models;
 
-use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Model;
 use Jedrzej\Pimpable\PimpableTrait;
 
 class Setting extends Model
 {
     use PimpableTrait;
-    //use Cachable;
-
-    public $table = 'settings';
-
-    public $searchable = ['*'];
-    /**
-     * @var array
-     */
-    protected $casts = ['value' => 'array'];
 
     /**
-     * 不可以批量复制字段
+     * 可填充字段
+     *
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'name', 'cn_name', 'value'
+    ];
+
+    /**
+     * 默认排序
+     *
+     * @var array
+     */
+    protected $defaultSortCriteria = ['created_at,desc'];
+
+    /**
+     * 可查询字段
+     *
+     * @var array
+     */
+    public $searchable = [];
+
+    /**
+     * 查询字段模式
+     *
+     *  nickname => '%field%' 模糊查询
+     *  created_at= (ge)field
+     * @var array
+     */
+    public $searchableModels = [
+
+    ];
+
+    public $casts = ['value' => 'array'];
 }

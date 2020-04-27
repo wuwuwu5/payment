@@ -29,7 +29,9 @@
                 </div>
                 <div class="layui-form-item ">
                     <div class="layui-inline">
-                        <button class="layui-btn layui-btn-normal wkcms" data-type="add" data-w="90%" data-h="90%">+ 添加</button>
+                        <button class="layui-btn layui-btn-normal wkcms" data-type="add" data-w="90%" data-h="90%">+
+                            添加
+                        </button>
                     </div>
                 </div>
             </div>
@@ -44,22 +46,22 @@
             var listTable = layui.listTable;
 
             var cols = [[
-                {field: 'id', width: 80, title: 'ID'},
+                {field: 'id', title: 'ID'},
                 {field: 'username', title: '登录名'},
                 {field: 'nickname', title: '用户姓名'},
                 {field: 'email', title: '邮箱'},
                 {field: 'mobile', title: '手机号'},
                 {
-                    field: 'locked', title: '禁用', width: 100, templet:
+                    field: 'locked', title: '禁用', templet:
                         function (d) {
                             return layui_switch('locked', d, '启用|禁用');
                         }
                 },
-                {title: '操作', width: 250, align: 'center', toolbar: '#tpl-admin-user-options'}
+                {title: '操作', align: 'center', toolbar: '#tpl-admin-user-options'}
             ]];
 
             //渲染
-            listTable.render(listConfig.list_url, cols);
+            listTable.render(listConfig.list_url, cols, {cellMinWidth: 80});
             // 查询
             listTable.search();
         });

@@ -9,7 +9,7 @@
                     value="{{ $v['id'] }}"
                     title="{{ $v['name'] }}"
                     lay-verify="{{ array_get($params,'rq','radio') }}"
-                    params-title="{{ $params['title'] }}"
+                    params-title="{{ $params['title'] ?? '' }}"
                     lay-filter="{{ array_get($params,'filter','')}}"
                     {{ array_get($params,'on_id','')==$v['id']?'checked':'' }}
                     style="{{array_get($params,'style','')}}"

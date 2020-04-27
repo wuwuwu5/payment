@@ -22,8 +22,20 @@ if (!function_exists('cms_config')) {
         if (is_null($key)) {
             return $default;
         }
+
         $settings = Setting::where(['name' => $key])->first();
-        return $settings->value ?? null;
+
+        if (empty($settings)) {
+            return [];
+        }
+
+        $config = [];
+
+        foreach ($settings->value as $item) {
+            $config[$item['field']] = $item['value'];
+        }
+
+        return $config;
     }
 }
 
@@ -210,6 +222,10 @@ if (!function_exists('category')) {
     {
         $categoryGroup = \App\Modules\Admin\Models\CategoryGroup::where('name', $group)->first();
 
+        if (empty($categoryGroup)) {
+            return [];
+        }
+
         $categories = $categoryGroup
             ->categories()
             ->where('status', 1)
@@ -260,7 +276,7 @@ if (!function_exists('render_cover')) {
             $diskConfig = cms_config('alioss');
 
             // 如果是七牛
-            return http_format($diskConfig['endpoint']) . '/' . $value;
+            return http_format(data_get($diskConfig, 'endpoint', '')) . '/' . $value;
         }
         // 返回系统默认
         return asset('/imgs/' . $type . '.png');

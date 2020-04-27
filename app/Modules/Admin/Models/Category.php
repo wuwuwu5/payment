@@ -2,86 +2,46 @@
 
 namespace App\Modules\Admin\Models;
 
-
-use App\Modules\Admin\Scopes\CreatorIdScope;
-use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Jedrzej\Pimpable\PimpableTrait;
 
 class Category extends Model
 {
-    use SoftDeletes;
     use PimpableTrait;
-    //use Cachable;
-    const GROUP = 7;
 
     /**
-     * @var string 分类
-     */
-    protected $table = 'categories';
-
-    /**
-     * @var array
-     */
-    public $searchable = ['name', 'pid', 'parent:name', 'category_group_id'];
-
-    /**
-     * @var array
-     */
-    public $sortable = ['weigh', 'pid'];
-
-//    protected $defaultSortCriteria = ['weigh,desc'];
-
-    /**
-     * @var array
-     */
-    protected $dates = ['deleted_at'];
-
-    /**
-     * @var array
-     */
-    protected $fillable = ['name', 'weigh', 'image', 'category_group_id', 'value', 'nickname', 'pid', 'top_id', 'path', 'creator_id'];
-
-    /**
-     * @var array
-     */
-    public static $baseFields = ['id', 'name', 'pid'];
-
-
-    /**
-     * @var array
-     */
-    protected $casts = ['value' => 'array'];
-
-
-    /**
-     * 所属群组
+     * 可填充字段
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @var array
      */
-    public function group()
-    {
-        return $this->belongsTo(CategoryGroup::class, 'category_group_id', 'id');
-    }
+    protected $fillable = [
+
+    ];
 
     /**
-     * 子类
+     * 默认排序
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @var array
      */
-    public function children()
-    {
-        return $this->hasMany(Category::class, 'pid', 'id');
-    }
+    protected $defaultSortCriteria = ['created_at,desc'];
 
     /**
-     * 子类
+     * 可查询字段
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @var array
      */
-    public function parent()
-    {
-        return $this->belongsTo(Category::class, 'pid', 'id');
-    }
+    public $searchable = [];
+
+    /**
+     * 查询字段模式
+     *
+     *  nickname => '%field%' 模糊查询
+     *  created_at= (ge)field
+     * @var array
+     */
+    public $searchableModels = [
+
+    ];
+
+    public $casts = ['value' => 'array'];
 }

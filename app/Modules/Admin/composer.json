@@ -5,7 +5,7 @@
         "spatie/laravel-permission": "^3.11",
         "overtrue/laravel-pinyin": "^4.0",
         "mews/captcha": "^3.1",
-        "godruoyi/laravel-idcard-validator": "^1.0"
+        "iidestiny/laravel-filesystem-oss": "^2.0"
     },
     "autoload": {
         "files": [

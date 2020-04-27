@@ -32,7 +32,7 @@ trait ApiTrait
      * @param int $code
      * @return array|\Illuminate\Http\JsonResponse
      */
-    public function returnOkApi($msg = '操作成功', $data = [], $code = 200)
+    public function returnOkApi($msg = '操作成功', $data = null, $code = 200)
     {
         return $this->returnApi($code, $msg, $data);
     }
