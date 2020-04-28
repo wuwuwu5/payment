@@ -3,22 +3,13 @@
 namespace App\Modules\Admin\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Jedrzej\Pimpable\PimpableTrait;
 
-class CategoryGroup extends Model
+class Article extends Model
 {
     use PimpableTrait;
-
-    /**
-     * 目录
-     */
-    const MENU = 'menu';
-
-    // 注释
-    const NAMES = [
-        'menu' => '目录',
-        'front_column' => '前端栏目'
-    ];
+    use SoftDeletes;
 
     /**
      * 可填充字段
@@ -26,7 +17,7 @@ class CategoryGroup extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'name', 'depth', 'is_show'
+        'column_id', 'column2_id','category_id','title','short_title','keywords','lit_pic'
     ];
 
     /**
@@ -53,14 +44,4 @@ class CategoryGroup extends Model
     public $searchableModels = [
 
     ];
-
-    /**
-     * 子分类
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function categories()
-    {
-        return $this->hasMany(Category::class);
-    }
 }

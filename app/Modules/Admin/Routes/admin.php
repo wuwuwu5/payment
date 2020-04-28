@@ -46,5 +46,8 @@ Route::name('admin.')->group(function () {
 
         // 图标
         Route::get('/icon', 'IconController@index')->name('icon.index');
+
+        // 文章
+        Route::resource('/articles', 'ArticlesController');
     });
 });

@@ -20,5 +20,11 @@ class CategoryGroupSeed extends Seeder
             'name' => 'menu',
             'depth' => 2,
         ]);
+        // 目录管理
+        CategoryGroup::create([
+            'title' => '前端栏目管理',
+            'name' => 'front_column',
+            'depth' => 2,
+        ]);
     }
 }

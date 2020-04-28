@@ -29,7 +29,7 @@ class CategoriesController extends BaseController
 
         $this->setCreateUrl('admin.categories.create', ['type' => $request->input('type')]);
         $this->setStoreUrl('admin.categories.store', ['type' => $request->input('type')]);
-        $this->page_name = data_get(CategoryGroup::NAMES, $request->input('type'));
+        $this->page_name = data_get(CategoryGroup::NAMES, $request->input('type', -1), '');
 
         return $this->display();
     }
