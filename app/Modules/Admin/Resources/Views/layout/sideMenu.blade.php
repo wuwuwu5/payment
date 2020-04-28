@@ -23,7 +23,7 @@
                 @if($item['status']!=0)
                     <li data-name="{{ $item['nickname'] }}" class="layui-nav-item ">
                         @if(!empty($item['value']['router']))
-                            <a lay-href="{{ $item['value']['router']?nroute($item['value']['router'],isset($item['param'])?$item['param']:[]):'javascript:void(0)' }}"
+                            <a lay-href="{{  (nroute(data_get($sub_v,'value.router')).data_get($sub_v,'value.param',''))?? 'javascript:void(0)' }}"
                                lay-tips="{{ $item['nickname'] }}" lay-direction="2">
                                 <i class="layui-side-icon {{ $item['image']}}"></i>
                                 <cite>{{ $item['nickname'] }}</cite>
@@ -43,7 +43,7 @@
                                     @if($sub_v['status'] == 1)
                                         <dd data-name="{{ $sub_v['nickname'] }}">
                                             @if(userHasMenu($user, $sub_v['name']))
-                                                <a lay-href="{{ nroute(data_get($sub_v,'value.router')).data_get($sub_v,'value.params','') }}">
+                                                <a lay-href="{{ nroute(data_get($sub_v,'value.router')).data_get($sub_v,'value.param','') }}">
                                                     {{ $sub_v['nickname'] }}</a>
                                             @endif
                                         </dd>

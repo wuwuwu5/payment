@@ -100,7 +100,7 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
     function listTableRender(url, cols, config, extendFun) {
         data_url = url;
         config = config || {};
-        defatul_config = {
+        var default_config = {
             elem: '#LAY-list-table',
             page: true,
             toolbar: true,
@@ -124,7 +124,7 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
             }
         };
         // 合并配置对象
-        render_config = $.extend({}, defatul_config, config);
+        var render_config = $.extend({}, default_config, config);
 
         table.render(render_config);
         //监听表

@@ -113,7 +113,7 @@ class CategoriesController extends BaseController
         }
 
         // 超出层级
-        if (count(explode(',', $path)) >= $depth) {
+        if (count(array_filter(explode(',', $path))) >= $depth) {
             return $this->returnErrorApi('层级最多可添加' . $depth . '层!');
         }
 

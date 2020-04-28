@@ -8,7 +8,7 @@ Route::name('admin.')->group(function () {
     // 验证码
     Route::get('/captcha', 'LoginController@captcha')->name('captcha');
 
-    Route::middleware(['auth:admin'])->group(function () {
+    Route::middleware(['auth:admin', 'bindings'])->group(function () {
 
         // 退出登录
         Route::post('/logout', 'LoginController@logout')->name('logout');
@@ -49,5 +49,7 @@ Route::name('admin.')->group(function () {
 
         // 文章
         Route::resource('/articles', 'ArticlesController');
+        // 获取子类
+        Route::get('/articles/{category}/children', 'ArticlesController@column2')->name('articles.column2');
     });
 });

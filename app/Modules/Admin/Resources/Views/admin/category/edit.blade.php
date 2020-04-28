@@ -44,7 +44,7 @@
             }}
 
             {{   Form::LayText([
-                    'name'=>'value[params]',
+                    'name'=>'value[param]',
                     'title'=>'附带参数',
                     'tips'=>'?limit=10',
                     'value'=>data_get($category, 'value.params')

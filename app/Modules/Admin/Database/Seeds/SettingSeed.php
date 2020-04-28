@@ -21,7 +21,7 @@ class SettingSeed extends Seeder
                 ['name' => '站点名称', 'field' => 'name', 'value' => '', 'type' => 'text'],
                 ['name' => 'Logo', 'field' => 'logo', 'value' => '', 'type' => 'img'],
                 ['name' => 'slogan', 'field' => 'slogan', 'value' => '', 'type' => 'img'],
-                ['name' => '统计代码', 'field' => 'tongji', 'value' => '', 'type' => 'textarea'],
+                ['name' => '统计代码', 'field' => 'tongji', 'value' => '', 'type' => 'textArea'],
             ]
         ]);
 

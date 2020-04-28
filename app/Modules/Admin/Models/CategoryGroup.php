@@ -9,15 +9,15 @@ class CategoryGroup extends Model
 {
     use PimpableTrait;
 
-    /**
-     * 目录
-     */
+    // 目录
     const MENU = 'menu';
+    // 前端栏目
+    const FRONT_COLUMN = 'front_column';
 
     // 注释
     const NAMES = [
         'menu' => '目录',
-        'front_column' => '前端栏目'
+        'front_column' => '前端栏目',
     ];
 
     /**

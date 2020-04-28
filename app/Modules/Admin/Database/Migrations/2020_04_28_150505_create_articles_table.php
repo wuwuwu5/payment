@@ -24,12 +24,14 @@ class CreateArticlesTable extends Migration
             $table->string('title')->comment("文章标题");
             $table->string('short_title')->comment("简略标题");
             $table->json('keywords')->comment("关键字");
-            $table->string('lit_pic')->comment("缩略图");
+            $table->string('cover')->comment("封面");
+            $table->string('lit_pic')->nullable()->comment("缩略图");
             $table->string('source')->default("")->comment("文章来源");
             $table->unsignedInteger('view_count')->default(0)->comment("查看数");
             $table->unsignedInteger('give_count')->default(0)->comment("点赞数");
             $table->unsignedInteger('collection_count')->default(0)->comment("收藏数");
             $table->unsignedInteger('post_count')->default(0)->comment("评论数");
+            $table->unsignedInteger('not_post')->default(1)->comment("0 不允许评论 1 允许评论");
             $table->unsignedInteger('sort')->default(0)->comment('排序');
             $table->timestamp('published_at')->default(null)->comment('发布时间');
             $table->timestamps();

@@ -524,14 +524,17 @@ if (!function_exists('admin_user')) {
 if (!function_exists('treeCategories')) {
     /**
      * @param string $name
+     * @param int $depth
      * @return array|\Illuminate\Http\JsonResponse
      */
-    function treeCategories($name = 'menu')
+    function treeCategories($name = 'menu', $depth = 0)
     {
-
         $category_group = \App\Modules\Admin\Models\CategoryGroup::where('name', $name)
-            ->with(['categories' => function ($query) {
+            ->with(['categories' => function ($query) use ($depth) {
                 $query
+                    ->when($depth == 1, function ($q) {
+                        $q->where('pid', 0);
+                    })
                     ->where('status', 1)
                     ->select('id', 'nickname as name', 'pid', 'category_group_id')
                     ->orderBy('weigh', 'desc')->orderBy('created_at', 'desc')
