@@ -17,7 +17,7 @@ class Article extends Model
      * @var array
      */
     protected $fillable = [
-        'column_id', 'column2_id', 'category_id', 'title', 'short_title', 'keywords', 'lit_pic'
+        'column_id', 'column2_id', 'category_id', 'title', 'short_title', 'keywords', 'cover', 'not_post', 'published_at', 'creator_id', 'lit_pic'
     ];
 
     /**
@@ -44,4 +44,16 @@ class Article extends Model
     public $searchableModels = [
 
     ];
+
+    public $casts = [
+        'keywords' => 'array'
+    ];
+
+    /**
+     * 获取文章图片
+     */
+    public function tags()
+    {
+        return $this->morphMany(ModelHasTag::class, 'model');
+    }
 }

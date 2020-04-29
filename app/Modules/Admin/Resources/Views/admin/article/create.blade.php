@@ -120,28 +120,19 @@
 @push('scripts')
     <script src="{{admin_asset('/tinymce/tinymce.min.js')}}"></script>
     <script>
-        layui.use(['index', 'uploader', 'form', 'verify', 'xmSelect', 'custorm', 'alioss', 'layedit', 'request'], function () {
+        layui.use(['index', 'uploader', 'form', 'verify', 'xmSelect', 'custorm', 'alioss', 'request'], function () {
             var xmSelect = layui.xmSelect;
             var alioss = layui.alioss;
             var request = layui.request;
-            var layedit = layui.layedit;
             var form = layui.form;
             var $ = layui.$;
-
-            alioss.file();
             alioss.img();
 
-            layedit.set({
-                uploadImage: {
-                    url: g_upload_files
-                    , type: 'post' //默认post
-                }
-            });
 
             {{   Form::LayTinymceJs(['id'=>'body', 'return'=>'body', 'content' =>'' ]) }}
 
             // 渲染xmselect
-            function renderXmSelect(el, tips, config, data) {
+            function renderXmSelect(el, tips, name, config, data) {
                 // 默认配置
                 var default_config = {
                     el: el,
@@ -149,7 +140,7 @@
                     height: '300px',
                     clickClose: true,
                     filterable: true,
-                    name: 'category_id',
+                    name: name,
                     theme: {
                         color: '#1E9FFF',
                     },
@@ -169,9 +160,9 @@
             }
 
             // 分类
-            renderXmSelect('#category', '选择分类', {radio: true}, @json(treeCategories('article')));
+            renderXmSelect('#category', '选择分类', 'category_id', {radio: true}, @json(treeCategories('article')));
             // tag
-            renderXmSelect('#tag', '选择标签', {checkbox: true}, @json(treeCategories('tag')));
+            renderXmSelect('#tag', '选择标签', 'tags', {checkbox: true}, @json(treeCategories('tag')));
 
             // 文章主栏目
             var column_id = layui.xmSelect.render({
@@ -197,15 +188,15 @@
                     var arr = data.arr;
                     if (arr.length > 0) {
                         request.get('/admin/articles/' + arr[0]['id'] + '/children', {}, function (res) {
-                            renderXmSelect('#column2_id', '文章副栏目', {radio: true}, res.data);
+                            renderXmSelect('#column2_id', '文章副栏目', 'column2_id', {radio: true}, res.data);
                         })
                     } else {
-                        renderXmSelect('#column2_id', '文章副栏目', {radio: true}, []);
+                        renderXmSelect('#column2_id', '文章副栏目', 'column2_id', {radio: true}, []);
                     }
                 }
             });
 
-            renderXmSelect('#column2_id', '文章副栏目', {radio: true}, []);
+            renderXmSelect('#column2_id', '文章副栏目', 'column2_id', {radio: true}, []);
         })
     </script>
 

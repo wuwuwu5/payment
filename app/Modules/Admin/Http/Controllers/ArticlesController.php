@@ -3,15 +3,21 @@
 namespace App\Modules\Admin\Http\Controllers;
 
 use App\Http\Controllers\BaseController;
+use App\Modules\Admin\Models\Article;
 use App\Modules\Admin\Models\Category;
 use App\Modules\Admin\Models\CategoryGroup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+use function foo\func;
 
 class ArticlesController extends BaseController
 {
     public $model = \App\Modules\Admin\Models\Article::class;
 
     public $view_prefix_path = "admin::admin.";
+
+    public $page_name = '文章';
 
     /**
      * 参数
@@ -42,5 +48,126 @@ class ArticlesController extends BaseController
         $categories = generateCategoriesTree($categories);
 
         return $this->returnOkApi(null, $categories);
+    }
+
+    /**
+     * 保存
+     *
+     * @param Request $request
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\JsonValidatorException
+     * @throws \App\Exceptions\WebValidatorException
+     */
+    public function store(Request $request)
+    {
+        $this->validateData($request);
+
+        // 关键字
+        $keywords = $request->input('keywords');
+
+        if (!empty($keywords)) {
+            $request->offsetSet('keywords', array_filter(explode(',', $keywords)));
+        }
+
+        // 缩略图
+        $request->offsetSet('lit_pic', $request->input('cover'));
+        // 创建人
+        $request->offsetSet('creator_id', auth()->guard('admin')->user()->id);
+
+        try {
+
+            DB::beginTransaction();
+
+            $article = Article::query()->create($request->all());
+
+            $tags = explode(',', $request->input('tags'));
+
+            $tags = array_map(function ($item) {
+                return ['tag_id' => $item];
+            }, $tags);
+
+
+            $article->tags()->createMany($tags);
+
+            DB::commit();
+            return $this->returnOkApi();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            report($exception);
+            return $this->returnErrorApi();
+        }
+    }
+
+    /**
+     * 表单验证规则
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function rules(Request $request): array
+    {
+        switch ($request->method()) {
+            case 'POST':
+                return [
+                    'cover' => 'required|string|max:200|min:1',
+                    'title' => 'required|string|min:2|max:200',
+                    'short_title' => 'nullable|string|min:2|max:200',
+                    'category_id' => ['required', 'integer', Rule::exists('categories', 'id')->where(function ($query) {
+                        $query->whereHas('categoryGroup', function ($q) {
+                            $q->where('name', CategoryGroup::ARTICLE);
+                        });
+                    })],
+                    'keywords' => ['nullable', 'string', function ($attr, $value, $fail) {
+                        if (empty($value)) {
+                            return true;
+                        }
+
+                        if (count(array_filter(explode(',', $value))) > 10) {
+                            return $fail('最多可添加十个关键字');
+                        }
+
+                        return true;
+                    }],
+                    'column_id' => ['nullable', 'integer', Rule::exists('categories', 'id')->where(function ($query) {
+                        $query
+                            ->whereHas('categoryGroup', function ($q) {
+                                $q->where('name', CategoryGroup::FRONT_COLUMN);
+                            })
+                            ->where('pid', 0);
+                    })],
+                    'column2_id' => ['nullable', 'integer', Rule::exists('categories', 'id')->where(function ($query) {
+                        $query
+                            ->whereHas('categoryGroup', function ($q) {
+                                $q->where('name', CategoryGroup::FRONT_COLUMN);
+                            })
+                            ->where('pid', \request()->input('column_id'));
+                    })],
+                    'tags' => 'nullable|string',
+                    'not_post' => 'required|min:0|max:1|integer',
+                    'published_at' => 'nullable|date',
+                ];
+                break;
+        }
+    }
+
+    /**
+     * 字段
+     *
+     * @return array
+     */
+    public function customAttributes(): array
+    {
+        return [
+            'cover' => '封面',
+            'title' => '标题',
+            'short_title' => '副标题',
+            'category_id' => '分类',
+            'keywords' => '关键字',
+            'column_id' => '主栏目',
+            'column2_id' => '副栏目',
+            'tags' => '标签',
+            'not_post' => '评论状态',
+            'published_at' => '发布时间',
+        ];
     }
 }

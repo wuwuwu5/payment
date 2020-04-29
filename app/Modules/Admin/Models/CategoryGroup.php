@@ -13,11 +13,14 @@ class CategoryGroup extends Model
     const MENU = 'menu';
     // 前端栏目
     const FRONT_COLUMN = 'front_column';
+    // 文章分类
+    const ARTICLE = 'article';
 
     // 注释
     const NAMES = [
         'menu' => '目录',
         'front_column' => '前端栏目',
+        'article' => '文章分类',
     ];
 
     /**
