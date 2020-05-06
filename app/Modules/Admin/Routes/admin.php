@@ -49,7 +49,12 @@ Route::name('admin.')->group(function () {
 
         // 文章
         Route::resource('/articles', 'ArticlesController');
-        // 获取子类
-        Route::get('/articles/{category}/children', 'ArticlesController@column2')->name('articles.column2');
+        {
+            // 发布
+            Route::patch('/articles/{article}/publish', 'ArticlesController@publish')->name('articles.publish');
+
+            // 获取子类
+            Route::get('/articles/{category}/children', 'ArticlesController@column2')->name('articles.column2');
+        }
     });
 });

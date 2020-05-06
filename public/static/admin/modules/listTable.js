@@ -170,6 +170,12 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
                 case 'show_img':
                     listTableShowImgEvent(obj, $(this), data, extendFun, callFun);
                     break;
+                case 'published':
+                    listTablePublishedEvent(obj, $(this), data, extendFun, callFun);
+                    break;
+                case 'cancel_published':
+                    listTableCancelPublishedEvent(obj, $(this), data, extendFun, callFun);
+                    break;
             }
 
 
@@ -561,7 +567,7 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
     //监听列表其他组件事件,开关设置
     form.on('switch(table-checked)', function (obj) {
         var field = $(this).data('field');
-        var value = obj.elem.checked ? 0: 1;
+        var value = obj.elem.checked ? 0 : 1;
         var id = $(this).data('id');
         var url = $(this).data('url');
 
@@ -577,7 +583,6 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
             layer.msg(res.msg);
         });
     });
-
 
 
     // 列表编辑事件
@@ -596,7 +601,8 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
         layer.msg('确定删除吗?', {
             time: 0,
             btn: ['确定', '取消'],
-            yes: function (index) {
+            yes: function () {
+                var index = layer.load(1);
                 var field = {
                     ids: data.id,
                     type_id: 'id',
@@ -606,11 +612,14 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
                 req.post(del_url, field, function (res) {
                     layer.msg(res.msg);
                     if (res.code == 200) {
-                        obj.del();
-                        layer.close(index);
                         table.reload('LAY-list-table');
                     }
                     callFun && callFun(res)
+                }, function () {
+                    layer.closeAll();
+                    layer.msg('操作失败!');
+                }, function () {
+                    layer.close(index);
                 });
             }
         });
@@ -654,6 +663,57 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
         });
     }
 
+    // 发布
+    function listTablePublishedEvent(obj, that, data, extendFun, callFun) {
+        layer.msg('确定发布?', {
+            time: 0,
+            btn: ['确定', '取消'],
+            yes: function () {
+                var index = layer.load(1);
+                req.post(data.publish_url, {'_method': 'patch', 'publish': 1}, function (res) {
+                    if (res.code == 200) {
+                        layer.msg('发布成功!');
+                        data.is_published = true;
+                        obj.update(data);
+                        that.removeAttr('lay-event').attr('lay-event', 'cancel_published');
+                        that.empty().append('<i class="layui-icon layui-icon-close-fill"></i>取消发布');
+                    }
+                    callFun && callFun(res)
+                }, function () {
+                    layer.closeAll();
+                    layer.msg('操作失败!');
+                }, function () {
+                    layer.close(index);
+                });
+            }
+        });
+    }
+
+    // 取消发布
+    function listTableCancelPublishedEvent(obj, that, data, extendFun, callFun) {
+        layer.msg('确定取消发布?', {
+            time: 0,
+            btn: ['确定', '取消'],
+            yes: function () {
+                var index = layer.load(1);
+                req.post(data.publish_url, {'_method': 'patch', 'publish': 0}, function (res) {
+                    if (res.code == 200) {
+                        layer.msg('取消发布成功!');
+                        data.is_published = false;
+                        obj.update(data);
+                        that.removeAttr('lay-event').attr('lay-event', 'published');
+                        that.empty().append('<i class="layui-icon layui-icon-upload-circle"></i>发布');
+                    }
+                    callFun && callFun(res)
+                }, function () {
+                    layer.closeAll();
+                    layer.msg('操作失败!');
+                }, function () {
+                    layer.close(index);
+                });
+            }
+        });
+    }
 
     exports('listTable', listTable);
 });

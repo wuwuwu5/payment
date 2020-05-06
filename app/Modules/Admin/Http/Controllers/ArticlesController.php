@@ -6,10 +6,10 @@ use App\Http\Controllers\BaseController;
 use App\Modules\Admin\Models\Article;
 use App\Modules\Admin\Models\Category;
 use App\Modules\Admin\Models\CategoryGroup;
+use Fukuball\Jieba\JiebaAnalyse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
-use function foo\func;
 
 class ArticlesController extends BaseController
 {
@@ -18,6 +18,46 @@ class ArticlesController extends BaseController
     public $view_prefix_path = "admin::admin.";
 
     public $page_name = '文章';
+
+
+    /**
+     * 首页JSON
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function indexJson(Request $request)
+    {
+        $request = $this->formatIndexQuery($request);
+
+        $data = $this
+            ->getQuery()
+            ->indexSearch()
+            ->indexWith()
+            ->pimp()
+            ->paginate($request->input('limit', $this->limit ?? 15));
+
+        return $this->formatPaginateResponse($data);
+    }
+
+
+    /**
+     * list event url
+     *
+     * @param $data
+     * @return mixed
+     */
+    public function setDataItemUrl($data)
+    {
+        foreach ($data as $item) {
+            $item->edit_url = $this->getEditUrl([$item->id]);
+            $item->update_url = $this->getUpdateUrl([$item->id]);
+            $item->destory_url = $this->getDestroyUrl([$item->id]);
+            $item->publish_url = $this->checkRoute('admin.articles.publish', [$item->id]);
+        }
+
+        return $data;
+    }
 
     /**
      * 参数
@@ -67,6 +107,11 @@ class ArticlesController extends BaseController
 
         if (!empty($keywords)) {
             $request->offsetSet('keywords', array_filter(explode(',', $keywords)));
+        } else {
+            // 分词
+            $keywords = JiebaAnalyse::extractTags($request->input('title'), 10);
+            // 赋值
+            $request->offsetSet('keywords', $keywords);
         }
 
         // 缩略图
@@ -96,6 +141,30 @@ class ArticlesController extends BaseController
             report($exception);
             return $this->returnErrorApi();
         }
+    }
+
+    /**
+     * 更新状态
+     *
+     * @param Article $article
+     * @param Request $request
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function publish(Article $article, Request $request)
+    {
+        $this->authorize('update', $article);
+
+        $publish = (bool)$request->input('publish');
+
+        if ($article->is_published == $publish) {
+            return $this->returnApi(200, '更新成功');
+        }
+
+        $article->is_published = $publish;
+        $article->save();
+
+        return $this->returnApi(200, '更新成功');
     }
 
     /**

@@ -229,7 +229,7 @@ trait PaperUrlTrait
      * @param $params
      * @return bool|string
      */
-    private function checkRoute($as, $params = [])
+    public function checkRoute($as, $params = [])
     {
         try {
             return route($as, $params);

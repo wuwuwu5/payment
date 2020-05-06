@@ -2,6 +2,7 @@
 
 namespace App\Modules\Admin\Models;
 
+use App\Modules\Admin\Scopes\ArticleScopeTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Jedrzej\Pimpable\PimpableTrait;
@@ -10,6 +11,7 @@ class Article extends Model
 {
     use PimpableTrait;
     use SoftDeletes;
+    use ArticleScopeTrait;
 
     /**
      * 可填充字段
@@ -46,7 +48,8 @@ class Article extends Model
     ];
 
     public $casts = [
-        'keywords' => 'array'
+        'keywords' => 'array',
+        'is_published' => 'bool'
     ];
 
     /**
@@ -55,5 +58,25 @@ class Article extends Model
     public function tags()
     {
         return $this->morphMany(ModelHasTag::class, 'model');
+    }
+
+    /**
+     * 分类
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * 创建人
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class);
     }
 }

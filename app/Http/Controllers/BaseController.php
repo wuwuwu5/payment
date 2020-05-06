@@ -216,7 +216,7 @@ class BaseController extends Controller
      * @param Request $request
      * @return Request
      */
-    private function formatIndexQuery(Request $request)
+    public function formatIndexQuery(Request $request)
     {
         $searchableModels = $this->getQuery()->searchableModels;
 
@@ -239,7 +239,7 @@ class BaseController extends Controller
      * @param $data
      * @return \Illuminate\Http\JsonResponse
      */
-    private function formatPaginateResponse($data)
+    public function formatPaginateResponse($data)
     {
         $data = $this->setDataItemUrl($data);
 

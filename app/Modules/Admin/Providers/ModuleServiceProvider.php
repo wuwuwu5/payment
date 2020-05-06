@@ -38,5 +38,6 @@ class ModuleServiceProvider extends ServiceProvider
         $this->app->register(FormGroupServiceProvider::class);
         $this->app->register(GeneratorServiceProvider::class);
         $this->app->register(ValidatorServiceProvider::class);
+        $this->app->register(AuthServiceProvider::class);
     }
 }
