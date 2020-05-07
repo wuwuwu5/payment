@@ -62,6 +62,6 @@ class Category extends Model
      */
     public function categoryGroup()
     {
-        return $this->belongsTo(CategoryGroup::class);
+        return $this->belongsTo(CategoryGroup::class, 'category_group_id', 'id');
     }
 }

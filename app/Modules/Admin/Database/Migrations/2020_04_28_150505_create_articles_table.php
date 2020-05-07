@@ -33,7 +33,7 @@ class CreateArticlesTable extends Migration
             $table->unsignedInteger('post_count')->default(0)->comment("评论数");
             $table->unsignedInteger('not_post')->default(1)->comment("0 不允许评论 1 允许评论");
             $table->unsignedInteger('sort')->default(0)->comment('排序');
-            $table->timestamp('published_at')->default(null)->comment('发布时间');
+            $table->timestamp('published_at')->nullable()->default(null)->comment('发布时间');
             $table->timestamps();
             $table->softDeletes();
             $table->index(['creator_id', 'category_id']);

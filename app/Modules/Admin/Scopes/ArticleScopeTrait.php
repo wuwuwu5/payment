@@ -39,7 +39,7 @@ trait ArticleScopeTrait
             },
             'creator' => function ($query) {
                 $query->select('id', 'nickname', 'username');
-            }
+            },
         ]);
     }
 }

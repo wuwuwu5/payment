@@ -134,6 +134,8 @@ class ArticlesController extends BaseController
 
             $article->tags()->createMany($tags);
 
+            $article->add()->create($request->only('body'));
+
             DB::commit();
             return $this->returnOkApi();
         } catch (\Exception $exception) {
@@ -142,6 +144,87 @@ class ArticlesController extends BaseController
             return $this->returnErrorApi();
         }
     }
+
+    /**
+     * 修改
+     *
+     * @param $id
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function edit($id, Request $request)
+    {
+        $show = $this->getQuery()->findOrFail($id);
+
+        $this->authorize('update', $show);
+
+        $show->load(['tags', 'add']);
+
+        return $this->display(null, compact('show'));
+    }
+
+    /**
+     * 更新
+     *
+     * @param $id
+     * @param Request $request
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\JsonValidatorException
+     * @throws \App\Exceptions\WebValidatorException
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function update($id, Request $request)
+    {
+        $this->validateData($request);
+
+        $article = $this->getQuery()->findOrFail($id);
+
+        $this->authorize('update', $article);
+
+        // 关键字
+        $keywords = $request->input('keywords');
+
+        if (!empty($keywords)) {
+            $request->offsetSet('keywords', array_filter(explode(',', $keywords)));
+        } else {
+            // 分词
+            $keywords = JiebaAnalyse::extractTags($request->input('title'), 10);
+            // 赋值
+            $request->offsetSet('keywords', $keywords);
+        }
+
+        // 缩略图
+        $request->offsetSet('lit_pic', $request->input('cover'));
+
+        try {
+
+            DB::beginTransaction();
+
+            $article->fill($request->all());
+            $article->save();
+
+            $tags = explode(',', $request->input('tags'));
+
+            $tags = array_map(function ($item) {
+                return ['tag_id' => $item];
+            }, $tags);
+
+
+            $article->tags()->delete();
+            $article->tags()->createMany($tags);
+
+            $article->add()->update($request->only('body'));
+
+            DB::commit();
+            return $this->returnOkApi();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            report($exception);
+            return $this->returnErrorApi();
+        }
+    }
+
 
     /**
      * 更新状态
@@ -162,6 +245,11 @@ class ArticlesController extends BaseController
         }
 
         $article->is_published = $publish;
+        if ($publish) {
+            $article->published_at = now();
+        } else {
+            $article->published_at = null;
+        }
         $article->save();
 
         return $this->returnApi(200, '更新成功');
@@ -177,15 +265,23 @@ class ArticlesController extends BaseController
     {
         switch ($request->method()) {
             case 'POST':
+            case 'PUT':
                 return [
                     'cover' => 'required|string|max:200|min:1',
                     'title' => 'required|string|min:2|max:200',
                     'short_title' => 'nullable|string|min:2|max:200',
-                    'category_id' => ['required', 'integer', Rule::exists('categories', 'id')->where(function ($query) {
-                        $query->whereHas('categoryGroup', function ($q) {
-                            $q->where('name', CategoryGroup::ARTICLE);
-                        });
-                    })],
+                    'category_id' => ['required', 'integer', function ($attr, $value, $fail) {
+                        $mark = Category::query()->where('id', $value)->where(function ($query) {
+                            return $query
+                                ->whereHas('categoryGroup', function ($q) {
+                                    return $q->where('name', CategoryGroup::ARTICLE);
+                                });
+                        })->exists();
+
+                        if (!$mark) {
+                            return $fail('分类不存在!');
+                        }
+                    }],
                     'keywords' => ['nullable', 'string', function ($attr, $value, $fail) {
                         if (empty($value)) {
                             return true;
@@ -197,20 +293,38 @@ class ArticlesController extends BaseController
 
                         return true;
                     }],
-                    'column_id' => ['nullable', 'integer', Rule::exists('categories', 'id')->where(function ($query) {
-                        $query
-                            ->whereHas('categoryGroup', function ($q) {
-                                $q->where('name', CategoryGroup::FRONT_COLUMN);
+                    'column_id' => ['nullable', 'integer', function ($attr, $value, $fail) {
+                        $mark = Category::query()
+                            ->where('id', $value)
+                            ->where('pid', 0)
+                            ->where(function ($query) {
+                                return $query
+                                    ->whereHas('categoryGroup', function ($q) {
+                                        return $q->where('name', CategoryGroup::FRONT_COLUMN);
+                                    });
                             })
-                            ->where('pid', 0);
-                    })],
-                    'column2_id' => ['nullable', 'integer', Rule::exists('categories', 'id')->where(function ($query) {
-                        $query
-                            ->whereHas('categoryGroup', function ($q) {
-                                $q->where('name', CategoryGroup::FRONT_COLUMN);
+                            ->exists();
+
+                        if (!$mark) {
+                            return $fail('文章主栏目不存在!');
+                        }
+                    }],
+                    'column2_id' => ['nullable', 'integer', function ($attr, $value, $fail) {
+                        $mark = Category::query()
+                            ->where('id', $value)
+                            ->where('pid', \request()->input('column_id'))
+                            ->where(function ($query) {
+                                return $query
+                                    ->whereHas('categoryGroup', function ($q) {
+                                        return $q->where('name', CategoryGroup::FRONT_COLUMN);
+                                    });
                             })
-                            ->where('pid', \request()->input('column_id'));
-                    })],
+                            ->exists();
+
+                        if (!$mark) {
+                            return $fail('文章副栏目不存在!');
+                        }
+                    }],
                     'tags' => 'nullable|string',
                     'not_post' => 'required|min:0|max:1|integer',
                     'published_at' => 'nullable|date',

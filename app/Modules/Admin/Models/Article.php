@@ -47,10 +47,28 @@ class Article extends Model
 
     ];
 
+    /**
+     * @var array
+     */
+    public $dates = ['published_at'];
+
+    /**
+     * @var array
+     */
     public $casts = [
         'keywords' => 'array',
         'is_published' => 'bool'
     ];
+
+    /**
+     * 附属信息
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function add()
+    {
+        return $this->hasOne(AddOnArticle::class, 'article_id', 'id');
+    }
 
     /**
      * 获取文章图片
