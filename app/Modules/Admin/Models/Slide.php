@@ -5,7 +5,7 @@ namespace App\Modules\Admin\Models;
 use Illuminate\Database\Eloquent\Model;
 use Jedrzej\Pimpable\PimpableTrait;
 
-class Category extends Model
+class Slide extends Model
 {
     use PimpableTrait;
 
@@ -15,7 +15,7 @@ class Category extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'nickname', 'pid', 'value', 'image', 'category_group_id', 'level', 'path', 'top_id'
+        'creator_id', 'category_id', 'name', 'path', 'redirect', 'sort', 'status'
     ];
 
     /**
@@ -23,7 +23,7 @@ class Category extends Model
      *
      * @var array
      */
-    protected $defaultSortCriteria = ['created_at,desc'];
+    protected $defaultSortCriteria = ['sort,desc', 'created_at,desc'];
 
     /**
      * 可查询字段
@@ -43,25 +43,13 @@ class Category extends Model
 
     ];
 
-    public $casts = ['value' => 'array'];
-
-    /**
-     * 子类
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function children()
-    {
-        return $this->hasMany(Category::class, 'pid', 'id');
-    }
-
     /**
      * 分组
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function categoryGroup()
+    public function category()
     {
-        return $this->belongsTo(CategoryGroup::class, 'category_group_id', 'id');
+        return $this->belongsTo(Category::class);
     }
 }

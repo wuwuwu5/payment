@@ -36,6 +36,10 @@ class PublishArticleJob implements ShouldQueue
     {
         $this->article = Article::query()->find($this->article->id);
 
+        if (empty($this->article)) {
+            return;
+        }
+
         if ($this->article->is_published == 1) {
             return;
         }

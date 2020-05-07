@@ -44,5 +44,11 @@ class CategoryGroupSeed extends Seeder
             'name' => 'tag',
             'depth' => 2,
         ]);
+        // 轮播图
+        CategoryGroup::create([
+            'title' => '轮播图',
+            'name' => 'slides',
+            'depth' => 1,
+        ]);
     }
 }

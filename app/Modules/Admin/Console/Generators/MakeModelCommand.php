@@ -15,7 +15,7 @@ class MakeModelCommand extends GeneratorCommand
     protected $signature = 'make:module_model
     	{slug : The slug of the module.}
     	{name : The name of the model class.}
-        {--prefix=: The prefix of the view prefix.}
+        {--prefix= }
         {--migration : Create a new migration file for the model.}
     	{--location= : The modules location to create the module model class in}';
 

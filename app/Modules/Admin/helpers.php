@@ -229,8 +229,13 @@ if (!function_exists('category')) {
         $categories = $categoryGroup
             ->categories()
             ->where('status', 1)
-            ->orderBy('weigh', 'desc')->orderBy('created_at', 'desc')->orderBy('id', 'desc')->get();
+            ->orderBy('weigh', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
+            ->get();
+
         $categories = tree($categories->toArray(), 'id', 'pid', 'sub_menus');
+
         return $categories;
     }
 }
@@ -523,26 +528,42 @@ if (!function_exists('admin_user')) {
 
 if (!function_exists('treeCategories')) {
     /**
+     * 缓存 TODO 缓存
+     *
+     *
      * @param string $name
+     * @param bool $add
      * @param int $depth
      * @return array|\Illuminate\Http\JsonResponse
      */
-    function treeCategories($name = 'menu', $depth = 0)
+    function treeCategories($name = 'menu', $add = false, $depth = 0)
     {
-        $category_group = \App\Modules\Admin\Models\CategoryGroup::where('name', $name)
-            ->with(['categories' => function ($query) use ($depth) {
-                $query
-                    ->when($depth == 1, function ($q) {
-                        $q->where('pid', 0);
-                    })
-                    ->where('status', 1)
-                    ->select('id', 'nickname as name', 'pid', 'category_group_id')
-                    ->orderBy('weigh', 'desc')->orderBy('created_at', 'desc')
-                    ->orderBy('id', 'desc');
-            }])
-            ->first();
+        $category_group = \App\Modules\Admin\Models\CategoryGroup::where('name', $name)->first();
 
-        $categories = generateCategoriesTree($category_group->categories->toArray());
+        if (empty($category_group)) {
+            return [];
+        }
+
+        if (empty($depth)) {
+            $depth = $category_group->depth - 1;
+        }
+
+        $categories = $category_group
+            ->categories()
+            ->where('status', 1)
+            ->when($add, function ($q) use ($depth) {
+                $q->where('level', '<=', $depth);
+            })
+            ->select('id', 'nickname as name', 'pid', 'category_group_id')
+            ->orderBy('weigh', 'desc')->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        if ($categories->isEmpty()) {
+            return [];
+        }
+
+        $categories = generateCategoriesTree($categories->toArray());
 
         return $categories;
     }

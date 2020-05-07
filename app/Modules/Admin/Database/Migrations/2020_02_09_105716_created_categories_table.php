@@ -18,6 +18,7 @@ class CreatedCategoriesTable extends Migration
             $table->unsignedBigInteger('top_id')->unsigned()->default(0)->index('top_id')->comment('顶级');
             $table->unsignedBigInteger('pid')->unsigned()->default(0)->index('pid')->comment('父ID');
             $table->unsignedBigInteger('category_group_id')->comment('群组');
+            $table->integer('level')->default(1)->index('level')->comment('等级');
             $table->string('path', 100)->nullable()->default('');
             $table->string('name', 30)->default('');
             $table->string('nickname', 50)->default('');

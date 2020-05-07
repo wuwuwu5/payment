@@ -61,7 +61,7 @@
     <script>
         var firstData = {id: 0, pid: 0, name: '顶级分类', category_group_id:{{$category_group->id}}, value: 0};
 
-        var datas = @json(treeCategories($category_group->name));
+        var datas = @json(treeCategories($category_group->name,true));
 
         datas.unshift(firstData);
 

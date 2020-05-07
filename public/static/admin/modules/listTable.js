@@ -477,8 +477,8 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
     function topCreate(callFun) {
         var url = $(this).data('url');
         var post_url = $(this).data('post_url');
-        var w = $(this).data('w') ? $(this).data('w') : '100%';
-        var h = $(this).data('h') ? $(this).data('h') : '100%';
+        var w = $(this).data('w') ? $(this).data('w') : '90%';
+        var h = $(this).data('h') ? $(this).data('h') : '90%';
 
         title = $(this).data('title');
         if ($(this).data('show') == 1) {

@@ -56,5 +56,8 @@ Route::name('admin.')->group(function () {
             // 获取子类
             Route::get('/articles/{category}/children', 'ArticlesController@column2')->name('articles.column2');
         }
+
+        // 轮播图
+        Route::resource('/slides', 'SlidesController');
     });
 });

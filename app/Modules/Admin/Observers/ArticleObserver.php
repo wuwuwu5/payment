@@ -28,4 +28,13 @@ class ArticleObserver
             }
         }
     }
+
+    /**
+     * @param Article $article
+     */
+    public function deleted(Article $article)
+    {
+        $article->tags()->delete();
+        $article->add()->delete();
+    }
 }

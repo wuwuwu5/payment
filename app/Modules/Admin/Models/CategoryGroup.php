@@ -15,12 +15,18 @@ class CategoryGroup extends Model
     const FRONT_COLUMN = 'front_column';
     // 文章分类
     const ARTICLE = 'article';
+    // 轮播图
+    const SLIDES = 'slides';
+    // 标签
+    const TAG = 'tag';
 
     // 注释
     const NAMES = [
         'menu' => '目录',
         'front_column' => '前端栏目',
         'article' => '文章分类',
+        'slides' => '轮播图',
+        'tag' => '标签',
     ];
 
     /**

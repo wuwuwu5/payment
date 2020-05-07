@@ -2,6 +2,8 @@
 
 namespace App\Modules\Admin\Http\Controllers;
 
+use App\Exceptions\JsonValidatorException;
+use App\Exceptions\WebValidatorException;
 use App\Http\Controllers\BaseController;
 use App\Modules\Admin\Models\Category;
 use App\Modules\Admin\Models\CategoryGroup;
@@ -96,6 +98,7 @@ class CategoriesController extends BaseController
 
         $parent = null;
         $top_id = 0;
+        $level = 1;
         $path = null;
 
         // 可添加的最大层级
@@ -108,8 +111,10 @@ class CategoriesController extends BaseController
                 $path = $parent->path . ',' . $parent->id;
                 $top_id = $parent->top_id;
             } else {
-                $top_id = $path = $parent->id;
+                $top_id = $parent->id;
             }
+
+            $level = $parent->level + 1;
         }
 
         // 超出层级
@@ -123,6 +128,7 @@ class CategoriesController extends BaseController
         $category->fill($request->all());
         $category->top_id = $top_id;
         $category->path = $path;
+        $category->level = $level;
         $category->save();
 
         return $this->returnOkApi();
@@ -140,6 +146,50 @@ class CategoriesController extends BaseController
         $category = Category::query()->with('categoryGroup')->where(compact('id'))->firstOrFail();
 
         return $this->display(null, compact('category'));
+    }
+
+
+    /**
+     * 更新
+     *
+     * @param $id
+     * @param Request $request
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws JsonValidatorException
+     * @throws WebValidatorException
+     */
+    public function update($id, Request $request)
+    {
+        $this->validateData($request);
+
+        $data = $this->getQuery()->findOrFail($id);
+
+        $parent = null;
+        $top_id = 0;
+        $level = 1;
+        $path = null;
+
+        if (($pid = $request->input('pid')) > 0) {
+            $parent = Category::query()->findOrFail($pid);
+
+            if ($parent->pid != 0) {
+                $path = $parent->path . ',' . $parent->id;
+                $top_id = $parent->top_id;
+            } else {
+                $top_id = $parent->id;
+            }
+
+            $level = $parent->level + 1;
+        }
+
+        $data->fill($request->all());
+        $data->top_id = $top_id;
+        $data->path = $path;
+        $data->level = $level;
+
+        $data->save();
+
+        return $this->returnOkApi();
     }
 
     /**
