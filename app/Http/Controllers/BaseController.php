@@ -285,10 +285,12 @@ class BaseController extends Controller
      */
     public function setDataItemUrl($data)
     {
-        foreach ($data as $key => $item) {
-            $item->edit_url = $this->getEditUrl([$item->id], true);
-            $item->update_url = $this->getUpdateUrl([$item->id], true);
-            $item->destroy_url = $this->getDestroyUrl([$item->id], true);
+        $params = \request()->route()->parameters() ?? [];
+
+        foreach ($data as $item) {
+            $item->edit_url = $this->getEditUrl(array_merge($params, [$item->id]), true);
+            $item->update_url = $this->getUpdateUrl(array_merge($params, [$item->id]), true);
+            $item->destory_url = $this->getDestroyUrl(array_merge($params, [$item->id]), true);
         }
 
         return $data;
@@ -340,12 +342,14 @@ class BaseController extends Controller
      */
     public function pushUrlToData($data)
     {
-        $data['list_url'] = $this->getListUrl();
-        $data['store_url'] = $this->getStoreUrl();
-        $data['create_url'] = $this->getCreateUrl();
-        $data['edit_url'] = $this->getEditUrl();
-        $data['update_url'] = $this->getUpdateUrl();
-        $data['destroy_url'] = $this->getDestroyUrl();
+        $params = \request()->route()->parameters() ?? [];
+
+        $data['list_url'] = $this->getListUrl($params);
+        $data['store_url'] = $this->getStoreUrl($params);
+        $data['create_url'] = $this->getCreateUrl($params);
+        $data['edit_url'] = $this->getEditUrl($params);
+        $data['update_url'] = $this->getUpdateUrl($params);
+        $data['destroy_url'] = $this->getDestroyUrl($params);
         $data['table_name'] = empty($this->getQuery()) ? '' : $this->getQuery()->getTable();
         $data['page_name'] = $this->page_name;
 
