@@ -220,7 +220,12 @@
                     renderXmSelect('#column2_id', '文章副栏目', 'column2_id', {radio: true}, res.data, @json($column2_id));
                 });
             @endif
-        })
+
+
+            form.on('submit', function (obj) {
+                obj.field.body = tinymce.get('body').getContent();
+            });
+        });
     </script>
 
 @endpush

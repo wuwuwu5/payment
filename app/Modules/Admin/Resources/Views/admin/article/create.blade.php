@@ -96,6 +96,18 @@
 
 
         {{Form::LayRadio([
+                'name'=>'is_published',
+                'title'=>'发布状态',
+                'tips'=>'is_published',
+                'filter'=>'is_published',
+                'list'=>[
+                     ['id'=>0,'name'=>'不发布'],
+                     ['id'=>1,'name'=>'发布'],
+                ]
+            ])}}
+
+
+        {{Form::LayRadio([
                 'name'=>'not_post',
                 'title'=>'评论选项',
                 'tips'=>'not_post',
@@ -197,6 +209,10 @@
             });
 
             renderXmSelect('#column2_id', '文章副栏目', 'column2_id', {radio: true}, []);
+
+            form.on('submit', function (obj) {
+                obj.field.body = tinymce.get('body').getContent();
+            });
         })
     </script>
 

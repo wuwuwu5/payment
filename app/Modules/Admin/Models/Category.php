@@ -64,4 +64,14 @@ class Category extends Model
     {
         return $this->belongsTo(CategoryGroup::class, 'category_group_id', 'id');
     }
+
+    /**
+     * 轮播图
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function slides()
+    {
+        return $this->hasMany(Slide::class, 'category_id', 'id');
+    }
 }

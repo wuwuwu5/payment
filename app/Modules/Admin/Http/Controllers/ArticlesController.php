@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Modules\Admin\Models\Article;
 use App\Modules\Admin\Models\Category;
 use App\Modules\Admin\Models\CategoryGroup;
+use Fukuball\Jieba\Jieba;
 use Fukuball\Jieba\JiebaAnalyse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -108,8 +109,10 @@ class ArticlesController extends BaseController
         if (!empty($keywords)) {
             $request->offsetSet('keywords', array_filter(explode(',', $keywords)));
         } else {
+            Jieba::init();
             // 分词
             $keywords = JiebaAnalyse::extractTags($request->input('title'), 10);
+
             // 赋值
             $request->offsetSet('keywords', $keywords);
         }
@@ -118,6 +121,10 @@ class ArticlesController extends BaseController
         $request->offsetSet('lit_pic', $request->input('cover'));
         // 创建人
         $request->offsetSet('creator_id', auth()->guard('admin')->user()->id);
+        // 发布
+        if ($request->input('is_published') == 1) {
+            $request->offsetSet('published_at', now()->format('Y-m-d H:i:s'));
+        }
 
         try {
 
@@ -125,14 +132,15 @@ class ArticlesController extends BaseController
 
             $article = Article::query()->create($request->all());
 
-            $tags = explode(',', $request->input('tags'));
+            $tags = array_filter(explode(',', $request->input('tags')));
 
             $tags = array_map(function ($item) {
                 return ['tag_id' => $item];
             }, $tags);
 
-
-            $article->tags()->createMany($tags);
+            if (count($tags) > 0) {
+                $article->tags()->createMany($tags);
+            }
 
             $article->add()->create($request->only('body'));
 
@@ -141,6 +149,7 @@ class ArticlesController extends BaseController
         } catch (\Exception $exception) {
             DB::rollBack();
             report($exception);
+            dd($exception);
             return $this->returnErrorApi();
         }
     }
@@ -188,6 +197,7 @@ class ArticlesController extends BaseController
         if (!empty($keywords)) {
             $request->offsetSet('keywords', array_filter(explode(',', $keywords)));
         } else {
+            Jieba::init();
             // 分词
             $keywords = JiebaAnalyse::extractTags($request->input('title'), 10);
             // 赋值
@@ -204,7 +214,7 @@ class ArticlesController extends BaseController
             $article->fill($request->all());
             $article->save();
 
-            $tags = explode(',', $request->input('tags'));
+            $tags = array_filter(explode(',', $request->input('tags')));
 
             $tags = array_map(function ($item) {
                 return ['tag_id' => $item];
@@ -212,7 +222,10 @@ class ArticlesController extends BaseController
 
 
             $article->tags()->delete();
-            $article->tags()->createMany($tags);
+
+            if (count($tags) > 0) {
+                $article->tags()->createMany($tags);
+            }
 
             $article->add()->update($request->only('body'));
 

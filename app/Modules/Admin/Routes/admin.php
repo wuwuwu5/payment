@@ -59,5 +59,9 @@ Route::name('admin.')->group(function () {
 
         // 轮播图
         Route::resource('/slides', 'SlidesController');
+        {
+            // 发布
+            Route::patch('/slides/{slide}/publish', 'SlidesController@publish')->name('slides.publish');
+        }
     });
 });

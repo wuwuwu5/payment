@@ -1,16 +1,17 @@
 layui.define(['table', 'jquery', 'form', 'xmSelect'], function (exports) {
     "use strict";
 
-    var MOD_NAME = 'myXmSelect';
+    var MOD_NAME = 'renderXmSelect';
     var xmSelect = layui.xmSelect;
-    var renderXmSelect = function () {
+    var $ = layui.$;
+    var renderXm = function () {
         this.v = '1.1.0';
     };
 
     /**
      * 初始化表格选择器
      */
-    renderXmSelect.prototype.render = function (el, tips, name, config, data) {
+    renderXm.prototype.render = function (el, tips, name, config, data) {
         // 默认配置
         var default_config = {
             el: el,
@@ -34,12 +35,12 @@ layui.define(['table', 'jquery', 'form', 'xmSelect'], function (exports) {
 
         default_config = $.extend({}, default_config, config);
 
-        return layui.xmSelect.render(default_config);
+        return xmSelect.render(default_config);
     };
 
 
     //自动完成渲染
-    var renderXmSelect = new renderXmSelect();
+    var renderXmSelect = new renderXm();
 
     exports(MOD_NAME, renderXmSelect);
 })

@@ -43,6 +43,10 @@ class Slide extends Model
 
     ];
 
+    public $casts = [
+        'is_published' => 'bool'
+    ];
+
     /**
      * 分组
      *

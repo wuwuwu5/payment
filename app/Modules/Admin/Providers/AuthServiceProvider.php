@@ -3,7 +3,9 @@
 namespace App\Modules\Admin\Providers;
 
 use App\Modules\Admin\Models\Article;
+use App\Modules\Admin\Models\Slide;
 use App\Modules\Admin\Policies\ArticlePolicy;
+use App\Modules\Admin\Policies\SlidePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -15,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Article::class => ArticlePolicy::class,
+        Slide::class => SlidePolicy::class,
     ];
 
 

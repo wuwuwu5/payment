@@ -15,6 +15,7 @@
 @section('content')
     <div class="layui-form " id="layuiadmin-form" style="background-color: #fff">
         @csrf
+        {{method_field('PUT')}}
         <div class="layui-form-item">
             <label for="" class="layui-form-label"><strong class="item-required">*</strong>分组</label>
             <div class="layui-input-block">
@@ -31,6 +32,7 @@
           'width'=>'500px',
           'height'=>'200px',
           'rq' => '',
+         'value' => $show->path,
           ]
           )}}
 
@@ -39,14 +41,16 @@
            'name'=>'name',
            'title'=>'名称',
            'tips'=>'',
-           'rq'=>'rq|length[2,100]'
+           'rq'=>'rq|length[2,100]',
+           'value' => $show->name,
        ])}}
 
         {{Form::LayText([
            'name'=>'redirect',
            'title'=>'跳转路径',
            'tips'=>'',
-           'rq'=>'length[2,200]'
+           'rq'=>'length[2,200]',
+           'value' => $show->redirect,
        ])}}
 
 
@@ -56,6 +60,7 @@
                 'title'=>'状态',
                 'tips'=>'is_published',
                 'filter'=>'is_published',
+                'on_id' => $show->is_published,
                 'list'=>[
                      ['id'=>0,'name'=>'禁用'],
                      ['id'=>1,'name'=>'发布'],
@@ -74,7 +79,7 @@
             alioss.img();
 
 
-            renderXmSelect.render('#category', '分组', 'category_id', {radio: true}, @json(treeCategories('slides')));
+            renderXmSelect.render('#category', '分组', 'category_id', {radio: true, initValue:['{{$show->category_id}}']}, @json(treeCategories('slides')));
         })
     </script>
 

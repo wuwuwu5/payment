@@ -148,9 +148,12 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
     /**
      * 监听编辑
      */
-    function handleListenTable(extendFun, callFun) {
+    function handleListenTable(extendFun, callFun, elem = null) {
+        if (elem == null) {
+            elem = 'tool(LAY-list-table)';
+        }
         //监听表操作
-        table.on('tool(LAY-list-table)', function (obj) {
+        table.on(elem, function (obj) {
             var data = obj.data;  //获得当前行数据
             //var del_url = listConfig.restful ? listConfig.index_url + '/' + data.id : listConfig.del_url;
 
@@ -587,6 +590,7 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
 
     // 列表编辑事件
     function listTableEditEvent(obj, data, extendFun, callFun, w, h) {
+        console.log(data);
         layerOpen.edit(data.edit_url, data.update_url, {
             w: ($(this).data('w') == null || $(this).data('w') == undefined) ? '90%' : $(this).data('w'),
             h: ($(this).data('h') == null || $(this).data('h') == undefined) ? '90%' : $(this).data('h'),

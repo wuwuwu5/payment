@@ -15,8 +15,8 @@ class CreateArticlesTable extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('column_id')->default(0)->comment('一级栏目ID 对应 category 主键');
-            $table->unsignedBigInteger('column2_id')->default(0)->comment('二级栏目ID  对应 category 主键');
+            $table->unsignedBigInteger('column_id')->nullable()->default(0)->comment('一级栏目ID 对应 category 主键');
+            $table->unsignedBigInteger('column2_id')->nullable()->default(0)->comment('二级栏目ID  对应 category 主键');
             $table->unsignedTinyInteger('is_published')->default(0)->comment('0 不发布 1 发布');
             $table->unsignedTinyInteger('is_commend')->default(0)->comment('0 不推荐 1推荐');
             $table->unsignedBigInteger('creator_id')->comment("创建人ID");

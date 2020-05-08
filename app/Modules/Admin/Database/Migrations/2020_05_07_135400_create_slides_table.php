@@ -21,7 +21,7 @@ class CreateSlidesTable extends Migration
             $table->string('path')->comment("图片路径");
             $table->string('redirect')->nullable()->default(null)->comment("跳转地址");
             $table->unsignedInteger('sort')->default(0)->comment("排序");
-            $table->enum('status', [0, 1])->default(0)->comment("0 禁用 1 发布");
+            $table->unsignedTinyInteger('is_published')->default(0)->comment("0 禁用 1 发布");
             $table->timestamps();
         });
     }
