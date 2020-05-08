@@ -82,9 +82,9 @@ class SlidesController extends BaseController
     public function setDataItemUrl($data)
     {
         foreach ($data as $item) {
-            $item->edit_url = $this->getEditUrl([$item->id]);
-            $item->update_url = $this->getUpdateUrl([$item->id]);
-            $item->destory_url = $this->getDestroyUrl([$item->id]);
+            $item->edit_url = $this->getEditUrl([$item->id], true);
+            $item->update_url = $this->getUpdateUrl([$item->id], true);
+            $item->destory_url = $this->getDestroyUrl([$item->id], true);
             $item->publish_url = $this->checkRoute('admin.slides.publish', [$item->id]);
         }
 

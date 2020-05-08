@@ -240,15 +240,17 @@ class CategoriesController extends BaseController
      */
     public function rules($request): array
     {
-        $name = $request->input('type');
+        if ($request->method() == 'POST' || $request->method() == 'PUT') {
+            $name = $request->input('type');
 
-        // 查询父类
-        $category_group = CategoryGroup::query()
-            ->where(compact('name'))
-            ->where('id', $request->input('category_group_id'))
-            ->firstOrFail();
+            // 查询父类
+            $category_group = CategoryGroup::query()
+                ->where(compact('name'))
+                ->where('id', $request->input('category_group_id'))
+                ->firstOrFail();
 
-        $request->offsetSet('category_group', $category_group);
+            $request->offsetSet('category_group', $category_group);
+        }
 
         switch ($request->method()) {
             case 'POST':
@@ -321,6 +323,9 @@ class CategoriesController extends BaseController
                         return true;
                     }],
                 ];
+                break;
+            default:
+                return [];
                 break;
         }
     }

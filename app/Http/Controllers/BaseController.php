@@ -198,6 +198,29 @@ class BaseController extends Controller
     }
 
     /**
+     * 更新
+     *
+     * @param $id
+     * @param Request $request
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws JsonValidatorException
+     * @throws WebValidatorException
+     */
+    public function updatePatch($id, Request $request)
+    {
+        $this->validateData($request);
+
+        // 数据
+        $data = $this->getQuery()->findOrFail($id);
+
+        $data->fill($request->all());
+
+        $data->save();
+
+        return $this->returnOkApi();
+    }
+
+    /**
      * 首页JSON
      *
      * @param Request $request
@@ -262,10 +285,10 @@ class BaseController extends Controller
      */
     public function setDataItemUrl($data)
     {
-        foreach ($data as $item) {
-            $item->edit_url = $this->getEditUrl([$item->id]);
-            $item->update_url = $this->getUpdateUrl([$item->id]);
-            $item->destory_url = $this->getDestroyUrl([$item->id]);
+        foreach ($data as $key => $item) {
+            $item->edit_url = $this->getEditUrl([$item->id], true);
+            $item->update_url = $this->getUpdateUrl([$item->id], true);
+            $item->destroy_url = $this->getDestroyUrl([$item->id], true);
         }
 
         return $data;

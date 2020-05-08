@@ -92,9 +92,10 @@ trait PaperUrlTrait
      * 获取请求路由 默认指向index方法
      *
      * @param array $data
+     * @param bool $new
      * @return string
      */
-    private function getListUrl($data = [])
+    private function getListUrl($data = [], $new = false)
     {
         if (empty($this->list_url)) {
 
@@ -103,6 +104,10 @@ trait PaperUrlTrait
             $as[count($as) - 1] = 'index';
 
             $as = implode('.', $as);
+
+            if ($new) {
+                return $this->checkRoute($as, $data);
+            }
 
             $this->setListUrl($as, $data);
         }
@@ -115,9 +120,10 @@ trait PaperUrlTrait
      * 获取创建路由
      *
      * @param array $data
+     * @param bool $new
      * @return string 默认指向create方法
      */
-    private function getCreateUrl($data = [])
+    private function getCreateUrl($data = [], $new = false)
     {
         if (empty($this->create_url)) {
 
@@ -126,6 +132,10 @@ trait PaperUrlTrait
             $as[count($as) - 1] = 'create';
 
             $as = implode('.', $as);
+
+            if ($new) {
+                return $this->checkRoute($as, $data);
+            }
 
             $this->setCreateUrl($as, $data);
         }
@@ -137,9 +147,10 @@ trait PaperUrlTrait
      * 获取储存路由 默认指向store方法
      *
      * @param array $data
+     * @param bool $new
      * @return string
      */
-    private function getStoreUrl($data = [])
+    private function getStoreUrl($data = [], $new = false)
     {
         if (empty($this->store_url)) {
 
@@ -148,6 +159,10 @@ trait PaperUrlTrait
             $as[count($as) - 1] = 'store';
 
             $as = implode('.', $as);
+
+            if ($new) {
+                return $this->checkRoute($as, $data);
+            }
 
             $this->setStoreUrl($as, $data);
         }
@@ -159,9 +174,10 @@ trait PaperUrlTrait
      * getEditUrl
      *
      * @param array $data
+     * @param bool $new
      * @return string
      */
-    public function getEditUrl($data = ['@'])
+    public function getEditUrl($data = ['@'], $new = false)
     {
         if (empty($this->edit_url)) {
 
@@ -170,6 +186,10 @@ trait PaperUrlTrait
             $as[count($as) - 1] = 'edit';
 
             $as = implode('.', $as);
+
+            if ($new) {
+                return $this->checkRoute($as, $data);
+            }
 
             $this->setEditUrl($as, $data);
         }
@@ -181,10 +201,12 @@ trait PaperUrlTrait
      * getUpdateUrl
      *
      * @param array $data
+     * @param bool $new
      * @return string
      */
-    public function getUpdateUrl($data = ['@'])
+    public function getUpdateUrl($data = ['@'], $new = false)
     {
+
         if (empty($this->update_url)) {
 
             $as = $this->parseRouteAs();
@@ -192,6 +214,10 @@ trait PaperUrlTrait
             $as[count($as) - 1] = 'update';
 
             $as = implode('.', $as);
+
+            if ($new) {
+                return $this->checkRoute($as, $data);
+            }
 
             $this->setUpdateUrl($as, $data);
         }
@@ -203,9 +229,10 @@ trait PaperUrlTrait
      * getDestroyUrl
      *
      * @param array $data
+     * @param bool $new
      * @return string
      */
-    public function getDestroyUrl($data = ['@'])
+    public function getDestroyUrl($data = ['@'], $new = false)
     {
         if (empty($this->destroy_url)) {
 
@@ -214,6 +241,10 @@ trait PaperUrlTrait
             $as[count($as) - 1] = 'destroy';
 
             $as = implode('.', $as);
+
+            if ($new) {
+                return $this->checkRoute($as, $data);
+            }
 
             $this->setDestroyUrl($as, $data);
         }

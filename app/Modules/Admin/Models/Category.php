@@ -15,7 +15,7 @@ class Category extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'nickname', 'pid', 'value', 'image', 'category_group_id', 'level', 'path', 'top_id'
+        'name', 'nickname', 'pid', 'value', 'image', 'category_group_id', 'level', 'path', 'top_id', 'weigh'
     ];
 
     /**
@@ -23,7 +23,7 @@ class Category extends Model
      *
      * @var array
      */
-    protected $defaultSortCriteria = ['created_at,desc'];
+    protected $defaultSortCriteria = ['weigh,desc', 'created_at,desc'];
 
     /**
      * 可查询字段

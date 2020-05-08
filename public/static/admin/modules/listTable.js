@@ -180,99 +180,6 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
                     listTableCancelPublishedEvent(obj, $(this), data, extendFun, callFun);
                     break;
             }
-
-
-            //打开openLayer
-            if (obj.event === 'open_layer') {
-
-                w = $(this).data('w');
-                h = $(this).data('h');
-                title = $(this).data('title');
-                url = $(this).data('url');
-                var config = {
-                    title: title,
-                    h: h,
-                    w: w
-                };
-
-                yesFun = function (layero, index) {
-                    layer.close(index); //关闭弹层
-                }
-                layerOpen.show(url, config, yesFun);
-            }
-
-
-            //打开openLayer操作提交数据
-            if (obj.event === 'open_layer_post') {
-
-                w = $(this).data('w');
-                h = $(this).data('h');
-                title = $(this).data('title');
-                url = $(this).data('url');
-                post_url = $(this).data('post_url');
-                var config = {
-                    title: title,
-                    w: w,
-                    h: h
-                };
-
-                layerOpen.edit(url, post_url, config, callFun);
-            }
-
-            //打开是否提交POST数据
-            if (obj.event === 'open_post') {
-
-                w = $(this).data('w');
-                h = $(this).data('h');
-                title = $(this).data('title');
-
-                post_url = $(this).data('post_url');
-                btn = $(this).data('btns') || ['确定', '取消'];
-
-
-                var post_index = layer.open({
-                    type: 1
-                    ,
-                    title: false //不显示标题栏
-                    ,
-                    closeBtn: false
-                    ,
-                    area: '300px;'
-                    ,
-                    shade: 0.2
-
-                    ,
-                    btn: btn
-                    ,
-                    btnAlign: 'c'
-                    ,
-                    moveType: 1 //拖拽模式，0或者1
-                    ,
-                    content: '<div style="padding: 20px; text-align: center; line-height: 22px; background-color: #009688; color: #fff; font-weight: 300;">' + title + '</div>'
-                    ,
-                    success: function (layero) {
-
-
-                    }, yes: function (index, layero) {
-                        layer.close(post_index); //关闭弹层
-                        var loading = layer.load(0, {shade: false});
-                        req.post(post_url, {}, function (res) {
-                            layer.close(loading);
-                            layer.msg(res.msg);
-                            if (res.code == 200) {
-                                table.reload('LAY-list-table');
-                                layer.close(index); //关闭弹层
-
-
-                            }
-                            callFun && callFun(res)
-                        });
-                    }
-
-                })
-            }
-
-
             //附加监听表
             if (typeof (extendFun) == "function") {
                 return extendFun(obj, $(this));
@@ -281,36 +188,19 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
 
         //监听单元格编辑
         table.on('edit(LAY-list-table)', function (obj) {
-            var value = obj.value //得到修改后的值
-                ,
-                data = obj.data //得到所在行所有键值
-                ,
-                field = obj.field; //得到字段
-            //ajax操作
-            data = {
-                field: field,
-                field_value: value,
-                ids: data.id
-            };
-            if (field == 'sort') {
-                reg = /^[0-9]*$/;
-                if (!reg.test(value)) {
-                    layer.msg('只能输入数字');
-                    return false;
-                }
-            }
+            var value = obj.value, data = obj.data, field = obj.field; //得到字段
+            // 要修改的数据
+            var fields = {};
+            fields[field] = value;
+            fields['_method'] = 'patch';
 
-
-            req.post(listConfig.edit_field_url, data, function (res) {
+            // 更新
+            req.post(data.update_url + '/patch', fields, function (res) {
                 layer.msg(res.msg);
-                if (field == 'sort') {
-                    table.reload('LAY-list-table');
-                }
+                table.reload('LAY-list-table');
                 //回调
                 callFun && callFun(res)
             })
-
-
         });
 
 
@@ -590,7 +480,6 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
 
     // 列表编辑事件
     function listTableEditEvent(obj, data, extendFun, callFun, w, h) {
-        console.log(data);
         layerOpen.edit(data.edit_url, data.update_url, {
             w: ($(this).data('w') == null || $(this).data('w') == undefined) ? '90%' : $(this).data('w'),
             h: ($(this).data('h') == null || $(this).data('h') == undefined) ? '90%' : $(this).data('h'),
@@ -600,7 +489,7 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
 
     // 列表删除事件
     function listTableDeLEvent(obj, data, extendFun, callFun) {
-        var del_url = data.destory_url;
+        var del_url = data.destroy_url;
 
         layer.msg('确定删除吗?', {
             time: 0,

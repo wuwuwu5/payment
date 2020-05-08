@@ -41,8 +41,13 @@ Route::name('admin.')->group(function () {
 
         // 分类|目录等
         Route::resource('/categories', 'CategoriesController');
-        // 更新状态
-        Route::patch('/categories/{category}/status', 'CategoriesController@updateStatus')->name('categories.status');
+        {
+            // 字段单修改
+            Route::patch('/categories/{category}/patch', 'CategoriesController@updatePatch');
+
+            // 更新状态
+            Route::patch('/categories/{category}/status', 'CategoriesController@updateStatus')->name('categories.status');
+        }
 
         // 图标
         Route::get('/icon', 'IconController@index')->name('icon.index');
