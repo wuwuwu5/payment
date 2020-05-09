@@ -179,6 +179,12 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
                 case 'cancel_published':
                     listTableCancelPublishedEvent(obj, $(this), data, extendFun, callFun);
                     break;
+                case 'commend':
+                    listTableCommendEvent(obj, $(this), data, extendFun, callFun);
+                    break;
+                case 'cancel_commend':
+                    listTableCancelCommendEvent(obj, $(this), data, extendFun, callFun);
+                    break;
             }
             //附加监听表
             if (typeof (extendFun) == "function") {
@@ -596,6 +602,58 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
                         obj.update(data);
                         that.removeAttr('lay-event').attr('lay-event', 'published');
                         that.empty().append('<i class="layui-icon layui-icon-upload-circle"></i>发布');
+                    }
+                    callFun && callFun(res)
+                }, function () {
+                    layer.closeAll();
+                    layer.msg('操作失败!');
+                }, function () {
+                    layer.close(index);
+                });
+            }
+        });
+    }
+
+    // 推荐
+    function listTableCommendEvent(obj, that, data, extendFun, callFun) {
+        layer.msg('确定推荐?', {
+            time: 0,
+            btn: ['确定', '取消'],
+            yes: function () {
+                var index = layer.load(1);
+                req.post(data.commend_url, {'_method': 'patch', 'commend': 1}, function (res) {
+                    if (res.code == 200) {
+                        layer.msg('推荐成功!');
+                        data.is_commend = true;
+                        obj.update(data);
+                        that.removeAttr('lay-event').attr('lay-event', 'cancel_commend');
+                        that.empty().append('<i class="layui-icon layui-icon-close-fill"></i>取消推荐');
+                    }
+                    callFun && callFun(res)
+                }, function () {
+                    layer.closeAll();
+                    layer.msg('操作失败!');
+                }, function () {
+                    layer.close(index);
+                });
+            }
+        });
+    }
+
+    // 取消推荐
+    function listTableCancelCommendEvent(obj, that, data, extendFun, callFun) {
+        layer.msg('确定取消推荐?', {
+            time: 0,
+            btn: ['确定', '取消'],
+            yes: function () {
+                var index = layer.load(1);
+                req.post(data.commend_url, {'_method': 'patch', 'commend': 0}, function (res) {
+                    if (res.code == 200) {
+                        layer.msg('取消推荐成功!');
+                        data.is_published = false;
+                        obj.update(data);
+                        that.removeAttr('lay-event').attr('lay-event', 'commend');
+                        that.empty().append('<i class="layui-icon layui-icon-upload-circle"></i>推荐');
                     }
                     callFun && callFun(res)
                 }, function () {

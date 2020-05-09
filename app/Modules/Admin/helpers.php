@@ -616,3 +616,106 @@ if (!function_exists('generateCategoriesTree')) {
         return $tree;
     }
 }
+
+// 文章相关辅助函数
+{
+
+}
+
+
+// 前端目录相关辅助函数
+{
+    // 树状栏目
+    if (!function_exists('getFrontColumns')) {
+        function getFrontColumns()
+        {
+            return treeCategories(\App\Modules\Admin\Models\CategoryGroup::FRONT_COLUMN);
+        }
+    }
+
+    // 获取子栏目
+    if (!function_exists('getFrontChildrenColumns')) {
+        function getFrontChildrenColumns($parent_id)
+        {
+            $category_group = \App\Modules\Admin\Models\CategoryGroup::query()
+                ->where('name', \App\Modules\Admin\Models\CategoryGroup::FRONT_COLUMN)
+                ->first();
+
+            if (empty($category_group)) {
+                return [];
+            }
+
+            return $category_group
+                ->categories()
+                ->where('pid', $parent_id)
+                ->select('id', 'nickname as name', 'pid', 'id as value', 'category_group_id')
+                ->get()
+                ->toArray();
+        }
+    }
+}
+
+// 轮播图相关
+{
+    // 获取栏目下的轮播图
+    if (!function_exists('getColumnSlides')) {
+        function getColumnSlides($column_id)
+        {
+            $category_group = \App\Modules\Admin\Models\CategoryGroup::query()
+                ->where('name', \App\Modules\Admin\Models\CategoryGroup::FRONT_COLUMN)
+                ->first();
+
+            if (empty($category_group)) {
+                return [];
+            }
+
+            $category = $category_group
+                ->categories()
+                ->where('id', $column_id)
+                ->first();
+
+            if (empty($category)) {
+                return [];
+            }
+
+            $category_group = \App\Modules\Admin\Models\CategoryGroup::query()
+                ->where('name', \App\Modules\Admin\Models\CategoryGroup::SLIDES)
+                ->first();
+
+            if (empty($category_group)) {
+                return [];
+            }
+
+            $level = $category->level;
+
+            if ($level == 1) {
+                $column = 'column_id';
+            } else {
+                $column = 'column' . $level . '_id';
+            }
+
+            // 查询
+            $where = 'value->' . $column;
+
+            $data = $category_group
+                ->categories()
+                ->where($where, $category->id)
+                ->with(['slides' => function ($query) {
+                    $query->where('is_published', 1)->orderBy('sort', 'desc')->orderBy('created_at', 'desc');
+                }])
+                ->get();
+
+            if ($data->isEmpty()) {
+                return [];
+            }
+
+            $slides = [];
+
+            foreach ($data as $item) {
+                $slides = array_merge($slides, $item->slides->toArray());
+            }
+
+            return $slides;
+        }
+    }
+}

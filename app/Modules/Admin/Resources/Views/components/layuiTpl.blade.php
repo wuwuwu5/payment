@@ -804,61 +804,32 @@
         {{# } }}
     </script>
     <script type="text/html" id="tpl-article">
-        {{# if(d.btns){ }}
-        <p>
-            {{#  layui.each(d.btns, function(index, item){ }}
-
-            <a href="{{ item.url }}" target="{{ item.target || '_self' }}"
-               class="layui-btn {{ item.class_name }} layui-btn-xs"><i
-                    class="layui-icon {{ item.icon || '' }}"></i>{{ item.name }}</a>
-            {{# if(index>3){  }}
-            <br/>
+        <div class="menu-item" style="text-align: left;cursor: pointer;">
+            <a class="" lay-event="edit"><i
+                    class="layui-icon layui-icon-edit"></i>编辑</a>
+            <a class="" lay-event="del"><i
+                    class="layui-icon layui-icon-delete"></i>删除</a>
+            {{# if(d.is_published == false){  }}
+            <a class="" lay-event="published"><i
+                    class="layui-icon layui-icon-upload-circle"></i>发布</a>
+            {{#  } else { }}
+            <a class="" lay-event="cancel_published"><i
+                    class="layui-icon layui-icon-close-fill"></i>取消发布</a>
             {{# } }}
-            {{#  }); }}
-        </p>
-        {{#  }; }}
-        {{# if(d.btn_open){ }}
-        <p>
-            {{#  layui.each(d.btn_open, function(index, item){ }}
-            <a lay-event="open_layer" data-w="{{ item.w || '1200px' }}"
-               data-h="{{ item.h || '800px' }}"
-               data-title="{{ item.title || item.name }}" data-url="{{ item.url }}"
-               class="layui-btn {{ item.class_name }} layui-btn-xs"><i
-                    class="layui-icon {{ item.icon || '' }}"></i>{{ item.name }}</a>
-            {{# if(index>3){  }}
-            <br/>
+            {{# if(d.is_commend == false){  }}
+            <a class="" lay-event="commend">
+                <i class="layui-icon layui-icon-upload-circle"></i>推荐</a>
+            {{#  } else { }}
+            <a class="" lay-event="cancel_commend">
+                <i class="layui-icon layui-icon-close-fill"></i>取消推荐</a>
             {{# } }}
-            {{#  }); }}
-
-        </p>
-        {{#  }; }}
-        {{# if(d.btn_posts){ }}
-        <p>
-            {{#  layui.each(d.btn_posts, function(index, item){ }}
-            <a lay-event="open_post" data-w="{{ item.w || '1200px' }}"
-               data-h="{{ item.h || '800px' }}"
-               data-title="{{ item.title || item.name }}" data-post_url="{{ item.post_url }}"
-               class="layui-btn {{ item.class_name }} layui-btn-xs"><i
-                    class="layui-icon {{ item.icon || '' }}"></i>{{ item.name }}</a>
-            {{# if(index>3){  }}
-            <br/>
-            {{# } }}
-            {{#  }); }}
-
-        </p>
-        {{#  }; }}
-
-        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i
-                class="layui-icon layui-icon-edit"></i>编辑</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i
-                class="layui-icon layui-icon-delete"></i>删除</a>
-        {{# if(d.is_published == false){  }}
-        <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="published"><i
-                class="layui-icon layui-icon-upload-circle"></i>发布</a>
-        {{#  } else { }}
-        <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="cancel_published"><i
-                class="layui-icon layui-icon-close-fill"></i>取消发布</a>
-        {{# } }}
+        </div>
     </script>
 
+    <script id="article_dropdown" type="text/html">
+        <button class="layui-btn layui-btn-xs" id="article_dropdown_{{d.id}}">
+            <span>操作</span>
+            <i class="layui-icon layui-icon-triangle-d"></i>
+        </button>
+    </script>
 @endverbatim

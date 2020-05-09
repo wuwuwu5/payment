@@ -59,6 +59,28 @@
             }}
 
         @endif
+
+        @if($category_group->name == \App\Modules\Admin\Models\CategoryGroup::SLIDES)
+            <div class="layui-form-item">
+                <label for="" class="layui-form-label"><strong class="item-required"></strong>文章主栏目</label>
+                <div class="layui-input-block">
+                    <div class="col-lg-4">
+                        <div id="column_id" style="width:100%" title="文章主栏目"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="" class="layui-form-label"><strong class="item-required"></strong>文章副栏目</label>
+                <div class="layui-input-block">
+                    <div class="col-lg-4">
+                        <div id="column2_id" style="width:100%" title="文章副栏目"></div>
+                    </div>
+                </div>
+            </div>
+
+
+        @endif
         {{   Form::LaySubmit()}}
     </div>
 @endsection
@@ -70,27 +92,54 @@
 
         datas.unshift(firstData);
 
-        layui.use(['index', 'xmSelect', 'custorm'], function () {
-            layui.xmSelect.render({
-                el: '#parent',
-                tips: '选择父级',
+        layui.use(['index', 'renderXmSelect', 'custorm', 'request'], function () {
+            var renderXmSelect = layui.renderXmSelect;
+            var request = layui.request;
+            var pid = {{$category->pid}};
+            // 父级
+            renderXmSelect.render('#parent', '选择父级', 'pid', {
+                initValue: [pid],
+                radio: true
+            }, datas);
+
+                @php
+                    $column_id = data_get($category, 'value.column_id', null);
+                    $column2_id = data_get($category, 'value.column2_id', null);
+                @endphp
+
+                @if($category_group->name == \App\Modules\Admin\Models\CategoryGroup::SLIDES)
+            var initValue = @json( empty($column_id) ? [] : [$column_id]);
+            renderXmSelect.render('#column_id', '文章主栏目', 'value[column_id]', {
                 radio: true,
-                max: 2,
-                height: '300px',
-                clickClose: true,
-                filterable: true,
-                name: 'pid',
-                theme: {
-                    color: '#1E9FFF',
-                },
-                tree: {
-                    show: true,
-                    strict: false,
-                    showFolderIcon: true,
-                },
-                data: datas,
-                initValue: ['{{$category->pid}}'],
+                initValue: initValue,
+                on: function (data) {
+                    var arr = data.arr;
+                    if (arr.length > 0) {
+                        request.get('/admin/articles/' + arr[0]['id'] + '/children', {}, function (res) {
+                            renderXmSelect.render('#column2_id', '文章副栏目', 'value[column2_id]', {radio: true}, res.data);
+                        })
+                    } else {
+                        renderXmSelect.render('#column2_id', '文章副栏目', 'value[column2_id]', {radio: true}, []);
+                    }
+                }
+            }, @json(treeCategories('front_column', true,1)));
+
+            @if(empty($column2_id))
+            renderXmSelect.render('#column2_id', '文章副栏目', 'value[column2_id]', {radio: true}, []);
+            @else
+            @if (!empty($column_id))
+            request.get('/admin/articles/' + '{{$column_id}}' + '/children', {}, function (res) {
+                var initValue2 = @json( empty($column2_id) ? [] : [$column2_id]);
+                renderXmSelect.render('#column2_id', '文章副栏目', 'value[column2_id]', {
+                    radio: true,
+                    initValue: initValue2
+                }, res.data);
             });
+            @else
+            renderXmSelect.render('#column2_id', '文章副栏目', 'value[column2_id]', {radio: true}, []);
+            @endif
+            @endif
+            @endif
         });
     </script>
 

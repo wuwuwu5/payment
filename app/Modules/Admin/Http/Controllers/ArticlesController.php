@@ -10,7 +10,6 @@ use Fukuball\Jieba\Jieba;
 use Fukuball\Jieba\JiebaAnalyse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 
 class ArticlesController extends BaseController
 {
@@ -19,7 +18,6 @@ class ArticlesController extends BaseController
     public $view_prefix_path = "admin::admin.";
 
     public $page_name = '文章';
-
 
     /**
      * 首页JSON
@@ -55,6 +53,7 @@ class ArticlesController extends BaseController
             $item->update_url = $this->getUpdateUrl([$item->id]);
             $item->destory_url = $this->getDestroyUrl([$item->id]);
             $item->publish_url = $this->checkRoute('admin.articles.publish', [$item->id]);
+            $item->commend_url = $this->checkRoute('admin.articles.commend', [$item->id]);
         }
 
         return $data;
@@ -126,6 +125,11 @@ class ArticlesController extends BaseController
             $request->offsetSet('published_at', now()->format('Y-m-d H:i:s'));
         }
 
+        // 副标题
+        if (empty($request->input('short_title'))) {
+            $request->offsetSet('short_title', $request->input('title'));
+        }
+
         try {
 
             DB::beginTransaction();
@@ -149,7 +153,6 @@ class ArticlesController extends BaseController
         } catch (\Exception $exception) {
             DB::rollBack();
             report($exception);
-            dd($exception);
             return $this->returnErrorApi();
         }
     }
@@ -251,18 +254,42 @@ class ArticlesController extends BaseController
     {
         $this->authorize('update', $article);
 
-        $publish = (bool)$request->input('publish');
+        $is_published = (bool)$request->input('publish');
 
-        if ($article->is_published == $publish) {
+        if ($article->is_published == $is_published) {
             return $this->returnApi(200, '更新成功');
         }
 
-        $article->is_published = $publish;
-        if ($publish) {
-            $article->published_at = now();
+        if ($is_published) {
+            $published_at = now();
         } else {
-            $article->published_at = null;
+            $published_at = null;
         }
+
+        Article::query()->where('id', $article->id)->update(compact('is_published', 'published_at'));
+
+        return $this->returnApi(200, '更新成功');
+    }
+
+    /**
+     * 更新状态
+     *
+     * @param Article $article
+     * @param Request $request
+     * @return array|\Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function commend(Article $article, Request $request)
+    {
+        $this->authorize('update', $article);
+
+        $commend = (bool)$request->input('commend');
+
+        if ($article->is_commend == $commend) {
+            return $this->returnApi(200, '更新成功');
+        }
+
+        $article->is_commend = $commend;
         $article->save();
 
         return $this->returnApi(200, '更新成功');

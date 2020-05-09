@@ -19,7 +19,7 @@ class Article extends Model
      * @var array
      */
     protected $fillable = [
-        'column_id', 'column2_id', 'category_id', 'title', 'short_title', 'keywords', 'cover', 'not_post', 'published_at', 'creator_id', 'lit_pic', 'is_published'
+        'column_id', 'column2_id', 'category_id', 'title', 'short_title', 'keywords', 'cover', 'not_post', 'published_at', 'creator_id', 'lit_pic', 'is_published', 'is_commend'
     ];
 
     /**
@@ -34,7 +34,9 @@ class Article extends Model
      *
      * @var array
      */
-    public $searchable = [];
+    public $searchable = [
+        'title', 'is_published', 'is_commend'
+    ];
 
     /**
      * 查询字段模式
@@ -44,7 +46,7 @@ class Article extends Model
      * @var array
      */
     public $searchableModels = [
-
+        'title' => '%field%'
     ];
 
     /**
@@ -57,7 +59,8 @@ class Article extends Model
      */
     public $casts = [
         'keywords' => 'array',
-        'is_published' => 'bool'
+        'is_published' => 'bool',
+        'is_commend' => 'bool',
     ];
 
     /**

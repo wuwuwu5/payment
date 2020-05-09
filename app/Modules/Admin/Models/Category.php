@@ -72,6 +72,6 @@ class Category extends Model
      */
     public function slides()
     {
-        return $this->hasMany(Slide::class, 'category_id', 'id');
+        return $this->hasMany(Slide::class);
     }
 }
