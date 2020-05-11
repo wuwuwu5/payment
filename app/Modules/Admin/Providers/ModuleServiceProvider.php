@@ -3,6 +3,7 @@
 namespace App\Modules\Admin\Providers;
 
 use Caffeinated\Modules\Support\ServiceProvider;
+use ElfSundae\Laravel\Hashid\HashidServiceProvider;
 use Illuminate\Support\Facades\Blade;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -40,5 +41,6 @@ class ModuleServiceProvider extends ServiceProvider
         $this->app->register(ValidatorServiceProvider::class);
         $this->app->register(AuthServiceProvider::class);
         $this->app->register(ObserverServiceProvider::class);
+        $this->app->register(HashidServiceProvider::class);
     }
 }

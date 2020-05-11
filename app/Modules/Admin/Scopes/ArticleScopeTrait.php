@@ -42,4 +42,26 @@ trait ArticleScopeTrait
             },
         ]);
     }
+
+    /**
+     * 获取首页最新文章
+     *
+     * @param $builder
+     * @return mixed
+     */
+    public function scopeFrontIndex($builder)
+    {
+        return $builder
+            ->where('is_published', 1)
+            ->select('id', 'title', 'short_title', 'creator_id', 'category_id', 'published_at', 'cover')
+            ->orderBy('published_at', 'desc')
+            ->with([
+                'tags' => function ($q) {
+                $q->with('tag:id,name,nickname');
+                },
+                'creator' => function ($query) {
+                    $query->select('id', 'nickname', 'username');
+                },
+            ]);
+    }
 }

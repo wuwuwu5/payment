@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Admin\Http\Controllers;
+namespace App\Modules\Admin\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
 use App\Modules\Admin\Services\FileServices;

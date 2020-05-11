@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Modules\Admin\Http\Controllers;
+namespace App\Modules\Admin\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
 use App\Modules\Admin\Models\Article;
 use App\Modules\Admin\Models\Category;
 use App\Modules\Admin\Models\CategoryGroup;
+use App\Modules\Traits\ArticleTrait;
 use Fukuball\Jieba\Jieba;
 use Fukuball\Jieba\JiebaAnalyse;
 use Illuminate\Http\Request;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 
 class ArticlesController extends BaseController
 {
+    use ArticleTrait;
+
     public $model = \App\Modules\Admin\Models\Article::class;
 
     public $view_prefix_path = "admin::admin.";
@@ -148,6 +151,9 @@ class ArticlesController extends BaseController
 
             $article->add()->create($request->only('body'));
 
+            // 将基本信息存入redis
+            $this->storeArticleInfoOnRedis($article);
+
             DB::commit();
             return $this->returnOkApi();
         } catch (\Exception $exception) {
@@ -232,6 +238,9 @@ class ArticlesController extends BaseController
 
             $article->add()->update($request->only('body'));
 
+            // 更新Redis数据
+            $this->updateArticleInfoOnRedis($article);
+
             DB::commit();
             return $this->returnOkApi();
         } catch (\Exception $exception) {
@@ -267,6 +276,11 @@ class ArticlesController extends BaseController
         }
 
         Article::query()->where('id', $article->id)->update(compact('is_published', 'published_at'));
+        $article->is_published = $is_published;
+        $article->published_at = $published_at;
+
+        // redis更新
+        $this->updateArticleInfoOnRedis($article);
 
         return $this->returnApi(200, '更新成功');
     }

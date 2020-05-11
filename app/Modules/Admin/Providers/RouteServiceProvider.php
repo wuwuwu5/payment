@@ -16,6 +16,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected $namespace = 'App\Modules\Admin\Http\Controllers';
 
+    protected $front_namespace = 'App\Modules\Admin\Http\Controllers\Front';
+
+    protected $admin_namespace = 'App\Modules\Admin\Http\Controllers\Admin';
+
     /**
      * Define your route model bindings, pattern filters, etc.
      *
@@ -53,7 +57,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::group([
             'middleware' => 'web',
-            'namespace'  => $this->namespace,
+            'namespace' => $this->front_namespace,
         ], function ($router) {
             require module_path('admin', 'Routes/web.php', 'app');
         });
@@ -70,8 +74,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::group([
             'middleware' => 'auth:api',
-            'namespace'  => $this->namespace,
-            'prefix'     => 'api',
+            'namespace' => $this->namespace,
+            'prefix' => 'api',
         ], function ($router) {
             require module_path('admin', 'Routes/api.php', 'app');
         });
@@ -87,8 +91,8 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapAdminRoutes()
     {
         Route::group([
-            'namespace'  => $this->namespace,
-            'prefix'     => 'admin',
+            'namespace' => $this->admin_namespace,
+            'prefix' => 'admin',
         ], function ($router) {
             require module_path('admin', 'Routes/admin.php', 'app');
         });

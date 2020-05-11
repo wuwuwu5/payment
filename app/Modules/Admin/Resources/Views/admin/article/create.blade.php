@@ -47,7 +47,7 @@
            'name'=>'short_title',
            'title'=>'副标题',
            'tips'=>'',
-           'rq'=>'length[2,60]'
+           'rq'=>'length[2,200]'
        ])}}
 
 

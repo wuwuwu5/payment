@@ -23,6 +23,8 @@ class GeneratorServiceProvider extends ServiceProvider
         $generators = [
             'command.make.module_controller' => \App\Modules\Admin\Console\Generators\MakeControllerCommand::class,
             'command.make.module_model' => \App\Modules\Admin\Console\Generators\MakeModelCommand::class,
+            'generate:hot_article' => \App\Modules\Admin\Console\Commands\GenerateHotArticle::class,
+            'load:article_info' => \App\Modules\Admin\Console\Commands\LoadArticleInfo::class,
         ];
 
         foreach ($generators as $slug => $class) {

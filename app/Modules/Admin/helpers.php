@@ -534,9 +534,10 @@ if (!function_exists('treeCategories')) {
      * @param string $name
      * @param bool $add
      * @param int $depth
+     * @param null $whit
      * @return array|\Illuminate\Http\JsonResponse
      */
-    function treeCategories($name = 'menu', $add = false, $depth = 0)
+    function treeCategories($name = 'menu', $add = false, $depth = 0, $whit = null)
     {
         $category_group = \App\Modules\Admin\Models\CategoryGroup::where('name', $name)->first();
 
@@ -548,13 +549,19 @@ if (!function_exists('treeCategories')) {
             $depth = $category_group->depth - 1;
         }
 
-        $categories = $category_group
+        $query = $category_group
             ->categories()
             ->where('status', 1)
+            ->select('id', 'nickname as name', 'pid', 'category_group_id', 'image', 'value', 'name as mark_name')
             ->when($add, function ($q) use ($depth) {
                 $q->where('level', '<=', $depth);
-            })
-            ->select('id', 'nickname as name', 'pid', 'category_group_id')
+            });
+
+        if (!empty($whit)) {
+            $query = $whit($query);
+        }
+
+        $categories = $query
             ->orderBy('weigh', 'desc')->orderBy('created_at', 'desc')
             ->orderBy('id', 'desc')
             ->get();
@@ -629,13 +636,22 @@ if (!function_exists('generateCategoriesTree')) {
     if (!function_exists('getFrontColumns')) {
         function getFrontColumns()
         {
-            return treeCategories(\App\Modules\Admin\Models\CategoryGroup::FRONT_COLUMN);
+            return treeCategories(\App\Modules\Admin\Models\CategoryGroup::FRONT_COLUMN, false, 0, function ($query) {
+                return $query
+                    ->where('value->show', 1)
+                    ->withCount(['columnArticles' => function ($query) {
+                        $query->where('is_published', 1);
+                    }])
+                    ->withCount(['column2Articles' => function ($query) {
+                        $query->where('is_published', 1);
+                    }]);
+            });
         }
     }
 
     // 获取子栏目
     if (!function_exists('getFrontChildrenColumns')) {
-        function getFrontChildrenColumns($parent_id)
+        function getFrontChildrenColumns($parent_id, $hot = false)
         {
             $category_group = \App\Modules\Admin\Models\CategoryGroup::query()
                 ->where('name', \App\Modules\Admin\Models\CategoryGroup::FRONT_COLUMN)
@@ -648,7 +664,10 @@ if (!function_exists('generateCategoriesTree')) {
             return $category_group
                 ->categories()
                 ->where('pid', $parent_id)
-                ->select('id', 'nickname as name', 'pid', 'id as value', 'category_group_id')
+                ->when($hot, function ($q) {
+                    $q->where('value->home_top', 1);
+                })
+                ->select('id', 'nickname as name', 'pid', 'id as value', 'category_group_id', 'name as mark_name')
                 ->get()
                 ->toArray();
         }
@@ -716,6 +735,44 @@ if (!function_exists('generateCategoriesTree')) {
             }
 
             return $slides;
+        }
+    }
+
+    // 获取指定类别下的轮播图
+    if (!function_exists('getSlides')) {
+        function getSlides($type, $num = 0)
+        {
+            $category_group = \App\Modules\Admin\Models\CategoryGroup::query()
+                ->where('name', \App\Modules\Admin\Models\CategoryGroup::SLIDES)
+                ->first();
+
+            if (empty($category_group)) {
+                return [];
+            }
+
+            $category = $category_group
+                ->categories()
+                ->where('name', $type)
+                ->with(['slides' => function ($query) use ($num) {
+                    $query
+                        ->where('is_published', 1)
+                        ->when($num > 0, function ($q) use ($num) {
+                            $q->take($num);
+                        })
+                        ->orderBy('sort', 'desc')
+                        ->orderBy('created_at', 'desc');
+                }])
+                ->first();
+
+            if (empty($category)) {
+                return [];
+            }
+
+            foreach ($category->slides as $slide) {
+                $slide->img_url = render_cover($slide->path);
+            }
+
+            return $category->slides->toArray();
         }
     }
 }

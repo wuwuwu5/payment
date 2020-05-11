@@ -74,4 +74,34 @@ class Category extends Model
     {
         return $this->hasMany(Slide::class);
     }
+
+    /**
+     * 文章
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
+
+    /**
+     * 栏目文章
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function columnArticles()
+    {
+        return $this->hasMany(Article::class, 'column_id', 'id');
+    }
+
+    /**
+     * 副栏目文章
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function column2Articles()
+    {
+        return $this->hasMany(Article::class, 'column2_id', 'id');
+    }
 }

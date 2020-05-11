@@ -49,7 +49,7 @@
            'name'=>'short_title',
            'title'=>'副标题',
            'tips'=>'',
-           'rq'=>'length[2,60]',
+           'rq'=>'length[2,200]',
            'value' => $show->short_title,
        ])}}
 
@@ -135,7 +135,7 @@
             alioss.img();
 
 
-            {{   Form::LayTinymceJs(['id'=>'body', 'return'=>'body', 'content' =>$show->add->body ]) }}
+            {{   Form::LayTinymceJs(['id'=>'body', 'return'=>'body', 'content' =>$show->add->body??'' ]) }}
 
             // 渲染xmselect
             function renderXmSelect(el, tips, name, config, data, initValue = null) {
@@ -211,14 +211,14 @@
                 }
             });
             @if(empty($show->column_id))
-                renderXmSelect('#column2_id', '文章副栏目', 'column2_id', {radio: true}, []);
+            renderXmSelect('#column2_id', '文章副栏目', 'column2_id', {radio: true}, []);
             @else
-                request.get('/admin/articles/' + '{{$show->column_id}}' + '/children', {}, function (res) {
-                    @php
-                       $column2_id = empty($show->column2_id) ?[]:[$show->column2_id];
-                    @endphp
-                    renderXmSelect('#column2_id', '文章副栏目', 'column2_id', {radio: true}, res.data, @json($column2_id));
-                });
+            request.get('/admin/articles/' + '{{$show->column_id}}' + '/children', {}, function (res) {
+                @php
+                    $column2_id = empty($show->column2_id) ?[]:[$show->column2_id];
+                @endphp
+                renderXmSelect('#column2_id', '文章副栏目', 'column2_id', {radio: true}, res.data, @json($column2_id));
+            });
             @endif
 
 

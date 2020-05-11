@@ -44,7 +44,6 @@
         layui.use(['index', 'listTable', 'table'], function () {
             var table = layui.table;
             var listTable = layui.listTable;
-            listTable.top();
 
             @forelse($categories as $key => $value)
             table.render({
@@ -61,14 +60,24 @@
                             }
                         }
                     },
-                    {title: '操作', align: 'center', toolbar: '#tpl-article'}
+                    {title: '操作', align: 'center', toolbar: '#tpl-slides-option'}
                 ]],
                 data:@json($value->slides)
             });
 
-            listTable.handle(null, null, 'tool(LAY-list-table-{{$value->name}})');
+            listTable.handle(null, function () {
+                top.layer.closeAll();
+                layer.closeAll();
+                window.location.reload();
+            }, 'tool(LAY-list-table-{{$value->name}})');
 
             @endforeach
+
+            listTable.top(function (data) {
+                top.layer.closeAll();
+                layer.closeAll();
+                window.location.reload();
+            });
         });
     </script>
 @endpush

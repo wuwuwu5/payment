@@ -379,7 +379,8 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
         var w = $(this).data('w') ? $(this).data('w') : '90%';
         var h = $(this).data('h') ? $(this).data('h') : '90%';
 
-        title = $(this).data('title');
+        var title = $(this).data('title');
+
         if ($(this).data('show') == 1) {
             layerOpen.show(url, {
                 h: h,
@@ -495,7 +496,8 @@ layui.define(['table', 'form', 'request', 'layerOpen', 'laypage', 'layer', 'layd
 
     // 列表删除事件
     function listTableDeLEvent(obj, data, extendFun, callFun) {
-        var del_url = data.destroy_url;
+        console.log(data);
+        var del_url = data.destory_url;
 
         layer.msg('确定删除吗?', {
             time: 0,

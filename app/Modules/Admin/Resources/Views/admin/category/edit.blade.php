@@ -25,23 +25,55 @@
              ])
         }}
 
-        {{   Form::LayText([
-                'name'=>'name',
-                'title'=>'别称',
-                'tips'=>'',
-                'value'=>$category->name,
-                'rq'=>'rq',
-             ])
-        }}
-
-        @if($category_group->name == \App\Modules\Admin\Models\CategoryGroup::MENU)
+        @if(!in_array($category_group->name, [ \App\Modules\Admin\Models\CategoryGroup::SLIDES]))
             {{   Form::LayText([
-                    'name'=>'value[router]',
-                    'title'=>'路由',
+                    'name'=>'name',
+                    'title'=>'别称',
                     'tips'=>'',
-                    'value'=>data_get($category, 'value.router')
+                    'value'=>$category->name,
+                    'rq'=>'rq',
                  ])
             }}
+        @endif
+
+        @if(in_array($category_group->name, [ \App\Modules\Admin\Models\CategoryGroup::FRONT_COLUMN]))
+                {{Form::LayRadio([
+                'name'=>'value[show]',
+                'title'=>'栏目显示',
+                'tips'=>'value[show]',
+                'filter'=>'value[show]',
+                'list'=>[
+                     ['id'=>0,'name'=>'不显示'],
+                     ['id'=>1,'name'=>'显示'],
+                ]
+            ])}}
+            {{Form::LayRadio([
+               'name'=>'value[home_top]',
+               'title'=>'首页置顶',
+               'tips'=>'value[home_top]',
+               'filter'=>'value[home_top]',
+               'on_id' => data_get($category, 'value.home_top', 0),
+               'list'=>[
+                    ['id'=>0,'name'=>'不置顶'],
+                    ['id'=>1,'name'=>'置顶'],
+               ]
+           ])}}
+            {{   Form::LayIcon([
+                     'name'=>'image',
+                     'title'=>'图标',
+                     'value'=>$category->image
+                ])
+            }}
+        @endif
+
+        @if(in_array($category_group->name, [\App\Modules\Admin\Models\CategoryGroup::MENU]) )
+            {{   Form::LayText([
+                        'name'=>'value[router]',
+                        'title'=>'路由',
+                        'tips'=>'',
+                        'value'=>data_get($category, 'value.router')
+                     ])
+                }}
 
             {{   Form::LayText([
                     'name'=>'value[param]',

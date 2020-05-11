@@ -59,6 +59,7 @@ layui.define(['layer', 'request', 'table'], function (exports) {
     }
 
     function openLayer(config, yesFun, susFuc, cacFun) {
+        console.log(susFuc)
         btn = config.btn || ['确定', '取消'];
         rep_px = layuiPx(config.w, config.h);
 
@@ -141,7 +142,6 @@ layui.define(['layer', 'request', 'table'], function (exports) {
         }
         var configs = $.extend({}, default_config);
         openLayer(configs, function (layero, index) {
-
             var iframeWindow = window.parent['layui-layer-iframe' + index],
                 submit = layero.find('iframe').contents().find("#LAY-form-submit");
 

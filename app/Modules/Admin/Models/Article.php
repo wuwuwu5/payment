@@ -3,6 +3,7 @@
 namespace App\Modules\Admin\Models;
 
 use App\Modules\Admin\Scopes\ArticleScopeTrait;
+use ElfSundae\Laravel\Hashid\Facades\Hashid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Jedrzej\Pimpable\PimpableTrait;
@@ -63,6 +64,8 @@ class Article extends Model
         'is_commend' => 'bool',
     ];
 
+    protected $appends = ['hash_id'];
+
     /**
      * 附属信息
      *
@@ -99,5 +102,15 @@ class Article extends Model
     public function creator()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * hash
+     *
+     * @return mixed
+     */
+    public function getHashIdAttribute()
+    {
+        return Hashid::encode($this->attributes['id']);
     }
 }

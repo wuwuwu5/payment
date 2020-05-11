@@ -803,6 +803,21 @@
         <a class="layui-btn layui-btn-danger  layui-btn-xs" lay-event="del">删除</a>
         {{# } }}
     </script>
+
+    <script type="text/html" id="tpl-slides-option">
+        <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">
+            <i class="layui-icon layui-icon-edit"></i>编辑</a>
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i
+                class="layui-icon layui-icon-delete"></i>删除</a>
+        {{# if(d.is_published == false){  }}
+        <a class="layui-btn layui-btn-xs  layui-btn-warm" lay-event="published"><i
+                class="layui-icon layui-icon-upload-circle"></i>发布</a>
+        {{#  } else { }}
+        <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="cancel_published"><i
+                class="layui-icon layui-icon-close-fill"></i>取消发布</a>
+        {{# } }}
+    </script>
+
     <script type="text/html" id="tpl-article">
         <div class="menu-item" style="text-align: left;cursor: pointer;">
             <a class="" lay-event="edit"><i
