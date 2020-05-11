@@ -2,12 +2,13 @@
 
 namespace App\Modules\Admin\Http\Controllers\Front;
 
-use App\Http\Controllers\BaseController;
+use App\Http\Controllers\Controller;
+use App\Modules\Admin\Models\Article;
 
-class ArticlesController extends BaseController
+class ArticlesController extends Controller
 {
-    public function index()
+    public function show(Article $article)
     {
-
+dd($article);
     }
 }
