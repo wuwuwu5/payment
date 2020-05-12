@@ -6,7 +6,7 @@
         </a>
     </div>
     <div class="item-content">
-        <a href="/articles/show/{{$article['id']}}" class="a_block" target="_blank">
+        <a href="/articles/show/{{$article['hash_id']}}" class="a_block" target="_blank">
             @if(\Carbon\Carbon::parse($article['published_at'])->diffInDays(now()) == 0)
                 <span class="new btn-orange-border">最新</span>
             @endif

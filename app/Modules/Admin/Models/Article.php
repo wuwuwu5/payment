@@ -113,4 +113,33 @@ class Article extends Model
     {
         return Hashid::encode($this->attributes['id']);
     }
+
+    /**
+     * 主部门
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function column()
+    {
+        return $this->belongsTo(Category::class, 'column_id', 'id');
+    }
+
+    /**
+     * 副部门
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function column2()
+    {
+        return $this->belongsTo(Category::class, 'column2_id', 'id');
+    }
+
+    /**
+     * 点赞
+     */
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'model');
+    }
+
 }

@@ -60,7 +60,6 @@ trait ArticleTrait
         // 获取redis中的数据
         $info = unserialize(Redis::hget('articles_info:' . $num, $article->id));
 
-
         if (empty($info)) {
             $this->storeArticleInfoOnRedis($article);
         } else {
@@ -131,5 +130,31 @@ trait ArticleTrait
 
         // 移除
         Redis::ZREM('hot_articles_all', $article->id);
+    }
+
+    /**
+     * 获取文章缓存
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function getArticleInfoOnRedis($id)
+    {
+        $num = $id % 10;
+
+        return unserialize(Redis::hget('articles_info:' . $num, $id));
+    }
+
+    /**
+     * 覆盖文章缓存
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function coverArticleInfoOnRedis($id, $info)
+    {
+        $num = $id % 10;
+
+        return Redis::hset('articles_info:' . $num, $id, serialize($info));
     }
 }

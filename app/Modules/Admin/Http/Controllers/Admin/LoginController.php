@@ -78,9 +78,9 @@ class LoginController extends Controller
         // 登录逻辑
         if ($this->attemptLogin($request)) {
 
-            $user = \auth()->guard('admin')->user();
+            $user = $this->guard()->user();
 
-            $user->session_token = \auth()->guard('admin')->getSession()->getId();
+            $user->session_token = $this->guard()->getSession()->getId();
             $user->last_ip = $request->ip();
             $user->login_numbers = $user->login_numbers + 1;
             $user->save();
@@ -116,5 +116,16 @@ class LoginController extends Controller
         session()->invalidate();
 
         return redirect('/admin/login');
+    }
+
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return \Auth::guard('admin');
     }
 }

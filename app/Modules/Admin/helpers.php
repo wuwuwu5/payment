@@ -626,7 +626,36 @@ if (!function_exists('generateCategoriesTree')) {
 
 // 文章相关辅助函数
 {
+    if (!function_exists('getArticleColumns')) {
+        function getArticleColumns($id)
+        {
+            $article = \App\Modules\Admin\Models\Article::query()
+                ->with([
+                    'column' => function ($q) {
+                        $q->select('id', 'nickname', 'name', 'level', 'path', 'top_id', 'pid');
+                    },
+                    'column2' => function ($q) {
+                        $q->select('id', 'nickname', 'name', 'level', 'path', 'top_id', 'pid');
+                    },
+                ])
+                ->findOrFail($id);
 
+            if (empty($article)) {
+                return [];
+            }
+
+            $array = [];
+
+            if (!empty($article->column)) {
+                $array[] = $article->column->toArray();
+            }
+            if (!empty($article->column2)) {
+                $array[] = $article->column2->toArray();
+            }
+
+            return $array;
+        }
+    }
 }
 
 
