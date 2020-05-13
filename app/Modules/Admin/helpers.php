@@ -663,7 +663,7 @@ if (!function_exists('generateCategoriesTree')) {
         function getColumnArticles($column_id, $type = 'now', $num = 10, $exclude = null)
         {
             if ($column_id <= 0) {
-                return [];
+                return collect();
             }
 
             $articles = \App\Modules\Admin\Models\Article::query()
@@ -750,6 +750,38 @@ if (!function_exists('generateCategoriesTree')) {
                 ->select('id', 'nickname as name', 'pid', 'id as value', 'category_group_id', 'name as mark_name')
                 ->get()
                 ->toArray();
+        }
+    }
+
+    // 获取子栏目
+    if (!function_exists('getColumnPath')) {
+        function getColumnPath($column)
+        {
+            if (empty($column)) {
+                return [];
+            }
+
+            if ($column->level == 1) {
+                return [$column];
+            }
+
+            $ids = explode(',', $column->path);
+
+            $columns = \App\Modules\Admin\Models\Category::query()
+                ->whereIn('id', $ids)
+                ->select('id', 'nickname as name', 'pid', 'id as value', 'category_group_id', 'name as mark_name')
+                ->orderByRaw("FIELD(`id`, " . $column->path . ")")
+                ->get()
+                ->toArray();
+
+            $column = $column->only(['id', 'nickname', 'pid', 'id as value', 'category_group_id', 'name']);
+            $column['mark_name'] = $column['name'];
+            $column['name'] = $column['nickname'];
+            $column['value'] = $column['id'];
+            unset($column['nickname']);
+            $columns[] = $column;
+
+            return $columns;
         }
     }
 }

@@ -49,14 +49,15 @@
                                     $sum = $sum + $sum2 + $item['column_articles_count'];
                                 @endphp
                                 <div class="item">
-                                    <a href="/article/all" target="_blank">
+                                    <a href="{{route('articles.column.show', ['type' => 'all'])}}" target="_blank">
                                         <i class="icon-allposts"></i>
                                         <h3>全部文章</h3>
                                         <h5>{{$sum}}篇</h5>
                                     </a>
                                 </div>
                                 <div class="item">
-                                    <a href="/article/{{$item['mark_name']}}" target="_blank">
+                                    <a href="{{route('articles.column.show', ['type' => $item['mark_name']])}}"
+                                       target="_blank">
                                         <i class="icon-allposts"></i>
                                         <h3>{{$item['name']}}</h3>
                                         <h5>{{$item['column_articles_count']}}篇</h5>
@@ -64,7 +65,7 @@
                                 </div>
                                 @foreach($item['children'] as $k => $val)
                                     <div class="item">
-                                        <a href="/article/{{$val['mark_name']}}" target="_blank">
+                                        <a href="{{route('articles.column.show', ['type' => $item['mark_name']])}}" target="_blank">
                                             @if(!empty($val['image']))
                                                 <i class="{{ $val['image'] }}"></i>
                                             @endif

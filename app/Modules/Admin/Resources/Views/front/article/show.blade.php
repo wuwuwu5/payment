@@ -5,6 +5,7 @@
             <li><a href="/" title="优设网 &#8211; UISDC">首页</a></li>
             @php
                 $columns = getArticleColumns($article->id);
+                $current = $columns[count($columns) - 1]??[];
             @endphp
             @foreach($columns as $column)
                 <li>
@@ -14,39 +15,7 @@
             <li>正文</li>
         </ol>
     </div>
-    <div class="top-cats hide_sm">
-        <div class="container">
-            <div class="items">
-                <ul>
-                    <li class="item">
-                        <a class="" href="{{route('articles.column.show', ['type' => 'all'])}}" target="_blank">
-                            <i class="icon icon-allposts"></i>
-                            全部
-                        </a>
-                    </li>
-                    @php
-                        $parent = $columns[0]??[];
-                        $current = $columns[count($columns) - 1]??[];
-                        if (empty($parent)) {
-                            $children = [];
-                        } else {
-                            $children = getFrontChildrenColumns($parent['id']);
-                        }
-                    @endphp
-                    @foreach($children as $child)
-                        <li class="item">
-                            <a class="{{($current['id'] ?? '') == ($child['id'] ?? -1) ? 'current' : ''}}"
-                               href="{{route('articles.column.show', ['type' => $child['mark_name']])}}"
-                               target="_blank">
-                                <i class="icon icon-allposts"></i>
-                                {{$child['name']}}
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        </div>
-    </div>
+   @include("admin::front.article.top_cats", compact('columns'))
     <div class="post-header">
         <div class="container">
             <h1 class="post-title">{{$article->title}}</h1>
@@ -272,7 +241,7 @@
                     <i class="ji2-icon" data-bubble="yes"></i>
                 </div>
             </div>
-            
+
             <div class="post-recommend">
                 <div class="recommend-titles">
                     <a href="{{route('articles.column.show', ['type' =>'all', 'order' => 'now'])}}" class="current"

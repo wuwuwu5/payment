@@ -4,9 +4,11 @@ namespace App\Modules\Admin\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Admin\Models\Article;
+use App\Modules\Admin\Models\Category;
 use App\Modules\Admin\Models\Like;
 use App\Modules\Traits\ArticleTrait;
 use ElfSundae\Laravel\Hashid\Facades\Hashid;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
 class ArticlesController extends Controller
@@ -44,6 +46,43 @@ class ArticlesController extends Controller
             ->first();
 
         return view('admin::front.article.show', compact('article', 'next_article'));
+    }
+
+    /**
+     * @param $type
+     * @param Request $request
+     */
+    public function column($type, Request $request)
+    {
+        $category_group = \App\Modules\Admin\Models\CategoryGroup::query()
+            ->where('name', \App\Modules\Admin\Models\CategoryGroup::FRONT_COLUMN)
+            ->first();
+
+        if (empty($category_group)) {
+            return redirect()->to('/');
+        }
+
+        if ($type == 'all') {
+            $articles = Article::query()->frontIndex()->take(20)->paginate();
+
+            return view('admin::front.article.index', compact('articles'));
+        }
+
+        // 获取栏目信息
+        $current_column = $category_group->categories()->where('name', $type)->first();
+
+        // 获取栏目级别
+        $articles = Article::query()
+            ->frontIndex()
+            ->where(function ($q) use ($current_column) {
+                $q
+                    ->where('column_id', $current_column->id)
+                    ->orWhere('column2_id', $current_column->id);
+            })
+            ->take(20)
+            ->paginate();
+
+        return view('admin::front.article.index', compact('articles', 'current_column'));
     }
 
     /**
