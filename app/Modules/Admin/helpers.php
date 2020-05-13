@@ -627,6 +627,7 @@ if (!function_exists('generateCategoriesTree')) {
 // 文章相关辅助函数
 {
     if (!function_exists('getArticleColumns')) {
+        // 获取文章导航
         function getArticleColumns($id)
         {
             $article = \App\Modules\Admin\Models\Article::query()
@@ -656,6 +657,31 @@ if (!function_exists('generateCategoriesTree')) {
             return $array;
         }
     }
+
+    if (!function_exists('getColumnArticles')) {
+        // 获取导航下的文章
+        function getColumnArticles($column_id, $type = 'now', $num = 10)
+        {
+            if ($column_id <= 0) {
+                return [];
+            }
+
+            $articles = \App\Modules\Admin\Models\Article::query()
+                ->where('column2_id', $column_id)
+                ->when($type == 'now', function ($q) {
+                    $q->frontIndex();
+                })
+                ->when($type == 'hot', function ($q) {
+                    $q->orderBy('created_at', 'desc')->orderBy('created_at', 'desc');
+                })
+                ->take($num)
+                ->get();
+
+            return $articles;
+        }
+    }
+
+    // 获取文章信息
     if (!function_exists('getArticleInfo')) {
         function getArticleInfo($id, $field = '')
         {

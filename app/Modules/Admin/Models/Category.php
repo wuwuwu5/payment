@@ -2,6 +2,7 @@
 
 namespace App\Modules\Admin\Models;
 
+use ElfSundae\Laravel\Hashid\Facades\Hashid;
 use Illuminate\Database\Eloquent\Model;
 use Jedrzej\Pimpable\PimpableTrait;
 
@@ -44,6 +45,8 @@ class Category extends Model
     ];
 
     public $casts = ['value' => 'array'];
+
+    protected $appends = ['hash_id'];
 
     /**
      * 子类
@@ -103,5 +106,15 @@ class Category extends Model
     public function column2Articles()
     {
         return $this->hasMany(Article::class, 'column2_id', 'id');
+    }
+
+    /**
+     * hash
+     *
+     * @return mixed
+     */
+    public function getHashIdAttribute()
+    {
+        return Hashid::encode($this->attributes['id']);
     }
 }

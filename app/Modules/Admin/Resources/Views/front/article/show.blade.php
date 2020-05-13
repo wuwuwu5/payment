@@ -3,7 +3,10 @@
     <div class="crumbs container hide_sm" style="padding-top: 60px;">
         <ol class="breadcrumb">
             <li><a href="/" title="优设网 &#8211; UISDC">首页</a></li>
-            @foreach(getArticleColumns($article->id) as $column)
+            @php
+                $columns = getArticleColumns($article->id);
+            @endphp
+            @foreach($columns as $column)
                 <li>
                     <a href="{{route('articles.column.show' ,['type' => $column['name']])}}">{{$column['nickname']}}</a>
                 </li>
@@ -15,28 +18,31 @@
         <div class="container">
             <div class="items">
                 <ul>
-                    <li class="item"><a class="" href="archives.html" target="_blank"> <i
-                                class="icon icon-allposts"></i> 全部</a></li>
-                    <li class="item"><a class="" href="category/uiicon.html" target="_blank"> <i
-                                class="icon icon-ui"></i> UI</a></li>
-                    <li class="item"><a class="current" href="category/graphic.html" target="_blank"> <i
-                                class="icon icon-graphic"></i> 平面</a></li>
-                    <li class="item"><a class="" href="category/element-of-web-ui.html" target="_blank"> <i
-                                class="icon icon-web"></i> 网页</a></li>
-                    <li class="item"><a class="" href="category/draw.html" target="_blank"> <i
-                                class="icon icon-painting"></i> 手绘</a></li>
-                    <li class="item"><a class="" href="category/e-commerce.html" target="_blank"> <i
-                                class="icon icon-e-commerce"></i> 电商</a></li>
-                    <li class="item"><a class="" href="category/interaction.html" target="_blank"> <i
-                                class="icon icon-interactive"></i> 交互</a></li>
-                    <li class="item"><a class="" href="category/product.html" target="_blank"> <i
-                                class="icon icon-pm"></i> 产品</a></li>
-                    <li class="item"><a class="" href="category/hot-download.html" target="_blank"> <i
-                                class="icon icon-download"></i> 下载</a></li>
-                    <li class="item"><a class="" href="category/tools-download.html" target="_blank"> <i
-                                class="icon icon-site"></i> 神器</a></li>
-                    <li class="item"><a class="" href="category/work-blueprint.html" target="_blank"> <i
-                                class="icon icon-experience"></i> 职场</a></li>
+                    <li class="item">
+                        <a class="" href="{{route('articles.column.show', ['type' => 'all'])}}" target="_blank">
+                            <i class="icon icon-allposts"></i>
+                            全部
+                        </a>
+                    </li>
+                    @php
+                        $parent = $columns[0]??[];
+                        $current = $columns[count($columns) - 1]??[];
+                        if (empty($parent)) {
+                            $children = [];
+                        } else {
+                            $children = getFrontChildrenColumns($parent['id']);
+                        }
+                    @endphp
+                    @foreach($children as $child)
+                        <li class="item">
+                            <a class="{{($current['id'] ?? '') == ($child['id'] ?? -1) ? 'current' : ''}}"
+                               href="{{route('articles.column.show', ['type' => $child['mark_name']])}}"
+                               target="_blank">
+                                <i class="icon icon-allposts"></i>
+                                {{$child['name']}}
+                            </a>
+                        </li>
+                    @endforeach
                 </ul>
             </div>
         </div>
@@ -45,7 +51,6 @@
         <div class="container">
             <h1 class="post-title">{{$article->title}}</h1>
             <h4 class="post-meta">
-                <span class="remain hide_sm"> <i class="icon-time"></i> 阅读本文需 21 分钟 </span>
                 <span class="editor">
                     <a href="" target="_blank">
                         <i class="thumb"
@@ -258,104 +263,15 @@
                        data-tab-wrap=".recommend-list" data-tab-menus=".post-recommend .recommend-titles a"
                        data-tab-target=".recommend-hot" data-tab-action="hot_posts" data-tab-type="list-post"
                        data-ppp="5">最热文章</a>
-                    <a href="tag/%E5%A3%B9%E5%91%A8%E9%80%9F%E8%AF%BB.html" class="hide_sm" target="_blank"
-                       data-component="tab"
-                       data-event="hover" data-tab-wrap=".recommend-list"
-                       data-tab-menus=".post-recommend .recommend-titles a"
-                       data-tab-target=".recommend-week" data-tab-action="quick_read" data-tab-type="list-post"
-                       data-ppp="5">一周速读</a>
-                    <a href="zt.html" target="_blank" data-component="tab" data-event="hover"
-                       data-tab-wrap=".recommend-list"
-                       data-tab-menus=".post-recommend .recommend-titles a" data-tab-target=".recommend-zt"
-                       data-tab-action="widget_zt" data-tab-type="list-post" data-ppp="5">专题文章<i
-                            class="hot-icon"></i></a>
                 </div>
                 <div class="recommends">
                     <div class="recommend-list">
                         <ul class="recommend-new">
-                            <li class="item"><h2 class="title"><a href="text-layout.html" target="_blank"> <i
-                                            class="ico-tag">
-                                            最新 </i> 创意广告中文字是如何运用的？来看平面高手的超多案例演示！ </a></h2><h4><i
-                                        class="time">12小时前</i><i
-                                        class="author">推荐： <a href="" target="_blank"> 研习设 </a> </i><span
-                                        class="tags"><a
-                                            href="tag/%E5%88%9B%E6%84%8F%E5%B9%BF%E5%91%8A.html"
-                                            target="_blank">创意广告</a><a
-                                            href="tag/%E5%AD%97%E4%BD%93%E9%80%89%E6%8B%A9.html"
-                                            target="_blank">字体选择</a><a
-                                            href="tag/%E5%B9%B3%E9%9D%A2%E8%AE%BE%E8%AE%A1.html"
-                                            target="_blank">平面设计</a><a
-                                            href="tag/%E6%8E%92%E7%89%88%E6%8A%80%E5%B7%A7.html"
-                                            target="_blank">排版技巧</a><a
-                                            href="tag/%E6%96%87%E5%AD%97%E6%8E%92%E7%89%88.html"
-                                            target="_blank">文字排版</a><a
-                                            href="tag/%E6%B5%B7%E6%8A%A5%E8%AE%BE%E8%AE%A1.html"
-                                            target="_blank">海报设计</a><a
-                                            href="tag/%E7%A0%94%E4%B9%A0%E8%AE%BE.html" target="_blank">研习设</a></span>
-                                </h4></li>
-                            <li class="item"><h2 class="title"><a href="b-end-button-design-guide.html" target="_blank">
-                                        <i
-                                            class="ico-tag"> 最新 </i> 上万字干货！超全面的B端按钮设计指南 </a></h2><h4><i class="time">13小时前</i><i
-                                        class="author">推荐： <a href="" target="_blank"> CE青年 </a> </i><span class="tags"><a
-                                            href="tag/b%E7%AB%AF%E8%AE%BE%E8%AE%A1.html" target="_blank">B端设计</a><a
-                                            href="tag/%E4%BA%A4%E4%BA%92%E8%AE%BE%E8%AE%A1.html"
-                                            target="_blank">交互设计</a><a
-                                            href="tag/%E6%8C%89%E9%92%AE%E8%AE%BE%E8%AE%A1.html"
-                                            target="_blank">按钮设计</a><a
-                                            href="tag/%E7%94%A8%E6%88%B7%E4%BD%93%E9%AA%8C.html"
-                                            target="_blank">用户体验</a><a
-                                            href="tag/%E8%AE%BE%E8%AE%A1%E6%8C%87%E5%8D%97.html"
-                                            target="_blank">设计指南</a></span>
-                                </h4></li>
-                            <li class="item"><h2 class="title"><a href="15-ui-technical-terms.html" target="_blank"> <i
-                                            class="ico-tag"> 最新 </i> 一看就懂！15个交互与UI必懂的技术用语 </a></h2><h4><i class="time">14小时前</i><i
-                                        class="author">推荐： <a href="" target="_blank"> 和出此严 </a> </i><span class="tags"><a
-                                            href="tag/ui.html" target="_blank">UI</a><a
-                                            href="tag/%E4%B8%93%E4%B8%9A%E6%9C%AF%E8%AF%AD.html"
-                                            target="_blank">专业术语</a><a
-                                            href="tag/%E5%90%8D%E8%AF%8D%E7%A7%91%E6%99%AE.html"
-                                            target="_blank">名词科普</a><a
-                                            href="tag/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html"
-                                            target="_blank">基础知识</a><a
-                                            href="tag/%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86.html"
-                                            target="_blank">开发知识</a><a
-                                            href="tag/%E6%B2%9F%E9%80%9A.html" target="_blank">沟通</a></span></h4></li>
-                            <li class="item"><h2 class="title"><a href="reading-notes-of-design-system.html"
-                                                                  target="_blank"> <i
-                                            class="ico-tag"> 最新 </i> 想学会系统化设计？为你整理了这份《设计体系》的读书笔记 </a></h2><h4><i
-                                        class="time">15小时前</i><i
-                                        class="author">推荐： <a href="" target="_blank"> 二楼自习室 </a> </i><span
-                                        class="tags"><a
-                                            href="tag/%E4%BA%A7%E5%93%81.html" target="_blank">产品</a><a
-                                            href="tag/%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C.html"
-                                            target="_blank">团队协作</a><a
-                                            href="tag/%E7%BB%84%E4%BB%B6%E5%BA%93.html" target="_blank">组件库</a><a
-                                            href="tag/%E8%AE%BE%E8%AE%A1%E4%BD%93%E7%B3%BB.html"
-                                            target="_blank">设计体系</a><a
-                                            href="tag/%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80.html"
-                                            target="_blank">设计语言</a><a
-                                            href="tag/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.html"
-                                            target="_blank">读书笔记</a></span>
-                                </h4></li>
-                            <li class="item"><h2 class="title"><a href="design-value.html" target="_blank"> <i
-                                            class="ico-tag">
-                                            最新 </i> 用十个案例，聊聊设计的价值在中国意味着什么？ </a></h2><h4><i class="time">15小时前</i><i
-                                        class="author">推荐： <a href="" target="_blank"> 卷宗Wallpaper </a> </i><span
-                                        class="tags"><a href="tag/%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1.html"
-                                                        target="_blank">产品设计</a><a
-                                            href="tag/%E5%88%9B%E6%84%8F%E8%AE%BE%E8%AE%A1.html"
-                                            target="_blank">创意设计</a><a
-                                            href="tag/%E5%8F%AF%E6%8C%81%E7%BB%AD%E8%AE%BE%E8%AE%A1.html"
-                                            target="_blank">可持续设计</a><a
-                                            href="tag/%E7%8E%AF%E4%BF%9D%E8%AE%BE%E8%AE%A1.html"
-                                            target="_blank">环保设计</a><a
-                                            href="tag/%E8%AE%BE%E8%AE%A1%E4%BB%B7%E5%80%BC.html"
-                                            target="_blank">设计价值</a></span>
-                                </h4></li>
+                            @foreach(getColumnArticles($current['id'] ?? 0, 'now', 5) as $article)
+                                @include('admin::front.article.show_item',  compact('article'))
+                            @endforeach
                         </ul>
                         <ul class="recommend-hot"></ul>
-                        <ul class="recommend-week"></ul>
-                        <ul class="recommend-zt"></ul>
                         <div class="more">
                             <a href="archives.html" class="btn btn-default">查看更多</a>
                         </div>
@@ -409,103 +325,6 @@
             </div>
         </div>
         <div class="sidebar" data-component="sidebar-autofixed" data-autofixed=".widget-show,.widget-article-menu">
-            <section class="widget widget-news hide_sm">
-                <h2 class="section-title"><a href="news.html" target="_blank"> 优设读报 </a> <span
-                        class="sub">2020年5月09日 星期六</span></h2>
-                <div class="section-content">
-                    <ul>
-                        <li><a href="news.html" target="_blank"> <i class="num">01</i> 可口可乐成立 134 周年，定制中文字体「在乎体」开放下载
-                            </a>
-                        </li>
-                        <li><a href="news.html" target="_blank"> <i class="num">02</i> 魅族更新LOGO品牌色，发布全新品牌字体 </a></li>
-                        <li><a href="news.html" target="_blank"> <i class="num">03</i> 欧洲设计奖（ED Awards）公布获奖情况 </a></li>
-                        <li><a href="news.html" target="_blank"> <i class="num">04</i> 蒙纳公司推出以 19 世纪为灵感的新字体 Macklin </a>
-                        </li>
-                        <li><a href="news.html" target="_blank"> <i class="num">05</i> MIUI 12 开发版推送：支持 32 款机型 </a></li>
-                    </ul>
-                    <div class="viewAll">
-                        <a href="news.html" target="_blank" class="btn btn-default"> 查看全部 <i class="icon-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </section>
-            <section class="widget widget-wonderful hide_sm">
-                <h2 class="section-title"> 精彩发现 </h2>
-                <div class="section-content">
-                    <div class="wonderful-part">
-                        <h3><i class="icon-hunter"></i> 细节猎人 </h3>
-                        <div class="part-content">
-                            <a href="topic/%E8%AE%BE%E8%AE%A1%E9%80%BB%E8%BE%91.html" target="_blank">设计逻辑</a><a
-                                href="topic/%E6%98%93%E7%94%A8%E6%80%A7.html" target="_blank">易用性</a><a
-                                href="topic/%E6%83%85%E5%A2%83%E9%A2%84%E5%88%A4.html" target="_blank">情境预判</a><a
-                                href="topic/%E8%B6%A3%E5%91%B3%E6%80%A7.html" target="_blank">趣味性</a><a
-                                href="topic/%E4%BA%BA%E6%80%A7%E5%8C%96.html" target="_blank">人性化</a><a
-                                href="topic/%E6%83%85%E6%84%9F%E5%8C%96%E8%AE%BE%E8%AE%A1.html"
-                                target="_blank">情感化设计</a><a
-                                href="topic/%E8%85%BE%E8%AE%AF.html" target="_blank">腾讯</a><a
-                                href="topic/%E4%BF%A1%E6%81%AF%E5%91%88%E7%8E%B0.html" target="_blank">信息呈现</a><a
-                                href="topic/%E7%A4%BE%E4%BA%A4.html" target="_blank">社交</a><a href="hunters.html"
-                                                                                              class="a_all"
-                                                                                              target="_blank">全部</a>
-                        </div>
-                    </div>
-                    <div class="wonderful-part">
-                        <h3><i class="icon-industry"></i> 设计灵感 </h3>
-                        <div class="part-content">
-                            <a class="" href="https://uiiiuiii.com/inspiration" target="_blank">灵感首页</a><a class=""
-                                                                                                           href="https://uiiiuiii.com/inspirations/banner"
-                                                                                                           target="_blank">Banner设计</a><a
-                                class="" href="https://uiiiuiii.com/inspirations/poster" target="_blank">海报设计</a><a
-                                class=""
-                                href="https://uiiiuiii.com/inspirations/logo"
-                                target="_blank">Logo设计</a><a
-                                class="" href="https://uiiiuiii.com/inspirations/ui" target="_blank">UI设计</a><a class=""
-                                                                                                                href="https://uiiiuiii.com/inspirations/illustrations"
-                                                                                                                target="_blank">插画绘画</a><a
-                                class="" href="https://uiiiuiii.com/inspirations/fontdesign" target="_blank">字体设计</a><a
-                                class="" href="https://uiiiuiii.com/inspirations/featured/motto"
-                                target="_blank">每日一签</a><a
-                                class="a_all" href="https://uiiiuiii.com/inspirations/featured" target="_blank">热门灵感</a>
-                        </div>
-                    </div>
-                    <div class="wonderful-part">
-                        <h3><i class="icon-2-inspiration"></i> 软件教程 </h3>
-                        <div class="part-content-flex">
-                            <div class="item"><a href="https://uiiiuiii.com/photoshop" target="_blank"><i class="thumb "
-                                                                                                          style="background-image:url(https://image.uisdc.com/wp-content/uploads/2019/10/sdc-h-ps.png)"></i><span>PS教程</span></a>
-                            </div>
-                            <div class="item"><a href="https://uiiiuiii.com/illustrator" target="_blank"><i
-                                        class="thumb "
-                                        style="background-image:url(https://image.uisdc.com/wp-content/uploads/2019/10/sdc-h-ai.png)"></i><span>AI教程</span></a>
-                            </div>
-                            <div class="item"><a href="https://uiiiuiii.com/aftereffects" target="_blank"><i
-                                        class="thumb "
-                                        style="background-image:url(https://image.uisdc.com/wp-content/uploads/2019/10/sdc-h-ae.png)"></i><span>AE教程</span></a>
-                            </div>
-                            <div class="item"><a href="https://uiiiuiii.com/cinema4d/12121653.html" target="_blank"><i
-                                        class="thumb "
-                                        style="background-image:url(https://image.uisdc.com/wp-content/uploads/2019/10/sdc-h-c4d.png)"></i><span>C4D教程</span></a>
-                            </div>
-                            <div class="item"><a href="https://uiiiuiii.com/knowledge/121211571.html" target="_blank"><i
-                                        class="thumb "
-                                        style="background-image:url(https://image.uisdc.com/wp-content/uploads/2019/10/sdc-h-sketch.png)"></i><span>Sketch</span></a>
-                            </div>
-                            <div class="item"><a href="https://uiiiuiii.com/knowledge/1212122079.html"
-                                                 target="_blank"><i
-                                        class="thumb "
-                                        style="background-image:url(https://image.uisdc.com/wp-content/uploads/2019/10/sdc-h-pr.jpg)"></i><span>视频剪辑</span></a>
-                            </div>
-                            <div class="item"><a href="https://uiiiuiii.com/knowledge/121212401.html" target="_blank"><i
-                                        class="thumb "
-                                        style="background-image:url(https://image.uisdc.com/wp-content/uploads/2019/10/sdc-h-lr.jpg)"></i><span>Lr教程</span></a>
-                            </div>
-                            <div class="item"><a href="https://uiiiuiii.com/draw" target="_blank"><i class="thumb "
-                                                                                                     style="background-image:url(https://image.uisdc.com/wp-content/uploads/2019/10/sdc-h-draw.jpg)"></i><span>手绘教程</span></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
             <section class="widget widget-post-related hide_sm">
                 <h2 class="section-title"> 相关文章 </h2>
                 <div class="section-content">
