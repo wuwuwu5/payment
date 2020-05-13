@@ -95,49 +95,51 @@
             <section class="widget widget-post-tabs hide_sm" data-component="tabs" data-action="widget_post_tabs"
                      data-fb="widget_post_tabs">
                 <div class="tabs-title">
-                    <a href="../archives.html" class="current title-item" target="_blank" data-component="tab"
+                    <a href="{{route('articles.column.show', ['type' =>'all', 'order' => 'hot'])}}"
+                       class="current title-item" target="_blank" data-component="tab"
                        data-event="hover" data-tab-wrap=".widget-post-tabs .tab-div"
-                       data-tab-menus=".widget-post-tabs .tabs-title a" data-tab-target=".widget-post-tabs .post-list"
-                       data-tab-action="new_posts" data-tab-type="list-simple" data-ppp="6">最热文章</a>
-                    <a href="../tag/%E5%A3%B9%E5%91%A8%E9%80%9F%E8%AF%BB.html" class="title-item" target="_blank"
-                       data-component="tab" data-event="hover" data-tab-wrap=".widget-post-tabs .tab-div"
-                       data-tab-menus=".widget-post-tabs .tabs-title a" data-tab-target=".widget-post-tabs .week-list"
-                       data-tab-action="quick_read" data-tab-type="list-simple" data-ppp="6">一周速读</a>
-                    <a href="../zt.html" class="title-item" target="_blank" data-component="tab" data-event="hover"
-                       data-tab-wrap=".widget-post-tabs .tab-div" data-tab-menus=".widget-post-tabs .tabs-title a"
-                       data-tab-target=".widget-post-tabs .zt-list" data-tab-action="widget_zt"
-                       data-tab-type="list-simple" data-ppp="6">专题文章</a>
+                       data-tab-menus=".widget-post-tabs .tabs-title a"
+                       data-tab-target=".widget-post-tabs .post-list"
+                       data-tab-action="new_posts" data-tab-type="list-simple" data-ppp="6">
+                        最新文章
+                    </a>
+                    <a href="{{route('articles.column.show', ['type' =>'all', 'order' => 'now'])}}"
+                       class="title-item" target="_blank" data-component="tab"
+                       data-event="hover" data-tab-wrap=".widget-post-tabs .tab-div"
+                       data-tab-menus=".widget-post-tabs .tabs-title a" data-tab-target=".widget-post-tabs .hot-post-list"
+                       data-tab-action="hot_posts" data-tab-type="list-simple" data-ppp="6">
+                        最热文章
+                    </a>
+
                 </div>
                 <div class="tabs-content">
                     <div class="tab-div">
                         <ul class="post-list">
-                            <li class="list-item-txt">
-                                <h2 class="title"><a href="../glow-sans.html" target="_blank"> <span
-                                            class="num">1</span> 免费商用字体「未来荧黑」开放下载！5种字宽+9种字重超好用！ </a></h2>
-                            </li>
-                            <li class="list-item-txt">
-                                <h2 class="title"><a href="../2020-ui-design-trends.html" target="_blank"> <span
-                                            class="num">2</span> 腾讯干货！深度分析2020 UI设计流行趋势 </a></h2>
-                            </li>
-                            <li class="list-item-txt">
-                                <h2 class="title"><a href="../layout-page.html" target="_blank"> <span
-                                            class="num">3</span> 文案信息较多时，该如何编排版面才会好看？ </a></h2>
-                            </li>
-                            <li class="list-item-txt">
-                                <h2 class="title"><a href="../alipay-logo-design.html" target="_blank"> <span
-                                            class="num">4</span> 为什么支付宝要换 Logo 颜色？分析下目前 Logo 的主色趋势 </a></h2>
-                            </li>
-                            <li class="list-item-txt">
-                                <h2 class="title"><a href="../jf-open-font.html" target="_blank"> <span
-                                            class="num">5</span> 又一款免费可商用的中文字体！Open 粉圆字体火热下载中 </a></h2>
-                            </li>
-                            <li class="list-item-txt">
-                                <h2 class="title"><a href="../animal-friendship-society.html" target="_blank"> <span
-                                            class="num">6</span> 最近超火的《动物森友会》，被网友玩出了这么多脑洞设计！ </a></h2>
-                            </li>
+                            @foreach(getColumnArticles($current_column['id'] ?? 0, 'now', 5, $article->id) as $key=> $article)
+                                <li class="list-item-txt">
+                                    <h2 class="title">
+                                        <a href="{{route('articles.show', ['article' => $article['hash_id']])}}"
+                                           target="_blank">
+                                            <span class="num">{{$key+1}}</span>
+                                            {{$article['title']}}
+                                        </a>
+                                    </h2>
+                                </li>
+                            @endforeach
                         </ul>
-                        <ul class="week-list"></ul>
-                        <ul class="zt-list"></ul>
+                        <ul class="hot-post-list hidden">
+                            @foreach(getColumnArticles($current_column['id'] ?? 0, 'hot', 5, $article->id) as $key=> $article)
+                                <li class="list-item-txt">
+                                    <h2 class="title">
+                                        <a href="{{route('articles.show', ['article' => $article['hash_id']])}}"
+                                           target="_blank">
+                                            <span class="num">{{$key+1}}</span>
+                                            {{$article['title']}}
+                                        </a>
+                                    </h2>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             </section>

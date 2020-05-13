@@ -391,7 +391,7 @@
     i = jQuery,
         orz.ajax =
             orz.curry(function (t, e, n, r, o, mb) {
-                if (r.action === 'hot_posts') {
+                if (r.action === 'hot_posts' || r.action === 'new_posts' ) {
                     mb;
                 } else {
                     i.ajax({type: t, url: "/", context: o, data: r, success: n, error: e})
