@@ -51,6 +51,70 @@ class ArticlesController extends Controller
         $article = $this->getArticleInfoOnRedis($id);
 
         if (empty($article)) {
+            $article = Article::query()->findOrFail($id);
+
+            $this->updateArticleInfoOnRedis($article);
+        }
+
+        if (empty($article)) {
+            $article = $this->getArticleInfoOnRedis($id);
+        }
+
+        $key = $this->formatRedisKey('give_articles_users', $id);
+
+        // 获取排名
+        $rank = Redis::zrank($key, auth()->user()->id);
+
+        if ($rank !== false) {
+
+            $score = Redis::ZSCORE($key, auth()->user()->id);
+
+            if ((int)($score) != -1) {
+                return response()->json(['code' => 0, 'msg' => '已点赞']);
+            }
+        }
+
+        $like = Like::query()->searchModel(auth()->user()->id, $id, Article::class)->first();
+
+        if (!empty($like)) {
+            Redis::zadd($key, now()->timestamp, auth()->user()->id);
+
+            return response()->json(['code' => 0, 'msg' => '已点赞']);
+        }
+
+        $day_give_users_key = $this->formatRedisKey('day_give_articles_users', today()->format('Y-m-d'));
+
+        $fields = [
+            $key,
+            $day_give_users_key,
+            $this->getArticleInfoOnRedisKey($id),
+            auth()->user()->id,
+            $this->generateMark(auth()->user()->id, $id, 0),
+            $this->generateMark(auth()->user()->id, $id, 1),
+            $id,
+            serialize($article),
+            1,
+            now()->timestamp
+        ];
+
+        Redis::eval($this->giveLua(), 3, ...$fields);
+
+        return response()->json(['code' => 200, 'msg' => '点赞成功']);
+    }
+
+    /**
+     * 取消点赞
+     *
+     * @param $article
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function cancelGive($article)
+    {
+        $id = Hashid::decode($article);
+
+        $article = $this->getArticleInfoOnRedis($id);
+
+        if (empty($article)) {
             $article = Article::query()->select('id')->findOrFail($id);
 
             $this->updateArticleInfoOnRedis($article);
@@ -65,59 +129,98 @@ class ArticlesController extends Controller
         // 获取排名
         $rank = Redis::zrank($key, auth()->user()->id);
 
-        if ($rank !== false && $rank >= 0) {
-            return response()->json(['code' => 0, 'msg' => '已点赞']);
+        if ($rank === false) {
+            $like = Like::query()->searchModel(auth()->user()->id, $id, Article::class)->first();
+
+            if (!empty($like)) {
+                Redis::zadd($key, now()->timestamp, auth()->user()->id);
+            } else {
+                Redis::zadd($key, -1, auth()->user()->id);
+            }
         }
 
-        $like = Like::query()->searchModel(auth()->user()->id, $id, Article::class)->first();
+        // 获取排名
+        $rank = Redis::zrank($key, auth()->user()->id);
 
-        if (!empty($like)) {
-            Redis::zadd($key, now()->timestamp, auth()->user()->id);
+        if ($rank !== false && $rank >= 0) {
+            $score = Redis::ZSCORE($key, auth()->user()->id);
 
-            return response()->json(['code' => 0, 'msg' => '已点赞']);
+            if ((int)($score) == -1) {
+                return response()->json(['code' => 0, 'msg' => '没有点过赞']);
+            }
         }
 
         $day_give_users_key = $this->formatRedisKey('day_give_articles_users', today()->format('Y-m-d'));
 
-        Redis::sadd($day_give_users_key, serialize([
-            'user_id' => auth()->user()->id,
-            'model_type' => Article::class,
-            'model_id' => $id,
-            'status' => 1
-        ]));
+        $article['give_count'] -= 1;
 
-        $article['give_count'] += 1;
+        $fields = [
+            $key,
+            $day_give_users_key,
+            $this->getArticleInfoOnRedisKey($id),
+            auth()->user()->id,
+            $this->generateMark(auth()->user()->id, $id, 1),
+            $this->generateMark(auth()->user()->id, $id, 0),
+            $id,
+            serialize($article),
+            0,
+            0,
+        ];
 
-        $this->coverArticleInfoOnRedis($id, $article);
+        Redis::eval($this->giveLua(), 3, ...$fields);
 
-        return response()->json(['code' => 200, 'msg' => '点赞成功']);
+        return response()->json(['code' => 200, 'msg' => '取消点赞成功']);
     }
 
 
-    /**
-     * 组装redis—key
-     *
-     * @param $key
-     * @param array $params
-     * @return string
-     */
-    public function formatRedisKey($key, ...$params)
+    public function giveLua()
     {
-        $sub = config('redis_key.' . $key);
+        $script = <<<LUA
+local key1 = KEYS[1]
+local key2 = KEYS[2]
+local key3 = KEYS[3]
+local value1 = ARGV[1]
+local value2 = ARGV[2]
+local value3 = ARGV[3]
+local value4 = ARGV[4]
+local value5 = ARGV[5]
+local value6 = tonumber(ARGV[6])
+local value7 = tonumber(ARGV[7])
+local ret = 0
 
-        $last_sub = implode(':', $params);
+if (value6 == 0) then
+    ret = redis.call('ZREM', key1, value1)
+    local isExists = redis.call('SISMEMBER', key2, value2)
+    if (isExists == 0) then
+        ret = redis.call('SADD', key2, value3)
+    else    
+        ret = redis.call('SREM', key2, value2)
+    end
+else
+    ret = redis.call('ZADD', key1, value7, value1)
+    ret = redis.call('SREM', key2, value2)
+    ret = redis.call('SADD', key2, value3)
+end
 
-        return $sub . ':' . $last_sub;
+ret = redis.call('HSET', key3, value4, value5)   
+
+return ret
+LUA;
+
+        return $script;
     }
 
     /**
-     * 位置
+     * 生成数据
      *
+     * @param $user_id
      * @param $id
-     * @return int
+     * @param $status
+     * @return mixed
      */
-    public function position($id)
+    public function generateMark($user_id, $id, $status)
     {
-        return $id % 10;
+        // 判断是否今天点的赞
+        return serialize(['user_id' => $user_id, 'model_type' => Article::class, 'model_id' => $id, 'status' => $status]);
     }
 }

@@ -151,10 +151,38 @@ trait ArticleTrait
      * @param $id
      * @return mixed
      */
-    public function coverArticleInfoOnRedis($id, $info)
+    public function getArticleInfoOnRedisKey($id)
     {
         $num = $id % 10;
 
-        return Redis::hset('articles_info:' . $num, $id, serialize($info));
+        return 'articles_info:' . $num;
+    }
+
+
+    /**
+     * 组装redis—key
+     *
+     * @param $key
+     * @param array $params
+     * @return string
+     */
+    public function formatRedisKey($key, ...$params)
+    {
+        $sub = config('redis_key.' . $key);
+
+        $last_sub = implode(':', $params);
+
+        return $sub . ':' . $last_sub;
+    }
+
+    /**
+     * 位置
+     *
+     * @param $id
+     * @return int
+     */
+    public function position($id)
+    {
+        return $id % 10;
     }
 }

@@ -10,7 +10,11 @@ Route::group(['middleware' => ['bindings']], function () {
     Route::get('/articles/columns/{type}', 'ArticlesController@column')->name('articles.column.show');
 
     // 点赞
-    Route::get('/articles/{article}/give', 'ArticlesController@give')->name('articles.give');
+    Route::post('/articles/{article}/give', 'ArticlesController@give')->name('articles.give');
+
+    // 取消点赞
+    Route::post('/articles/{article}/cancel_give', 'ArticlesController@cancelGive')->name('articles.cancel_give');
+
     // 收藏
     Route::get('/articles/{article}/collection', 'ArticlesController@collection')->name('articles.collection');
 });

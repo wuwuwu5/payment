@@ -656,6 +656,25 @@ if (!function_exists('generateCategoriesTree')) {
             return $array;
         }
     }
+    if (!function_exists('getArticleInfo')) {
+        function getArticleInfo($id, $field = '')
+        {
+            $num = $id % 10;
+
+            $data = unserialize(\Illuminate\Support\Facades\Redis::hget('articles_info:' . $num, $id));
+
+            if (empty($data)) {
+
+                if (!empty($field)) {
+                    return '';
+                }
+
+                return [];
+            }
+
+            return data_get($data, $field, '');
+        }
+    }
 }
 
 
