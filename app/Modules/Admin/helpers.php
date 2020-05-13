@@ -660,7 +660,7 @@ if (!function_exists('generateCategoriesTree')) {
 
     if (!function_exists('getColumnArticles')) {
         // 获取导航下的文章
-        function getColumnArticles($column_id, $type = 'now', $num = 10)
+        function getColumnArticles($column_id, $type = 'now', $num = 10, $exclude = null)
         {
             if ($column_id <= 0) {
                 return [];
@@ -672,7 +672,13 @@ if (!function_exists('generateCategoriesTree')) {
                     $q->frontIndex();
                 })
                 ->when($type == 'hot', function ($q) {
-                    $q->orderBy('created_at', 'desc')->orderBy('created_at', 'desc');
+                    $q->hot();
+                })
+                ->when($type == 'rand', function ($q) {
+                    $q->random();
+                })
+                ->when($exclude > 0, function ($q) use ($exclude) {
+                    $q->where('id', '<>', $exclude);
                 })
                 ->take($num)
                 ->get();

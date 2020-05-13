@@ -85,110 +85,7 @@
                 <div class="articles-week"></div>
             </div>
             <div class="seeAll">
-                <a href="/article/all?page=2&limit=20" class="btn btn-orange">查看全部文章</a>
-            </div>
-            <section class="kingba hide_sm">
-                <div class="section-title">
-                    金主爸爸 <small> <a href="about.html" target="_blank">联系优设</a> </small>
-                </div>
-                <div class="section-content">
-                    <div class="kind">
-                        <div class="spark_rm">
-                        <span class="hidden"><a target="_blank" href="https://xue.uisdc.com/draw2/"
-                                                class="has_border"><img
-                                    src="https://image.uisdc.com/wp-content/uploads/2020/05/dkt-draw-banner20200507.jpg"/></a></span>
-                            <span class="hidden"><a target="_blank" href="https://uiiiuiii.com/" class="has_border"><img
-                                        src="https://image.uisdc.com/wp-content/uploads/2020/04/uisdc-uu-banner-top2004.jpg"/></a></span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <div class="part-zt-archive">
-                <h2 class="section-title">优设专题
-                    <a href="zt.html" class="more" target="_blank">查看全部</a>
-                </h2>
-                <div class="section-content">
-                    <div class="zt-item">
-                        <a href="zt/redesign.html" target="_blank">
-                            <div class="item-thumb">
-                                <i class="thumb "
-                                   style="background-image:url(https://image.uisdc.com/wp-content/uploads/2019/03/gb-zt-banner19329.jpg)"></i>
-                                <h5>
-                                    <span class="l">638626人看过</span>
-                                    <span class="r">26篇文章</span>
-                                </h5>
-                            </div>
-                            <h2>改版设计</h2>
-                            <h4>大公司的改版方法和实战案例都在这了！</h4>
-                            <div class="entry">
-                                本专题包括4篇改版设计方法和技巧，还有超过10个大公司的产品改版设计实战案例。想做改版设计之前记得来看一遍，绝对是收获满满！
-                            </div>
-                            <div class="btns">
-                                <span class="btn">查看专题</span>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="zt-item">
-                        <a href="zt/design-films.html" target="_blank">
-                            <div class="item-thumb">
-                                <i class="thumb "
-                                   style="background-image:url(https://image.uisdc.com/wp-content/uploads/2018/08/uisdc-zt-180820.jpg)"></i>
-                                <h5>
-                                    <span class="l">261111人看过</span>
-                                    <span class="r">12篇文章</span>
-                                </h5>
-                            </div>
-                            <h2>设计影片</h2>
-                            <h4>看完能涨姿势的设计相关影片</h4>
-                            <div class="entry">
-                                本专题收录了适合设计师观看的 TED
-                                演讲、电影、纪录片等，既有帮你学习艺术史的，也有让你提高审美的，还有很多关于顶尖设计师专访的，几乎每一部推荐都是大牌出品，质量有口皆碑。收藏起来，作为下饭菜是最好的！
-                            </div>
-                            <div class="btns">
-                                <span class="btn">查看专题</span>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="zt-item">
-                        <a href="zt/design-guideline.html" target="_blank">
-                            <div class="item-thumb">
-                                <i class="thumb "
-                                   style="background-image:url(https://image.uisdc.com/wp-content/uploads/2018/07/zt-sjgf-0709.jpg)"></i>
-                                <h5>
-                                    <span class="l">502464人看过</span>
-                                    <span class="r">14篇文章</span>
-                                </h5>
-                            </div>
-                            <h2>设计规范</h2>
-                            <h4>那些条条框框您真得懂？</h4>
-                            <div class="entry">
-                                说出来你可能不信，我去了几家公司，每个公司里都让我制作设计规范，说是为了便于公司规划流程化管理，当时我可是费了老大劲...
-                            </div>
-                            <div class="btns">
-                                <span class="btn">查看专题</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="part-hot-cats">
-                <h2 class="section-title">热门频道</h2>
-                <section class="hot-cats-section">
-                    <div class="section-content">
-                        <div class="item"><a href="zt.html" target="_blank"><i class="icon-subject"></i>
-                                <h3>设计专题</h3><h4>热门设计知识精挑细选</h4></a></div>
-                        <div class="item"><a href="hunters.html" target="_blank"><i class="icon-hunter"></i>
-                                <h3>细节猎人</h3><h4>1分钟小短文揣摩设计真谛</h4></a></div>
-                        <div class="item"><a href="news.html" target="_blank"><i class="icon-newspaper"></i>
-                                <h3>优设读报</h3><h4>行业资讯一站知晓</h4></a></div>
-                        <div class="item"><a href="talk.html" target="_blank"><i class="icon-topic"></i>
-                                <h3>设计话题</h3><h4>高手大咖在线答疑解惑</h4></a></div>
-                        <div class="item"><a href="category/hangye.html" target="_blank"><i class="icon-toppost"></i>
-                                <h3>行业新闻</h3><h4>行业大事小事全知道</h4></a></div>
-                        <div class="item"><a href="https://event.uisdc.com/" target="_blank"><i class="icon-event"></i>
-                                <h3>设计大赛</h3><h4>专业承办设计赛事活动</h4></a></div>
-                    </div>
-                </section>
+                <a href="/articles/all" class="btn btn-orange">查看全部文章</a>
             </div>
         </div>
         <div class="sidebar">
@@ -328,59 +225,28 @@
                                 平面高手出品！如何让你的设计变的更有内涵？</a></h2></div>
                 </div>
             </section>
-            <section class="widget widget-authors-hot hide_sm">
-                <h2 class="section-title"> 专栏作者 <a href="uisdc-submit-specifications.html" target="_blank"
-                                                   class="more">文章投稿</a>
-                </h2>
-                <div class="section-cont">
-                    <ul class="authors-hot">
-                        <li>
-                            <div class="item">
-                                <div class="author-avatar"><a href="author/sstt.html" target="_blank">
-                                        <div class="avatar"
-                                             style="background-image:url(https://image.uisdc.com/wp-content/uploads/2019/08/tuboshu-pic-2019.jpg);"></div>
-                                    </a></div>
-                                <div class="item-main"><h2><a href="author/sstt.html" target="_blank">土拨鼠</a></h2><h4><a
-                                            href="author/sstt.html" target="_blank">文章 801 <i>|</i> 人气 13158048</a></h4>
-                                    <h3><a href="text-layout.html" target="_blank"> <i class="icon-article"></i>
-                                            创意广告中文字是如何运用的？来看平面高手的超多案例演示！ </a></h3></div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item">
-                                <div class="author-avatar"><a href="author/chenzimu7.html" target="_blank">
-                                        <div class="avatar"
-                                             style="background-image:url(https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTL5cyRVutbpBU3TnwnV3utlQfb2LhyDsAvsibM9jltdicnM65JrrLLrcflXLrYsKDapfdUTa1K0a7FA/132);"></div>
-                                    </a></div>
-                                <div class="item-main"><h2><a href="author/chenzimu7.html" target="_blank">陈子木 <i
-                                                class="icon-medal-1" title="专栏作者"></i></a></h2><h4><a
-                                            href="author/chenzimu7.html" target="_blank">文章 1186 <i>|</i> 人气
-                                            25100935</a>
-                                    </h4>
-                                    <h3><a href="when-they-were-young.html" target="_blank"> <i
-                                                class="icon-article"></i>
-                                            25岁，当设计大师们还只是「后浪」的时候 </a></h3></div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item">
-                                <div class="author-avatar"><a href="author/soleildu.html" target="_blank">
-                                        <div class="avatar"
-                                             style="background-image:url(https://image.uisdc.com/wp-content/uploads/2020/04/xb-tx.jpg);"></div>
-                                    </a></div>
-                                <div class="item-main"><h2><a href="author/soleildu.html" target="_blank">soleildu <i
-                                                class="icon-medal-1" title="专栏作者"></i></a></h2><h4><a
-                                            href="author/soleildu.html" target="_blank">文章 28 <i>|</i> 人气 4326194</a>
-                                    </h4>
-                                    <h3><a href="top-fashion-magazine-fonts.html" target="_blank"> <i
-                                                class="icon-article"></i> 你知道被《GQ》《VOGUE》等顶级时尚杂志所青睐的字体是什么吗？ </a></h3>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+        </div>
+    </div>
+
+    <div class="footer-post-sets hide_sm">
+        <div class="container">
+            <section class="post-sets">
+                <div class="section-title">
+                    热门文章集合
+                </div>
+                <div class="section-content">
+                    @foreach($tags as $k => $tag)
+                        <div class="item">
+                            <a href="{{route('tags.show', ['tag' => $tag['tag']['hash_id'] ?? ''])}}" target="_blank">
+                                @if($k <= 3)
+                                    <i class="num btn btn-default-border">{{$k+1}}</i>
+                                @endif
+                                <strong>{{$tag['tag']['nickname'] ?? ''}}</strong> <i class="hot-icon"></i>
+                            </a>
+                        </div>
+                    @endforeach
                 </div>
             </section>
         </div>
     </div>
-
 @stop

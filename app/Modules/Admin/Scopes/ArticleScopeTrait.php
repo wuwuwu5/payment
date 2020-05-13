@@ -57,7 +57,48 @@ trait ArticleScopeTrait
             ->orderBy('published_at', 'desc')
             ->with([
                 'tags' => function ($q) {
-                $q->with('tag:id,name,nickname');
+                    $q->with('tag:id,name,nickname');
+                },
+                'creator' => function ($query) {
+                    $query->select('id', 'nickname', 'username');
+                },
+            ]);
+    }
+
+
+    /**
+     * 获取首页最新文章
+     *
+     * @param $builder
+     * @return mixed
+     */
+    public function scopeRandom($builder)
+    {
+        return $builder
+            ->where('is_published', 1)
+            ->select('id', 'title','cover')
+            ->inRandomOrder();
+    }
+
+    /**
+     * 获取推荐文章
+     *
+     * @param $builder
+     * @return mixed
+     */
+    public function scopeHot($builder)
+    {
+        return $builder
+            ->where('is_published', 1)
+            ->where('is_commend', 1)
+            ->select('id', 'title', 'short_title', 'creator_id', 'category_id', 'published_at', 'cover')
+            ->orderBy('give_count', 'desc')
+            ->orderBy('collection_count', 'desc')
+            ->orderBy('post_count', 'desc')
+            ->orderBy('published_at', 'desc')
+            ->with([
+                'tags' => function ($q) {
+                    $q->with('tag:id,name,nickname');
                 },
                 'creator' => function ($query) {
                     $query->select('id', 'nickname', 'username');

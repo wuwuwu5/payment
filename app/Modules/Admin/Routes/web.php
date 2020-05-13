@@ -1,6 +1,7 @@
 <?php
 
 Route::group(['middleware' => ['bindings']], function () {
+
     // 首页
     Route::get('/', 'IndexController@index');
 

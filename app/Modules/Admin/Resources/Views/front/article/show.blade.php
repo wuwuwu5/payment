@@ -101,77 +101,106 @@
                 </div>
                 <div class="article-info">
                     <p>
-                        <a href="text-layout.html" class="btn btn-orange-border copy-link"> <i class="icon-link"></i>
+                        <a href="text-layout.html" class="btn btn-orange-border copy-link">
+                            <i class="icon-link"></i>
                             复制本文链接
-                            <input type="text" name="copy" value="https://www.uisdc.com/text-layout"
-                                   class="copy-content"> </a>
+                            <input type="text" name="copy"
+                                   value="{{route('articles.show', ['article' => $article['hash_id']])}}"
+                                   class="copy-content">
+                        </a>
                         文章为作者独立观点不代表优设网立场，<span>未经允许不得转载。</span>
                     </p>
                 </div>
                 <div class="article-tag">
                     <h4>继续阅读与本文标签相同的文章</h4>
-                    <div class="tags">
-                        <a href="tag/%E5%88%9B%E6%84%8F%E5%B9%BF%E5%91%8A.html" rel="tag">创意广告</a><a
-                            href="tag/%E5%AD%97%E4%BD%93%E9%80%89%E6%8B%A9.html" rel="tag">字体选择</a><a
-                            href="tag/%E5%B9%B3%E9%9D%A2%E8%AE%BE%E8%AE%A1.html" rel="tag">平面设计</a><a
-                            href="tag/%E6%8E%92%E7%89%88%E6%8A%80%E5%B7%A7.html" rel="tag">排版技巧</a><a
-                            href="tag/%E6%96%87%E5%AD%97%E6%8E%92%E7%89%88.html" rel="tag">文字排版</a><a
-                            href="tag/%E6%B5%B7%E6%8A%A5%E8%AE%BE%E8%AE%A1.html" rel="tag">海报设计</a><a
-                            href="tag/%E7%A0%94%E4%B9%A0%E8%AE%BE.html" rel="tag">研习设</a></div>
+                    @include("admin::front.article.tag_item", ['article' => $article])
                 </div>
             </div>
             <div class="article-paged">
-                <div class="previous prev_next"><a href="archives.html" target="_blank" class="flex paged-item">
-                        <div class="paged-thumb"><i class="thumb "
-                                                    style="background-image:url(https://image.uisdc.com/wp-content/uploads/2019/10/uisdc-bg-article-trans.png)"></i>
+                <div class="previous prev_next">
+                    <a href="{{route('articles.column.show', ['type' =>'all'])}}" target="_blank"
+                       class="flex paged-item">
+                        <div class="paged-thumb">
+                            <i class="thumb "
+                               style="background-image:url(https://image.uisdc.com/wp-content/uploads/2019/10/uisdc-bg-article-trans.png)">
+                            </i>
                         </div>
-                        <div class="paged-main"><h5>返回目录</h5>
-                            <h3>每天优设看文章 掌握设计新动向</h3></div>
-                    </a></div>
-                <div class="next prev_next"><a href="b-end-button-design-guide.html" target="_blank"
-                                               class="flex paged-item">
-                        <div class="paged-thumb h-scale"><i class="thumb "
-                                                            style="background-image:url(https://image.uisdc.com/wp-content/uploads/2020/05/uisdc-banner-20200507-5.jpg)"></i>
+                        <div class="paged-main">
+                            <h5>返回目录</h5>
+                            <h3>每天看文章 掌握行业新动向</h3>
                         </div>
-                        <div class="paged-main"><h5>下一篇 <i class="icon-right"></i></h5>
-                            <h3>上万字干货！超全面的B端按钮设计指南</h3></div>
-                    </a></div>
+                    </a>
+                </div>
+                @if(!empty($next_article))
+                    <div class="next prev_next">
+                        <a href="{{route('articles.show', ['article' => $next_article->hash_id])}}" target="_blank"
+                           class="flex paged-item">
+                            <div class="paged-thumb h-scale">
+                                <i class="thumb "
+                                   style="background-image:url(https://image.uisdc.com/wp-content/uploads/2020/05/uisdc-banner-20200507-5.jpg)"></i>
+                            </div>
+                            <div class="paged-main">
+                                <h5>下一篇 <i class="icon-right"></i></h5>
+                                <h3>{{$next_article->title}}</h3>
+                            </div>
+                        </a>
+                    </div>
+                @endif
             </div>
-            <section class="article-related">
-                <div class="section-title"> 继续阅读相关文章</div>
-                <div class="section-content">
-                    <div class="flex">
-                        <div class="wrap wrap-first">
-                            <div class="item"><a href="photo-design-poster-15.html" target="_blank">
-                                    <div class="item-thumb h-scale"><i class="thumb "
-                                                                       style="background-image:url(https://image.uisdc.com/wp-content/uploads/2020/04/uisdc-banner-20200421-1.jpg)"></i>
-                                    </div>
-                                    <div class="item-main"><h2>如何处理好文案和图片之间的层级关系，看这篇文章就够啦！</h2><h5>18860 人阅读</h5></div>
-                                </a></div>
-                        </div>
-                        <div class="wrap wrap-items">
-                            <div class="item"><a href="layout-page.html" target="_blank">
-                                    <div class="item-thumb h-scale"><i class="thumb "
-                                                                       style="background-image:url(https://image.uisdc.com/wp-content/uploads/2020/03/uisdc-banner-20200326-1.jpg)"></i>
-                                    </div>
-                                    <div class="item-main"><h2>文案信息较多时，该如何编排版面才会好看？</h2><h5>56504 人阅读</h5></div>
-                                </a></div>
-                            <div class="item"><a href="make-design-more-meaningful.html" target="_blank">
-                                    <div class="item-thumb h-scale"><i class="thumb "
-                                                                       style="background-image:url(https://image.uisdc.com/wp-content/uploads/2020/04/uisdc-banner-20200416-3.jpg)"></i>
-                                    </div>
-                                    <div class="item-main"><h2>平面高手出品！如何让你的设计变的更有内涵？</h2><h5>16969 人阅读</h5></div>
-                                </a></div>
-                            <div class="item"><a href="launch-composition.html" target="_blank">
-                                    <div class="item-thumb h-scale"><i class="thumb "
-                                                                       style="background-image:url(https://image.uisdc.com/wp-content/uploads/2020/05/uisdc-banner-20200504-3.jpg)"></i>
-                                    </div>
-                                    <div class="item-main"><h2>这种构成方法，让你的画面更吸睛！</h2><h5>13590 人阅读</h5></div>
-                                </a></div>
+            @php
+                $data = getColumnArticles($current['id'] ?? 0, 'rand', 4, $article->id);
+            @endphp
+            @if(!$data->isEmpty())
+                <section class="article-related">
+                    <div class="section-title">继续阅读相关文章</div>
+                    <div class="section-content">
+                        <div class="flex">
+
+                            <div class="wrap wrap-first">
+                                <div class="item">
+                                    <a href="{{route('articles.show', ['article' => data_get($data, '0.hash_id')])}}"
+                                       target="_blank">
+                                        <div class="item-thumb h-scale">
+                                            <i class="thumb "
+                                               style="background-image:url(
+                                                   '{{render_cover(data_get($data, '0.cover'))}}'
+                                                   )"></i>
+                                        </div>
+                                        <div class="item-main">
+                                            <h2>{{data_get($data, '0.title')}}</h2>
+                                            <h5>{{getArticleInfo(data_get($data, '0.id'), 'view_count')}} 人阅读</h5></div>
+                                    </a>
+                                </div>
+                            </div>
+
+                            @if($data->count() > 1)
+                                <div class="wrap wrap-items">
+                                    @foreach($data as $k => $v)
+                                        @if($k > 0)
+
+                                            <div class="item">
+                                                <a href="{{route('articles.show', ['article' => $v['hash_id']])}}"
+                                                   target="_blank">
+                                                    <div class="item-thumb h-scale">
+                                                        <i class="thumb " style="background-image:url(
+                                                            '{{render_cover($v['cover'])}}'
+                                                            )"></i>
+                                                    </div>
+                                                    <div class="item-main">
+                                                        <h2>{{$v['title']}}</h2>
+                                                        <h5>{{getArticleInfo($v['id'], 'view_count')}}
+                                                            人阅读</h5>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            @endif
             <div class="comment-div" id="post_comment">
                 <h3 class="section-title">发表评论
                     <span class="sub">已发布 <i class="clr_orange comment_count">1</i> 条</span>
@@ -237,29 +266,22 @@
                             <a href="#post_comment" class="btn btn-orange-border">立即评论</a>
                         </div>
                         <div class="item">
-                            以上留言仅代表用户个人观点，不代表优设立场
+                            以上留言仅代表用户个人观点，不代表本站立场
                         </div>
                     </div>
                     <i class="ji2-icon" data-bubble="yes"></i>
                 </div>
             </div>
-            <div class="article-show">
-                <div class="kind">
-                    <div class="spark_rm">
-                <span class="hidden"><a target="_blank" href="https://xue.uisdc.com/draw2/" class="has_border"><img
-                            src="https://image.uisdc.com/wp-content/uploads/2020/05/dkt-draw-banner20200507.jpg"/></a></span>
-                        <span class="hidden"><a target="_blank" href="https://uiiiuiii.com/" class="has_border"><img
-                                    src="https://image.uisdc.com/wp-content/uploads/2020/04/uisdc-uu-banner-top2004.jpg"/></a></span>
-                    </div>
-                </div>
-            </div>
+            
             <div class="post-recommend">
                 <div class="recommend-titles">
-                    <a href="archives.html" class="current" target="_blank" data-component="tab" data-event="hover"
+                    <a href="{{route('articles.column.show', ['type' =>'all', 'order' => 'now'])}}" class="current"
+                       target="_blank" data-component="tab" data-event="hover"
                        data-tab-wrap=".recommend-list" data-tab-menus=".post-recommend .recommend-titles a"
                        data-tab-target=".recommend-new" data-tab-action="new_posts" data-tab-type="list-default"
                        data-ppp="5">最新文章</a>
-                    <a href="archives.html" target="_blank" data-component="tab" data-event="hover"
+                    <a href="{{route('articles.column.show', ['type' =>'all', 'order' => 'hot'])}}" target="_blank"
+                       data-component="tab" data-event="hover"
                        data-tab-wrap=".recommend-list" data-tab-menus=".post-recommend .recommend-titles a"
                        data-tab-target=".recommend-hot" data-tab-action="hot_posts" data-tab-type="list-post"
                        data-ppp="5">最热文章</a>
@@ -267,14 +289,15 @@
                 <div class="recommends">
                     <div class="recommend-list">
                         <ul class="recommend-new">
-                            @foreach(getColumnArticles($current['id'] ?? 0, 'now', 5) as $article)
+                            @foreach(getColumnArticles($current['id'] ?? 0, 'now', 5, $article->id) as $article)
                                 @include('admin::front.article.show_item',  compact('article'))
                             @endforeach
                         </ul>
-                        <ul class="recommend-hot"></ul>
-                        <div class="more">
-                            <a href="archives.html" class="btn btn-default">查看更多</a>
-                        </div>
+                        <ul class="recommend-hot">
+                            @foreach(getColumnArticles($current['id'] ?? 0, 'hot', 5, $article->id) as $article)
+                                @include('admin::front.article.show_item',  compact('article'))
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -328,43 +351,18 @@
             <section class="widget widget-post-related hide_sm">
                 <h2 class="section-title"> 相关文章 </h2>
                 <div class="section-content">
-                    <div class="item"><a href="photo-design-poster-15.html" target="_blank">
-                            <div class="num"><i class="btn btn-default-border">1</i></div>
-                            <h2>如何处理好文案和图片之间的层级关系，看这篇文章就够啦！</h2>
-                            <div class="item-thumb h-scale"><i class="thumb "
-                                                               style="background-image:url(https://image.uisdc.com/wp-content/uploads/2020/04/uisdc-banner-20200421-1.jpg)"></i>
-                            </div>
-                        </a></div>
-                    <div class="item"><a href="layout-page.html" target="_blank">
-                            <div class="num"><i class="btn btn-default-border">2</i></div>
-                            <h2>文案信息较多时，该如何编排版面才会好看？</h2>
-                            <div class="item-thumb h-scale"><i class="thumb "
-                                                               style="background-image:url(https://image.uisdc.com/wp-content/uploads/2020/03/uisdc-banner-20200326-1.jpg)"></i>
-                            </div>
-                        </a></div>
-                    <div class="item"><a href="make-design-more-meaningful.html" target="_blank">
-                            <div class="num"><i class="btn btn-default-border">3</i></div>
-                            <h2>平面高手出品！如何让你的设计变的更有内涵？</h2>
-                            <div class="item-thumb h-scale"><i class="thumb "
-                                                               style="background-image:url(https://image.uisdc.com/wp-content/uploads/2020/04/uisdc-banner-20200416-3.jpg)"></i>
-                            </div>
-                        </a></div>
-                    <div class="item"><a href="launch-composition.html" target="_blank">
-                            <div class="num"><i class="btn btn-default-border">4</i></div>
-                            <h2>这种构成方法，让你的画面更吸睛！</h2>
-                            <div class="item-thumb h-scale"><i class="thumb "
-                                                               style="background-image:url(https://image.uisdc.com/wp-content/uploads/2020/05/uisdc-banner-20200504-3.jpg)"></i>
-                            </div>
-                        </a></div>
-                </div>
-            </section>
-            <section class="widget widget-show">
-                <div class="kind">
-                    <div class="spark_rm">
-                    <span class="hidden"><a href="https://xue.uisdc.com/draw2/" target="_blank" class="has_border"><img
-                                alt="优设"
-                                src="https://image.uisdc.com/wp-content/uploads/2020/03/2020-draw2-banner-0301.jpg"></a></span>
-                    </div>
+                    @foreach(getColumnArticles($current['id'] ?? 0, 'rand', 5, $article->id) as $k => $article)
+                        <div class="item">
+                            <a href="{{route('articles.show', ['article' => $article['hash_id']])}}" target="_blank">
+                                <div class="num"><i class="btn btn-default-border">{{$k+1}}</i></div>
+                                <h2>{{$article->title}}</h2>
+                                <div class="item-thumb h-scale">
+                                    <i class="thumb"
+                                       style="background-image:url('{{render_cover($article->cover)   }}')"></i>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
                 </div>
             </section>
             <section class="widget widget-article-menu hidden" id="article_menu"></section>

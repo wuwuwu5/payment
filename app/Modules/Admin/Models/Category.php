@@ -109,6 +109,16 @@ class Category extends Model
     }
 
     /**
+     * 标签使用
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tags()
+    {
+        return $this->hasMany(ModelHasTag::class, 'tag_id', 'id');
+    }
+
+    /**
      * hash
      *
      * @return mixed

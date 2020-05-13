@@ -27,6 +27,9 @@ class ArticlesController extends Controller
             ->with([
                 'creator',
                 'add',
+                'tags' => function ($q) {
+                    $q->with('tag:id,name,nickname');
+                },
             ])
             ->findOrFail($id);
 
@@ -34,7 +37,13 @@ class ArticlesController extends Controller
             return redirect()->to('/');
         }
 
-        return view('admin::front.article.show', compact('article'));
+        $next_article = Article::query()
+            ->select('id', 'title')
+            ->where('id', '<>', $article->id)
+            ->inRandomOrder()
+            ->first();
+
+        return view('admin::front.article.show', compact('article', 'next_article'));
     }
 
     /**
@@ -172,7 +181,11 @@ class ArticlesController extends Controller
         return response()->json(['code' => 200, 'msg' => '取消点赞成功']);
     }
 
-
+    /**
+     * 点赞
+     *
+     * @return string
+     */
     public function giveLua()
     {
         $script = <<<LUA
