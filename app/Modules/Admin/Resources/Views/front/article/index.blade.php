@@ -106,16 +106,16 @@
                     <a href="{{route('articles.column.show', ['type' =>'all', 'order' => 'now'])}}"
                        class="title-item" target="_blank" data-component="tab"
                        data-event="hover" data-tab-wrap=".widget-post-tabs .tab-div"
-                       data-tab-menus=".widget-post-tabs .tabs-title a" data-tab-target=".widget-post-tabs .hot-post-list"
+                       data-tab-menus=".widget-post-tabs .tabs-title a"
+                       data-tab-target=".widget-post-tabs .hot-post-list"
                        data-tab-action="hot_posts" data-tab-type="list-simple" data-ppp="6">
                         最热文章
                     </a>
-
                 </div>
                 <div class="tabs-content">
                     <div class="tab-div">
                         <ul class="post-list">
-                            @foreach(getColumnArticles($current_column['id'] ?? 0, 'now', 5, $article->id) as $key=> $article)
+                            @foreach(getColumnArticles($current_column['id'] ?? 0, 'now', 5, null, $current_column['level']) as $key=> $article)
                                 <li class="list-item-txt">
                                     <h2 class="title">
                                         <a href="{{route('articles.show', ['article' => $article['hash_id']])}}"
@@ -128,7 +128,7 @@
                             @endforeach
                         </ul>
                         <ul class="hot-post-list hidden">
-                            @foreach(getColumnArticles($current_column['id'] ?? 0, 'hot', 5, $article->id) as $key=> $article)
+                            @foreach(getColumnArticles($current_column['id'] ?? 0, 'hot', 5, null, $current_column['level']) as $key=> $article)
                                 <li class="list-item-txt">
                                     <h2 class="title">
                                         <a href="{{route('articles.show', ['article' => $article['hash_id']])}}"

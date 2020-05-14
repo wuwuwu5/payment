@@ -676,14 +676,19 @@ if (!function_exists('generateCategoriesTree')) {
 
     if (!function_exists('getColumnArticles')) {
         // 获取导航下的文章
-        function getColumnArticles($column_id, $type = 'now', $num = 10, $exclude = null)
+        function getColumnArticles($column_id, $type = 'now', $num = 10, $exclude = null, $level = 2)
         {
             if ($column_id <= 0) {
                 return collect();
             }
 
             $articles = \App\Modules\Admin\Models\Article::query()
-                ->where('column2_id', $column_id)
+                ->when($level == 2, function ($q) use ($column_id) {
+                    $q->where('column2_id', $column_id);
+                })
+                ->when($level == 1, function ($q) use ($column_id) {
+                    $q->where('column_id', $column_id);
+                })
                 ->when($type == 'now', function ($q) {
                     $q->frontIndex();
                 })
@@ -778,7 +783,13 @@ if (!function_exists('generateCategoriesTree')) {
             }
 
             if ($column->level == 1) {
-                return [$column];
+                $column = $column->only(['id', 'nickname', 'pid', 'id as value', 'category_group_id', 'name']);
+                $column['mark_name'] = $column['name'];
+                $column['name'] = $column['nickname'];
+                $column['value'] = $column['id'];
+                unset($column['nickname']);
+                $columns[] = $column;
+                return $columns;
             }
 
             $ids = explode(',', $column->path);

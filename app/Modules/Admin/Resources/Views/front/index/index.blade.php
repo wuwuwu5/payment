@@ -69,7 +69,8 @@
                 <div class="menu-r nav-inline auto-scroll-menu">
                     <ul>
                         @foreach(getFrontChildrenColumns(55, true) as $column)
-                            <li><a href="{{ route('articles.column.show', ['type' => $column['mark_name']]) }}" target="_blank">{{ $column['name'] }}</a>
+                            <li><a href="{{ route('articles.column.show', ['type' => $column['mark_name']]) }}"
+                                   target="_blank">{{ $column['name'] }}</a>
                             </li>
                         @endforeach
                     </ul>
@@ -85,7 +86,7 @@
                 <div class="articles-week"></div>
             </div>
             <div class="seeAll">
-                <a href="/articles/all" class="btn btn-orange">查看全部文章</a>
+                <a href="{{ route('articles.column.show', ['type' => 'all']) }}" class="btn btn-orange">查看全部文章</a>
             </div>
         </div>
         <div class="sidebar">
