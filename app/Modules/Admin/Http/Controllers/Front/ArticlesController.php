@@ -62,8 +62,23 @@ class ArticlesController extends Controller
             return redirect()->to('/');
         }
 
+
+        // 排序
+        $order = $request->input('order', 'default');
+
         if ($type == 'all') {
-            $articles = Article::query()->frontIndex()->take(20)->paginate();
+            $articles = Article::query()
+                ->when(!empty($order), function ($q) use ($order) {
+                    switch ($order) {
+                        case 'hot':
+                            $q->hotIndex();
+                            break;
+                        default:
+                            $q->frontIndex();
+                            break;
+                    }
+                })
+                ->take(20)->paginate();
 
             return view('admin::front.article.index', compact('articles'));
         }
@@ -73,7 +88,16 @@ class ArticlesController extends Controller
 
         // 获取栏目级别
         $articles = Article::query()
-            ->frontIndex()
+            ->when(!empty($order), function ($q) use ($order) {
+                switch ($order) {
+                    case 'hot':
+                        $q->hotIndex();
+                        break;
+                    default:
+                        $q->frontIndex();
+                        break;
+                }
+            })
             ->where(function ($q) use ($current_column) {
                 $q
                     ->where('column_id', $current_column->id)

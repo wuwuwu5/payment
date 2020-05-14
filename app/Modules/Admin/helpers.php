@@ -678,15 +678,11 @@ if (!function_exists('generateCategoriesTree')) {
         // 获取导航下的文章
         function getColumnArticles($column_id, $type = 'now', $num = 10, $exclude = null, $level = 2)
         {
-            if ($column_id <= 0) {
-                return collect();
-            }
-
             $articles = \App\Modules\Admin\Models\Article::query()
-                ->when($level == 2, function ($q) use ($column_id) {
+                ->when($level == 2 && !empty($column_id), function ($q) use ($column_id) {
                     $q->where('column2_id', $column_id);
                 })
-                ->when($level == 1, function ($q) use ($column_id) {
+                ->when($level == 1 && !empty($column_id), function ($q) use ($column_id) {
                     $q->where('column_id', $column_id);
                 })
                 ->when($type == 'now', function ($q) {

@@ -52,18 +52,6 @@
                     <div class="main">
                         <section class="dropdown-section dropdown-allposts">
                             <div class="section-content">
-                                @php
-                                    $sum = collect($item['children'])->sum('column2_articles_count');
-                                    $sum2 = collect($item['children'])->sum('column_articles_count');
-                                    $sum = $sum + $sum2 + $item['column_articles_count'];
-                                @endphp
-                                <div class="item">
-                                    <a href="{{route('articles.column.show', ['type' => 'all'])}}" target="_blank">
-                                        <i class="icon-allposts"></i>
-                                        <h3>全部文章</h3>
-                                        <h5>{{$sum}}篇</h5>
-                                    </a>
-                                </div>
                                 <div class="item">
                                     <a href="{{route('articles.column.show', ['type' => $item['mark_name']])}}"
                                        target="_blank">
