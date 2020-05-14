@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password')->default('')->comment('密码');
             $table->string('email', 100)->nullable()->index('email')->comment('电子邮箱');
             $table->string('mobile', 11)->nullable()->index('mobile')->comment('手机号');
-            $table->string('id_card', 18)->nullable()->index('mobile')->comment('身份证号');
+            $table->string('id_card', 18)->nullable()->index('id_card')->comment('身份证号');
             $table->string('qq', 30)->nullable()->comment('qq');
             $table->string('weixin', 100)->nullable()->comment('微信');
             $table->string('avatar')->default('')->comment('头像');
