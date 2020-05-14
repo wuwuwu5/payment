@@ -10,17 +10,23 @@
     <meta name="renderer" content="webkit">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <title>优设网 - UISDC - 设计师交流学习平台 - 看设计文章，学软件教程，找灵感素材，尽在优设网！</title>
-    <meta
-        content="优设,优设网,优秀网页设计联盟,网页设计教程,PS教程,AI教程,设计文章,设计讲座,学设计,设计网站,设计平台,你丫才美工,獠麝鸡,网站模板,WebUI,GUI,ICON,PSD,笔刷,模板,字体设计,UISDC,SDC"
-        name="keywords"/>
-    <meta content="优设网-优秀设计联盟(SDC)，是国内优秀的设计师学习平台，拥有海量优质设计文章，包含了PS教程，AI教程，UI设计，网页设计，排版教程等。学设计，上优设！" name="description"/>
-    <meta content='优设网' name='Author'/>
+    <title>{{cms_config_field('front_site', 'title')}}</title>
+    <meta content="{{cms_config_field('front_site', 'keywords')}}" name="keywords"/>
+    <meta content="{{cms_config_field('front_site', 'description')}}" name="description"/>
+    <meta content='{{cms_config_field('front_site', 'author')}}' name='Author'/>
+    <link rel="shortcut icon" href="{{render_cover(cms_config_field('front_site', 'icon'))}}" type="image/x-icon" />
     @include("admin::front.layout.style")
+    <style>
+        .header .logo-icon {
+            padding-top: 36px;
+            background-image: url('{{render_cover(cms_config_field('front_site', 'logo'))}}') !important;
+            background-size: 50%;
+        }
+    </style>
     @stack('styles')
     <!--[if lt IE 9]>
     <script type="text/javascript">
-        location.href = "https://www.uisdc.com/ie8/?re=https%3A%2F%2Fwww.uisdc.com%2F";
+        location.href = "/";
     </script>
     <![endif]-->
     <script type="text/javascript">
@@ -31,15 +37,7 @@
             document.write('<link rel="stylesheet" href="https://www.uisdc.com/wp-content/themes/U/ui/css/ie9.css?v=2.3.8" type="text/css" media="all" />');
         }
     </script>
-    <script>
-        var _hmt = _hmt || [];
-        (function () {
-            var hm = document.createElement("script");
-            hm.src = "//hm.baidu.com/hm.js?7aeefdb15fe9aede961eee611c7e48a5";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
+    {!!  cms_config_field('front_site', 'tongji') !!}
 </head>
 <body class="home blog">
 @include("admin::front.layout.header")

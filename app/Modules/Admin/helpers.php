@@ -39,6 +39,22 @@ if (!function_exists('cms_config')) {
     }
 }
 
+/**
+ * 获取配置字段
+ */
+if (!function_exists('cms_config_field')) {
+    function cms_config_field($key, $field = '')
+    {
+        $config = cms_config($key, []);
+
+        if (empty($field)) {
+            return [];
+        }
+
+        return data_get($config, $field, '');
+    }
+}
+
 if (!function_exists('admin_asset')) {
     /**
      * 资源加载 res

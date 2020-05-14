@@ -4,12 +4,15 @@
       <span class="h-navi modal-open" data-modal-id="modal_menu">
         菜单 <i class="ico-navi"></i>
       </span>
-            <a href="index.html" class="a-glass"> <i class="logo-icon thumb"></i> <span>优设网 - UISDC</span> </a>
+            <a href="/" class="a-glass">
+                <i class="logo-icon thumb"></i>
+                <span>{{ cms_config_field('front_site', 'name') }}</span>
+            </a>
         </h1>
         <div class="site-menu fl">
             <ul id="primary_menu" class="menu-primary">
                 <li id="menu-item-31935" class="item-0 current-menu-item">
-                    <a href="index.html" class="link-0"><span>首页</span></a>
+                    <a href="/" class="link-0"><span>首页</span></a>
                 </li>
                 <li id="menu-item-250995" class="item-0 ">
                     @foreach(getFrontColumns() as $key => $item)
