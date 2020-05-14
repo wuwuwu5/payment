@@ -30,15 +30,15 @@
             {{--                    <i class="icon-search"></i> 搜索 --}}
             {{--                </a>--}}
             {{--            </div>--}}
-            <div class="login-panel fr">
-                <ul>
-                    <li id="login">
-                        <a href="#" class="avatar_a modal-open" data-modal-id="modal_login">
-                            <i class="avatar thumb"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+{{--            <div class="login-panel fr">--}}
+{{--                <ul>--}}
+{{--                    <li id="login">--}}
+{{--                        <a href="#" class="avatar_a modal-open" data-modal-id="modal_login">--}}
+{{--                            <i class="avatar thumb"></i>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
+{{--                </ul>--}}
+{{--            </div>--}}
         </div>
     </div>
 </div>
