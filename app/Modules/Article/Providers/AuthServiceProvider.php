@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Modules\Admin\Providers;
+namespace App\Modules\Article\Providers;
 
-use App\Modules\Admin\Models\Slide;
-use App\Modules\Admin\Policies\SlidePolicy;
+use App\Modules\Article\Models\Article;
+use App\Modules\Article\Policies\ArticlePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Slide::class => SlidePolicy::class,
+        Article::class => ArticlePolicy::class,
     ];
 
 

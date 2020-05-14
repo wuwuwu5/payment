@@ -646,7 +646,7 @@ if (!function_exists('generateCategoriesTree')) {
         // 获取文章导航
         function getArticleColumns($id)
         {
-            $article = \App\Modules\Admin\Models\Article::query()
+            $article = \App\Modules\Article\Models\Article::query()
                 ->with([
                     'column' => function ($q) {
                         $q->select('id', 'nickname', 'name', 'level', 'path', 'top_id', 'pid');
@@ -678,7 +678,7 @@ if (!function_exists('generateCategoriesTree')) {
         // 获取导航下的文章
         function getColumnArticles($column_id, $type = 'now', $num = 10, $exclude = null, $level = 2)
         {
-            $articles = \App\Modules\Admin\Models\Article::query()
+            $articles = \App\Modules\Article\Models\Article::query()
                 ->when($level == 2 && !empty($column_id), function ($q) use ($column_id) {
                     $q->where('column2_id', $column_id);
                 })

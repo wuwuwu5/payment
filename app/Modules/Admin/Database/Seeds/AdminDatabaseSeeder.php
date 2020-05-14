@@ -15,6 +15,6 @@ class AdminDatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(SettingSeed::class);
-//        $this->call(CategoryGroupSeed::class);
+        $this->call(CategoryGroupSeed::class);
     }
 }

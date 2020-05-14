@@ -2,6 +2,7 @@
 
 namespace App\Modules\Admin\Models;
 
+use App\Modules\Article\Models\Article;
 use ElfSundae\Laravel\Hashid\Facades\Hashid;
 use Illuminate\Database\Eloquent\Model;
 use Jedrzej\Pimpable\PimpableTrait;

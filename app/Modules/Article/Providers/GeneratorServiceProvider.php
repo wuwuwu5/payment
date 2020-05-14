@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Admin\Providers;
+namespace App\Modules\Article\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -21,8 +21,9 @@ class GeneratorServiceProvider extends ServiceProvider
     public function register()
     {
         $generators = [
-            'command.make.module_controller' => \App\Modules\Admin\Console\Generators\MakeControllerCommand::class,
-            'command.make.module_model' => \App\Modules\Admin\Console\Generators\MakeModelCommand::class,
+            'generate:hot_article' => \App\Modules\Article\Console\Commands\GenerateHotArticle::class,
+            'load:article_info' => \App\Modules\Article\Console\Commands\LoadArticleInfo::class,
+            'sync:like_article' => \App\Modules\Article\Console\Commands\SyncArticleLikes::class,
         ];
 
         foreach ($generators as $slug => $class) {
