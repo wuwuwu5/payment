@@ -14,13 +14,17 @@
     <meta content="{{cms_config_field('front_site', 'keywords')}}" name="keywords"/>
     <meta content="{{cms_config_field('front_site', 'description')}}" name="description"/>
     <meta content='{{cms_config_field('front_site', 'author')}}' name='Author'/>
-    <link rel="shortcut icon" href="{{render_cover(cms_config_field('front_site', 'icon'))}}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{render_cover(cms_config_field('front_site', 'icon'))}}" type="image/x-icon"/>
     @include("admin::front.layout.style")
     <style>
         .header .logo-icon {
             padding-top: 36px;
             background-image: url('{{render_cover(cms_config_field('front_site', 'logo'))}}') !important;
             background-size: 50%;
+        }
+
+        .fixed-right {
+            z-index: 9999;
         }
     </style>
     @stack('styles')

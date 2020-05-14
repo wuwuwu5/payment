@@ -115,7 +115,7 @@
                 <div class="tabs-content">
                     <div class="tab-div">
                         <ul class="post-list">
-                            @foreach(getColumnArticles($current_column['id'] ?? 0, 'now', 5, null, $current_column['level']) as $key=> $article)
+                            @foreach(getColumnArticles($current_column['id'] ?? 0, 'now', 5, null, $current_column['level'] ?? 0) as $key=> $article)
                                 <li class="list-item-txt">
                                     <h2 class="title">
                                         <a href="{{route('articles.show', ['article' => $article['hash_id']])}}"
@@ -128,7 +128,7 @@
                             @endforeach
                         </ul>
                         <ul class="hot-post-list hidden">
-                            @foreach(getColumnArticles($current_column['id'] ?? 0, 'hot', 5, null, $current_column['level']) as $key=> $article)
+                            @foreach(getColumnArticles($current_column['id'] ?? 0, 'hot', 5, null, $current_column['level'] ?? 0) as $key=> $article)
                                 <li class="list-item-txt">
                                     <h2 class="title">
                                         <a href="{{route('articles.show', ['article' => $article['hash_id']])}}"
