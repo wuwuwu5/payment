@@ -69,7 +69,7 @@
                 <div class="menu-r nav-inline auto-scroll-menu">
                     <ul>
                         @foreach(getFrontChildrenColumns(55, true) as $column)
-                            <li><a href="/articles/{{$column['mark_name']}}" target="_blank">{{ $column['name'] }}</a>
+                            <li><a href="{{ route('articles.column.show', ['type' => $column['mark_name']]) }}" target="_blank">{{ $column['name'] }}</a>
                             </li>
                         @endforeach
                     </ul>

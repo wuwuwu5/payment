@@ -22,12 +22,18 @@
             </ul>
         </div>
         <div class="header-login-search fr">
-            <div class="header-search fl"><a href="https://www.uisdc.com?s=" data-component="dropdown-click"
-                                             data-target="search_dropdown"> <i class="icon-search"></i> 搜索 </a></div>
+            {{--            <div class="header-search fl">--}}
+            {{--                <a href="https://www.uisdc.com?s=" data-component="dropdown-click" data-target="search_dropdown"> --}}
+            {{--                    <i class="icon-search"></i> 搜索 --}}
+            {{--                </a>--}}
+            {{--            </div>--}}
             <div class="login-panel fr">
                 <ul>
-                    <li id="login"><a href="#" class="avatar_a modal-open" data-modal-id="modal_login"> <i
-                                class="avatar thumb"></i> </a></li>
+                    <li id="login">
+                        <a href="#" class="avatar_a modal-open" data-modal-id="modal_login">
+                            <i class="avatar thumb"></i>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -65,7 +71,8 @@
                                 </div>
                                 @foreach($item['children'] as $k => $val)
                                     <div class="item">
-                                        <a href="{{route('articles.column.show', ['type' => $item['mark_name']])}}" target="_blank">
+                                        <a href="{{route('articles.column.show', ['type' => $item['mark_name']])}}"
+                                           target="_blank">
                                             @if(!empty($val['image']))
                                                 <i class="{{ $val['image'] }}"></i>
                                             @endif
