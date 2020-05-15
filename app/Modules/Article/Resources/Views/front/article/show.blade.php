@@ -1,5 +1,6 @@
 @extends('article::front.layout.app')
 @section('content')
+
     <div class="crumbs container hide_sm" style="padding-top: 60px;">
         <ol class="breadcrumb">
             <li><a href="/" title="优设网 &#8211; UISDC">首页</a></li>
@@ -15,7 +16,7 @@
             <li>正文</li>
         </ol>
     </div>
-   @include("article::front.article.top_cats", compact('columns'))
+    @include("article::front.article.top_cats", compact('columns'))
     <div class="post-header">
         <div class="container">
             <h1 class="post-title">{{$article->title}}</h1>
@@ -33,10 +34,10 @@
                 </span>
                 <span class="time"
                       title="{{ $article->published_at }}"> {{ \Carbon\Carbon::parse($article['published_at'])->diffForHumans() }} </span>
-{{--                <span class="zan"> 点赞 {{ $article->give_count ?? 0 }} </span>--}}
-{{--                <span class="comment">--}}
-{{--                    <a href="#post_comment">评论区</a>--}}
-{{--                </span>--}}
+                <span class="zan"> 点赞 {{ getArticleInfoOnCache($article->id, 'give_count') }} </span>
+                {{--                <span class="comment">--}}
+                {{--                    <a href="#post_comment">评论区</a>--}}
+                {{--                </span>--}}
             </h4>
         </div>
     </div>
@@ -48,38 +49,48 @@
 
                 </div>
 
-{{--                <div class="article-zan-fav">--}}
-{{--                    <div class="zan-div">--}}
-{{--                    <span class="zan btn btn-orange" data-component="zan" data-pid="{{$article->hash_id}}"--}}
-{{--                          data-count="{{$article->give_count}}">--}}
-{{--                        <i class="icon-1-like"></i>--}}
-{{--                        <span class="txt">点赞</span>--}}
-{{--                        <em class="count">{{$article->give_count}}</em>--}}
-{{--                        </span>--}}
-{{--                    </div>--}}
+                <div class="article-zan-fav">
+                    <div class="zan-div"
+                         type="{{ likeArticleOrNot($article->id, auth()->user()->id) ? 'give' :'cancel_give' }}">
+                                    <span class="zan btn btn-orange" data-component="zan"
+                                          data-pid="{{$article->hash_id}}"
+                                          data-count="{{ getArticleInfoOnCache($article->id, 'give_count') }}">
+                                                                                @if(likeArticleOrNot($article->id, auth()->user()->id))
+                                            <i class="iconfont" style="font-size: 17px;">&#xe68f;</i>
+                                        @else
+                                            <i class="iconfont" style="font-size: 17px;">&#xe611;</i>
+                                        @endif
+                                        @if(likeArticleOrNot($article->id, auth()->user()->id))
+                                            <span class="txt">点赞</span>
+                                        @else
+                                            <span class="txt">已赞</span>
+                                        @endif
+                                        <em class="count">{{ getArticleInfoOnCache($article->id, 'give_count') }}</em>
+                                        </span>
+                    </div>
 {{--                    <div class="fav-div">--}}
-{{--                <span class="fav btn btn-orange-border"--}}
-{{--                      data-component="fav"--}}
-{{--                      data-id="{{$article->hash_id}}"--}}
-{{--                      data-original-count="{{$article->collection_count}}"--}}
-{{--                      data-count="{{$article->collection_count}}"> <i class="icon-1-heart-border"></i>--}}
-{{--                    <span class="txt">收藏</span>--}}
-{{--                    <em>{{$article->collection_count}}</em>--}}
-{{--                </span>--}}
+{{--                                <span class="fav btn btn-orange-border"--}}
+{{--                                      data-component="fav"--}}
+{{--                                      data-id="{{$article->hash_id}}"--}}
+{{--                                      data-original-count="{{$article->collection_count}}"--}}
+{{--                                      data-count="{{$article->collection_count}}"> <i class="icon-1-heart-border"></i>--}}
+{{--                                    <span class="txt">收藏</span>--}}
+{{--                                    <em>{{$article->collection_count}}</em>--}}
+{{--                                </span>--}}
 {{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="article-info">--}}
-{{--                    <p>--}}
-{{--                        <a href="text-layout.html" class="btn btn-orange-border copy-link">--}}
-{{--                            <i class="icon-link"></i>--}}
-{{--                            复制本文链接--}}
-{{--                            <input type="text" name="copy"--}}
-{{--                                   value="{{route('articles.show', ['article' => $article['hash_id']])}}"--}}
-{{--                                   class="copy-content">--}}
-{{--                        </a>--}}
-{{--                        文章为作者独立观点不代表优设网立场，<span>未经允许不得转载。</span>--}}
-{{--                    </p>--}}
-{{--                </div>--}}
+                </div>
+                <div class="article-info">
+                    <p>
+                        <a href="text-layout.html" class="btn btn-orange-border copy-link">
+                            <i class="icon-link"></i>
+                            复制本文链接
+                            <input type="text" name="copy"
+                                   value="{{route('articles.show', ['article' => $article['hash_id']])}}"
+                                   class="copy-content">
+                        </a>
+                        文章为作者独立观点不代表优设网立场，<span>未经允许不得转载。</span>
+                    </p>
+                </div>
                 <div class="article-tag">
                     <h4>继续阅读与本文标签相同的文章</h4>
                     @include("article::front.article.tag_item", ['article' => $article])
@@ -137,7 +148,8 @@
                                         </div>
                                         <div class="item-main">
                                             <h2>{{data_get($data, '0.title')}}</h2>
-                                            <h5>{{getArticleInfoOnCache(data_get($data, '0.id'), 'view_count')}} 人阅读</h5></div>
+                                            <h5>{{getArticleInfoOnCache(data_get($data, '0.id'), 'view_count')}}
+                                                人阅读</h5></div>
                                     </a>
                                 </div>
                             </div>
@@ -170,120 +182,120 @@
                     </div>
                 </section>
             @endif
-{{--            <div class="comment-div" id="post_comment">--}}
-{{--                <h3 class="section-title">发表评论--}}
-{{--                    <span class="sub">已发布 <i class="clr_orange comment_count">1</i> 条</span>--}}
-{{--                </h3>--}}
-{{--                <div class="comment-write">--}}
-{{--                    <form class="comment-write-form" action="index.html" method="post">--}}
-{{--                        <input type="hidden" name="pid" value="370902">--}}
-{{--                        <input type="hidden" name="parent" value="0">--}}
-{{--                        <div class="form-item">--}}
-{{--                            <div class="item-title">--}}
-{{--                        <span class="user-avatar"><i class="thumb "--}}
-{{--                                                     style="background-image:url(https://image.uisdc.com/wp-content/uploads/2018/06/avatar-uisdc-chat.png)"></i></span>--}}
-{{--                            </div>--}}
-{{--                            <div class="item-content"><span class="user-name"> <input type="text" name="user-name"--}}
-{{--                                                                                      data-placeholder="欢迎来到优设，试试别填名字..."--}}
-{{--                                                                                      class="txt txt_user_name"> </span>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="form-item">--}}
-{{--                            <div class="item-title"><label for="comment_word">评论</label></div>--}}
-{{--                            <div class="item-content">--}}
-{{--                        <textarea name="comment" rows="1" id="comment_word" class="comment-word txt lineLen"--}}
-{{--                                  data-placeholder="您的评论会经编辑或作者筛选后显示，全站可见，请文明发言。" data-total=800></textarea>--}}
-{{--                                <span class="rest"> 还可以输入 <em>800</em> 个字 </span>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="form-item form-yzm hidden">--}}
-{{--                            <div class="item-title"><label for="yzm"> 验证码 </label></div>--}}
-{{--                            <div class="item-content">--}}
-{{--                                <input type="text" name="yzm" id="yzm" class="txt yzm comment-yzm"--}}
-{{--                                       data-placeholder="请输入验证码">--}}
-{{--                                <img src="" alt="yzm">--}}
-{{--                                <input type="hidden" name="prefix" class="yzm_prefix">--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="error-box hide form-item">--}}
-{{--                            <div class="item-title"> &nbsp;</div>--}}
-{{--                            <div class="item-content"></div>--}}
-{{--                        </div>--}}
-{{--                        <div class="form-item">--}}
-{{--                            <div class="item-title"> &nbsp;</div>--}}
-{{--                            <div class="item-content">--}}
-{{--                                <button type="submit" class="btn btn-orange btn-submit">提交评论</button>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </form>--}}
-{{--                    <span class="btn-reply-close"> <i class="icon-close"></i> </span>--}}
-{{--                </div>--}}
-{{--                <div class="comment-list" id="comment_list" data-paged="1" data-pid="370902"></div>--}}
-{{--                <div class="content-loading" data-component="loading">--}}
-{{--                    <i class="loading-icon"></i> 载入中....--}}
-{{--                </div>--}}
-{{--                <div class="comment-more hidden">--}}
-{{--                    <span class="btn btn-orange btn-more-comments">加载更多评论</span>--}}
-{{--                </div>--}}
-{{--                <div class="comment-nomore hidden">--}}
-{{--                    没有更多评论了--}}
-{{--                </div>--}}
-{{--                <div class="comment-footer">--}}
-{{--                    <div class="comment-footer-main">--}}
-{{--                        <div class="item">--}}
-{{--                            <span class="hide_sm">评论就这些咯，让大家也知道你的独特见解</span>--}}
-{{--                            <a href="#post_comment" class="btn btn-orange-border">立即评论</a>--}}
-{{--                        </div>--}}
-{{--                        <div class="item">--}}
-{{--                            以上留言仅代表用户个人观点，不代表本站立场--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <i class="ji2-icon" data-bubble="yes"></i>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+            {{--            <div class="comment-div" id="post_comment">--}}
+            {{--                <h3 class="section-title">发表评论--}}
+            {{--                    <span class="sub">已发布 <i class="clr_orange comment_count">1</i> 条</span>--}}
+            {{--                </h3>--}}
+            {{--                <div class="comment-write">--}}
+            {{--                    <form class="comment-write-form" action="index.html" method="post">--}}
+            {{--                        <input type="hidden" name="pid" value="370902">--}}
+            {{--                        <input type="hidden" name="parent" value="0">--}}
+            {{--                        <div class="form-item">--}}
+            {{--                            <div class="item-title">--}}
+            {{--                        <span class="user-avatar"><i class="thumb "--}}
+            {{--                                                     style="background-image:url(https://image.uisdc.com/wp-content/uploads/2018/06/avatar-uisdc-chat.png)"></i></span>--}}
+            {{--                            </div>--}}
+            {{--                            <div class="item-content"><span class="user-name"> <input type="text" name="user-name"--}}
+            {{--                                                                                      data-placeholder="欢迎来到优设，试试别填名字..."--}}
+            {{--                                                                                      class="txt txt_user_name"> </span>--}}
+            {{--                            </div>--}}
+            {{--                        </div>--}}
+            {{--                        <div class="form-item">--}}
+            {{--                            <div class="item-title"><label for="comment_word">评论</label></div>--}}
+            {{--                            <div class="item-content">--}}
+            {{--                        <textarea name="comment" rows="1" id="comment_word" class="comment-word txt lineLen"--}}
+            {{--                                  data-placeholder="您的评论会经编辑或作者筛选后显示，全站可见，请文明发言。" data-total=800></textarea>--}}
+            {{--                                <span class="rest"> 还可以输入 <em>800</em> 个字 </span>--}}
+            {{--                            </div>--}}
+            {{--                        </div>--}}
+            {{--                        <div class="form-item form-yzm hidden">--}}
+            {{--                            <div class="item-title"><label for="yzm"> 验证码 </label></div>--}}
+            {{--                            <div class="item-content">--}}
+            {{--                                <input type="text" name="yzm" id="yzm" class="txt yzm comment-yzm"--}}
+            {{--                                       data-placeholder="请输入验证码">--}}
+            {{--                                <img src="" alt="yzm">--}}
+            {{--                                <input type="hidden" name="prefix" class="yzm_prefix">--}}
+            {{--                            </div>--}}
+            {{--                        </div>--}}
+            {{--                        <div class="error-box hide form-item">--}}
+            {{--                            <div class="item-title"> &nbsp;</div>--}}
+            {{--                            <div class="item-content"></div>--}}
+            {{--                        </div>--}}
+            {{--                        <div class="form-item">--}}
+            {{--                            <div class="item-title"> &nbsp;</div>--}}
+            {{--                            <div class="item-content">--}}
+            {{--                                <button type="submit" class="btn btn-orange btn-submit">提交评论</button>--}}
+            {{--                            </div>--}}
+            {{--                        </div>--}}
+            {{--                    </form>--}}
+            {{--                    <span class="btn-reply-close"> <i class="icon-close"></i> </span>--}}
+            {{--                </div>--}}
+            {{--                <div class="comment-list" id="comment_list" data-paged="1" data-pid="370902"></div>--}}
+            {{--                <div class="content-loading" data-component="loading">--}}
+            {{--                    <i class="loading-icon"></i> 载入中....--}}
+            {{--                </div>--}}
+            {{--                <div class="comment-more hidden">--}}
+            {{--                    <span class="btn btn-orange btn-more-comments">加载更多评论</span>--}}
+            {{--                </div>--}}
+            {{--                <div class="comment-nomore hidden">--}}
+            {{--                    没有更多评论了--}}
+            {{--                </div>--}}
+            {{--                <div class="comment-footer">--}}
+            {{--                    <div class="comment-footer-main">--}}
+            {{--                        <div class="item">--}}
+            {{--                            <span class="hide_sm">评论就这些咯，让大家也知道你的独特见解</span>--}}
+            {{--                            <a href="#post_comment" class="btn btn-orange-border">立即评论</a>--}}
+            {{--                        </div>--}}
+            {{--                        <div class="item">--}}
+            {{--                            以上留言仅代表用户个人观点，不代表本站立场--}}
+            {{--                        </div>--}}
+            {{--                    </div>--}}
+            {{--                    <i class="ji2-icon" data-bubble="yes"></i>--}}
+            {{--                </div>--}}
+            {{--            </div>--}}
 
-{{--            <div class="post-recommend">--}}
-{{--                <div class="recommend-titles">--}}
-{{--                    <a href="{{route('articles.column.show', ['type' =>'all', 'order' => 'now'])}}" class="current"--}}
-{{--                       target="_blank" data-component="tab" data-event="hover"--}}
-{{--                       data-tab-wrap=".recommend-list" data-tab-menus=".post-recommend .recommend-titles a"--}}
-{{--                       data-tab-target=".recommend-new" data-tab-action="new_posts" data-tab-type="list-default"--}}
-{{--                       data-ppp="5">最新文章</a>--}}
-{{--                    <a href="{{route('articles.column.show', ['type' =>'all', 'order' => 'hot'])}}" target="_blank"--}}
-{{--                       data-component="tab" data-event="hover"--}}
-{{--                       data-tab-wrap=".recommend-list" data-tab-menus=".post-recommend .recommend-titles a"--}}
-{{--                       data-tab-target=".recommend-hot" data-tab-action="hot_posts" data-tab-type="list-post"--}}
-{{--                       data-ppp="5">最热文章</a>--}}
-{{--                </div>--}}
-{{--                <div class="recommends">--}}
-{{--                    <div class="recommend-list">--}}
-{{--                        <ul class="recommend-new">--}}
-{{--                            @foreach(getColumnArticles($current['id'] ?? 0, 'now', 5, $article->id) as $article)--}}
-{{--                                @include('article::front.article.show_item',  compact('article'))--}}
-{{--                            @endforeach--}}
-{{--                        </ul>--}}
-{{--                        <ul class="recommend-hot">--}}
-{{--                            @foreach(getColumnArticles($current['id'] ?? 0, 'hot', 5, $article->id) as $article)--}}
-{{--                                @include('article::front.article.show_item',  compact('article'))--}}
-{{--                            @endforeach--}}
-{{--                        </ul>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+            {{--            <div class="post-recommend">--}}
+            {{--                <div class="recommend-titles">--}}
+            {{--                    <a href="{{route('articles.column.show', ['type' =>'all', 'order' => 'now'])}}" class="current"--}}
+            {{--                       target="_blank" data-component="tab" data-event="hover"--}}
+            {{--                       data-tab-wrap=".recommend-list" data-tab-menus=".post-recommend .recommend-titles a"--}}
+            {{--                       data-tab-target=".recommend-new" data-tab-action="new_posts" data-tab-type="list-default"--}}
+            {{--                       data-ppp="5">最新文章</a>--}}
+            {{--                    <a href="{{route('articles.column.show', ['type' =>'all', 'order' => 'hot'])}}" target="_blank"--}}
+            {{--                       data-component="tab" data-event="hover"--}}
+            {{--                       data-tab-wrap=".recommend-list" data-tab-menus=".post-recommend .recommend-titles a"--}}
+            {{--                       data-tab-target=".recommend-hot" data-tab-action="hot_posts" data-tab-type="list-post"--}}
+            {{--                       data-ppp="5">最热文章</a>--}}
+            {{--                </div>--}}
+            {{--                <div class="recommends">--}}
+            {{--                    <div class="recommend-list">--}}
+            {{--                        <ul class="recommend-new">--}}
+            {{--                            @foreach(getColumnArticles($current['id'] ?? 0, 'now', 5, $article->id) as $article)--}}
+            {{--                                @include('article::front.article.show_item',  compact('article'))--}}
+            {{--                            @endforeach--}}
+            {{--                        </ul>--}}
+            {{--                        <ul class="recommend-hot">--}}
+            {{--                            @foreach(getColumnArticles($current['id'] ?? 0, 'hot', 5, $article->id) as $article)--}}
+            {{--                                @include('article::front.article.show_item',  compact('article'))--}}
+            {{--                            @endforeach--}}
+            {{--                        </ul>--}}
+            {{--                    </div>--}}
+            {{--                </div>--}}
+            {{--            </div>--}}
             <div class="article-toolkit" data-component="autofixed" data-start=".post-content" data-end=".post-content"
                  data-top="70">
-{{--                <a class="toolkit comment" href="#post_comment">--}}
-{{--                    <i class="icon-comm"></i>--}}
-{{--                    <em>{{$article->post_count}}</em>--}}
-{{--                </a>--}}
-{{--                <span class="toolkit fav"--}}
-{{--                      data-component="fav"--}}
-{{--                      data-id="{{$article->hash_id}}"--}}
-{{--                      data-original-count="{{$article->collection_count}}"--}}
-{{--                      data-count="{{$article->collection_count}}">--}}
-{{--                    <i class="icon-1-heart-border"></i>--}}
-{{--                    <span>收藏</span>--}}
-{{--                </span>--}}
+                {{--                <a class="toolkit comment" href="#post_comment">--}}
+                {{--                    <i class="icon-comm"></i>--}}
+                {{--                    <em>{{$article->post_count}}</em>--}}
+                {{--                </a>--}}
+                {{--                <span class="toolkit fav"--}}
+                {{--                      data-component="fav"--}}
+                {{--                      data-id="{{$article->hash_id}}"--}}
+                {{--                      data-original-count="{{$article->collection_count}}"--}}
+                {{--                      data-count="{{$article->collection_count}}">--}}
+                {{--                    <i class="icon-1-heart-border"></i>--}}
+                {{--                    <span>收藏</span>--}}
+                {{--                </span>--}}
                 <span class="toolkit share">
                     <i class="icon-share"></i>
                     <em>分享</em>
@@ -320,14 +332,14 @@
             <section class="widget widget-post-related hide_sm">
                 <h2 class="section-title"> 相关文章 </h2>
                 <div class="section-content">
-                    @foreach(getColumnArticles($current['id'] ?? 0, 'rand', 5, $article->id) as $k => $article)
+                    @foreach(getColumnArticles($current['id'] ?? 0, 'rand', 5, $article->id) as $k => $item)
                         <div class="item">
-                            <a href="{{route('articles.show', ['article' => $article['hash_id']])}}" target="_blank">
+                            <a href="{{route('articles.show', ['article' => $item['hash_id']])}}" target="_blank">
                                 <div class="num"><i class="btn btn-default-border">{{$k+1}}</i></div>
-                                <h2>{{$article->title}}</h2>
+                                <h2>{{$item->title}}</h2>
                                 <div class="item-thumb h-scale">
                                     <i class="thumb"
-                                       style="background-image:url('{{render_cover($article->cover)   }}')"></i>
+                                       style="background-image:url('{{render_cover($item->cover)   }}')"></i>
                                 </div>
                             </a>
                         </div>
@@ -342,3 +354,53 @@
         </div>
     </div>
 @stop
+
+@push('scripts')
+    <script>
+        $('.zan-div').click(function () {
+            $(this).addClass('disable');
+            var that = $(this);
+
+            var type = $(this).attr('type');
+            var url = '{{route('articles.give', ['article'=> $article->hash_id])}}';
+            url += '?type=' + type;
+
+            $.ajax(
+                {
+                    type: 'POST',
+                    url: url,
+                    dataType: 'JSON',
+                    success: function (res) {
+                        if (res.code === 200) {
+                            var count = parseInt(that.find('.count').html());
+                            var new_count = 0;
+                            if (type === 'cancel_give') {
+                                that.find('.txt').html('点赞');
+                                that.removeAttr('type').attr('type', 'give');
+                                that.find('.iconfont').html('&#xe68f;');
+                                new_count = count - 1;
+                                that.find('.count').html(new_count);
+                                $('.post-meta .zan').html('点赞 ' + new_count);
+                            } else {
+                                that.find('.txt').text('已赞');
+                                that.removeAttr('type').attr('type', 'cancel_give');
+                                that.find('.iconfont').html('&#xe611;');
+                                new_count = count + 1;
+                                that.find('.count').html(new_count);
+                                $('.post-meta .zan').html('点赞 ' + new_count);
+                            }
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    },
+                    error: function () {
+                        layer.msg("操作失败");
+                    },
+                    complete() {
+                        that.removeClass('disable');
+                    }
+                }
+            )
+        });
+    </script>
+@endpush

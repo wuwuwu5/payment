@@ -91,7 +91,7 @@
 
     // 获取文章信息
     if (!function_exists('incrArticleViewCount')) {
-        function incrArticleViewCount($id)
+        function incrArticleViewCount($id, $field = 'view_count')
         {
             $info = getArticleInfoOnCache($id);
 
@@ -99,14 +99,14 @@
                 return false;
             }
 
-            $info['view_count']++;
+            $info[$field]++;
 
             return coverArticleCache($id, $info);
         }
     }
 
     // 覆盖文章信息
-    if (!function_exists('incrArticleViewCount')) {
+    if (!function_exists('coverArticleCache')) {
         function coverArticleCache($id, $info)
         {
             $key = getArticleInfoOnCacheKey($id);
@@ -208,6 +208,40 @@
             }
 
             return $molecule / $denominator;
+        }
+    }
+
+    // syncArticleInfoJob
+    if (!function_exists('syncArticleInfoJob')) {
+        function syncArticleInfoJob($article, $mark = false)
+        {
+            \App\Modules\Article\Jobs\SyncArticleInfoToCache::dispatch($article, $mark)
+                ->onConnection('redis')
+                ->onQueue('sync_article');
+        }
+    }
+
+    // likeArticleOrNot
+    if (!function_exists('likeArticleOrNot')) {
+        function likeArticleOrNot($id, $user_id)
+        {
+            $rand_key = formatRedisKey('give_articles_users', $id);
+
+            // 获取排名
+            $rank = \Illuminate\Support\Facades\Redis::zrank($rand_key, $user_id);
+
+            if ($rank !== false) {
+
+                $score = \Illuminate\Support\Facades\Redis::ZSCORE($rand_key, $user_id);
+
+                if ((int)($score) != -1) {
+                    return false;
+                }
+
+                return true;
+            } else {
+                return true;
+            }
         }
     }
 }

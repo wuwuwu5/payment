@@ -47,6 +47,9 @@ class ArticlesController extends Controller
             ->first();
 
         // 追加访问量
+        incrArticleViewCount($article->id);
+        // 同步数据
+        syncArticleInfoJob($article, true);
 
         return view('article::front.article.show', compact('article', 'next_article'));
     }
@@ -117,6 +120,7 @@ class ArticlesController extends Controller
      * 点赞 | 取消点赞
      *
      * @param $article
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function give($article, Request $request)
@@ -214,6 +218,9 @@ class ArticlesController extends Controller
         ];
 
         Redis::eval($this->giveLua(), 3, ...$fields);
+
+        // 同步数据
+        syncArticleInfoJob(Article::find($id), true);
 
         return response()->json(['code' => 200, 'msg' => ($give == 'give' ? '点赞成功' : '取消点赞成功')]);
     }

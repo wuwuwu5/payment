@@ -14,6 +14,7 @@
     <meta content="{{cms_config_field('front_site', 'keywords')}}" name="keywords"/>
     <meta content="{{cms_config_field('front_site', 'description')}}" name="description"/>
     <meta content='{{cms_config_field('front_site', 'author')}}' name='Author'/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{render_cover(cms_config_field('front_site', 'icon'))}}" type="image/x-icon"/>
     @include("article::front.layout.style")
     <style>
@@ -25,6 +26,10 @@
 
         .fixed-right {
             z-index: 9999;
+        }
+
+        .disable {
+            pointer-events: none;
         }
     </style>
     @stack('styles')

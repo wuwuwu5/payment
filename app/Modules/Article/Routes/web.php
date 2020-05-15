@@ -11,7 +11,7 @@ Route::group(['middleware' => ['bindings']], function () {
     Route::get('/articles/show/{article}', 'ArticlesController@show')->name('articles.show');
 
     // 点赞 | 取消点赞
-    Route::get('/articles/{article}/give', 'ArticlesController@give')->name('articles.give');
+    Route::post('/articles/{article}/give', 'ArticlesController@give')->name('articles.give');
 
     // 收藏
     Route::get('/articles/{article}/collection', 'ArticlesController@collection')->name('articles.collection');
