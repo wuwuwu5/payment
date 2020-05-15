@@ -2,8 +2,9 @@
 
 namespace App\Modules\Article\Policies;
 
+use App\Modules\Admin\Models\User;
+use App\Modules\Admin\Policies\BasePolicy;
 use App\Modules\Article\Models\Article;
-use App\Modules\Article\Models\User;
 
 class ArticlePolicy extends BasePolicy
 {

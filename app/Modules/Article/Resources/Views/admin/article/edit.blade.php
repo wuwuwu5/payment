@@ -99,6 +99,19 @@
         </div>
 
 
+
+        {{Form::LayRadio([
+                'name'=>'is_published',
+                'title'=>'发布状态',
+                'tips'=>'is_published',
+                'filter'=>'is_published',
+                'on_id' => $show->is_published == true?1:0,
+                'list'=>[
+                     ['id'=>0,'name'=>'不发布'],
+                     ['id'=>1,'name'=>'发布'],
+                ]
+            ])}}
+
         {{Form::LayRadio([
                 'name'=>'not_post',
                 'title'=>'评论选项',

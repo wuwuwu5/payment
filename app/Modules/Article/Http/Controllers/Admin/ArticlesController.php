@@ -152,10 +152,11 @@ class ArticlesController extends BaseController
 
             $article->add()->create($request->only('body'));
 
+            DB::commit();
+
             // 将基本信息存入redis
             SyncArticleInfoToCache::dispatch($article)->onConnection('redis')->onQueue('sync_article');
 
-            DB::commit();
             return $this->returnOkApi();
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -239,10 +240,11 @@ class ArticlesController extends BaseController
 
             $article->add()->update($request->only('body'));
 
+            DB::commit();
+
             // 更新Redis数据
             SyncArticleInfoToCache::dispatch($article, true)->onConnection('redis')->onQueue('sync_article');
 
-            DB::commit();
             return $this->returnOkApi();
         } catch (\Exception $exception) {
             DB::rollBack();

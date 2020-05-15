@@ -166,7 +166,7 @@ local articles_info_key = KEYS[5]
 
 local article_id = ARGV[1]
 local hot_score = ARGV[2]
-local publish = ARGV[3]
+local publish = tonumber(ARGV[3])
 local info = ARGV[4]
 
 redis.call('ZADD', all_hot_key, hot_score, article_id)
@@ -176,7 +176,8 @@ redis.call('ZADD', column_hot_key, hot_score, article_id)
 deleteRedundantData(column_hot_key)
 
 
-if (publish == -1) then
+if (publish < 0) then
+    redis.call('set', '1234567891345789', 12131313131)
     redis.call('ZREM', publish_key, article_id)
     redis.call('ZREM', column_publish_key, article_id)
 else
