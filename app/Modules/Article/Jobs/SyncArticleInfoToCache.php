@@ -177,7 +177,6 @@ deleteRedundantData(column_hot_key)
 
 
 if (publish < 0) then
-    redis.call('set', '1234567891345789', 12131313131)
     redis.call('ZREM', publish_key, article_id)
     redis.call('ZREM', column_publish_key, article_id)
 else

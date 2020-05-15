@@ -49,6 +49,7 @@ class PublishArticleJob implements ShouldQueue
         // 当前时间小于等于发布时间
         if ($diff <= 0) {
             Article::query()->where('id', $this->article->id)->update(['is_published' => 1]);
+            SyncArticleInfoToCache::dispatch($this->article, true)->onConnection('redis')->onQueue('sync_article');
         } else {
             // 发布时间大于当前时间 重新放回队列
             PublishArticleJob::dispatch($this->article)->delay($this->article->published_at)->onConnection('redis');

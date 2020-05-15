@@ -43,6 +43,7 @@ class SyncArticleLikes extends Command
     public function handle()
     {
         $key = $this->formatRedisKey('day_give_articles_users', now()->startOfDay()->subDay()->format('Y-m-d'));
+        $key = $this->formatRedisKey('day_give_articles_users', now()->startOfDay()->format('Y-m-d'));
 
         if (!Redis::exists($key)) {
             return;
@@ -135,8 +136,6 @@ class SyncArticleLikes extends Command
             foreach ($items as $item) {
                 $sql .= sprintf("WHEN %d THEN %s ", $item['article_id'], 'give_count ' . $symbol . ' ' . $item['count']);
                 $ids[] = $item['article_id'];
-                info("article_id: " . $item['article_id'] . ' ' . getArticleInfo($item['article_id'], 'give_count'));
-                info("article_id: " . $item['article_id'] . ' ' . $symbol . ' ' . $item['count']);
             }
         }
 
