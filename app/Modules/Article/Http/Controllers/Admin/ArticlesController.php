@@ -19,7 +19,7 @@ class ArticlesController extends BaseController
 
     public $model = \App\Modules\Article\Models\Article::class;
 
-    public $view_prefix_path = "admin::admin.";
+    public $view_prefix_path = "article::admin.";
 
     public $page_name = '文章';
 
