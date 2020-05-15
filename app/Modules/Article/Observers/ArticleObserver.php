@@ -14,7 +14,7 @@ class ArticleObserver
 
     public function saving(Article $article)
     {
-        if (!empty($article->published_at) && $article->isDirty('published_at')) {
+        if ((!empty($article->published_at) && $article->isDirty('published_at')) || $article->isDirty('is_published')) {
             if (empty($article->published_at)) {
                 $article->is_published = 0;
             } else {

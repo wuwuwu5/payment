@@ -65,7 +65,7 @@
     }
 
     // 获取文章信息
-    if (!function_exists('getArticleInfo')) {
+    if (!function_exists('getArticleInfoOnCache')) {
         function getArticleInfoOnCache($id, $field = '')
         {
             $num = $id % 10;
@@ -166,6 +166,8 @@
                 'post_count' => $article->post_count,
                 'created_at' => $created_at,
                 'published_at' => $published_at,
+                'column_id' => $article->column_id,
+                'column2_id' => $article->column2_id,
             ];
         }
     }
@@ -185,6 +187,27 @@
             }
 
             return $column_hot_key;
+        }
+    }
+
+    // getColumnKey
+    if (!function_exists('calculateScore')) {
+        function calculateScore($info)
+        {
+            // 评论数
+            $log_post_count = ($info['post_count'] == 0) ? 0 : log($info['post_count']);
+            // 查看数
+            $log_view_count = ($info['view_count'] == 0) ? 0 : log($info['view_count'], 10);
+            // 分子
+            $molecule = ($log_view_count + $info['give_count'] + $info['collection_count'] + $log_post_count);
+            // 分母
+            $denominator = pow(($info['created_at'] / 3600 / 2 + $info['published_at'] / 3600 / 2 + 1), 0.3);
+
+            if ($molecule == 0) {
+                return 0;
+            }
+
+            return $molecule / $denominator;
         }
     }
 }

@@ -44,60 +44,42 @@ class SyncArticleInfoToCache implements ShouldQueue
      */
     public function handle()
     {
-        $article = Article::find($this->article->id);
-
-        if (empty($article)) {
-            return;
-        }
+        $article = $this->article;
 
         // 可以从redis中获取数据
         $info = $this->is_update == true ? $this->updateGetInfo($article) : formatArticleInfo($article);
 
+        // 获取缓存中的久栏目
+        $old_column_id = $info['column_id'];
+        $old_column2_id = $info['column2_id'];
+
+        // 重新在赋值一次
+        $info['column_id'] = $article->column_id;
+        $info['column2_id'] = $article->column2_id;
+        $info['published_at'] = $article->published_at->timestamp;
+
         // 发布
         if ($article->is_published == 1) {
-            $score = $this->calculateScore($info);
+            $score = calculateScore($info);
             $published_at = $info['published_at'];
         } else {
             $published_at = $score = -1;
         }
 
         // 储存
-        Redis::eval($this->luaScript(), 5, ...[
+        Redis::eval($this->luaScript(), 7, ...[
             'hot_articles_all',
             getColumnKey($article, 'hot'),
             'published_articles',
             getColumnKey($article, 'published'),
             getArticleInfoOnCacheKey($article->id),
+            $this->getNeedDelKey($old_column_id, $old_column2_id, $info, 'hot'),
+            $this->getNeedDelKey($old_column_id, $old_column2_id, $info, 'published'),
             $article->id,
             $score,
             $published_at,
             serialize($info)
         ]);
-    }
-
-
-    /**
-     * 分数
-     *
-     * @param $info
-     * @return float|int
-     */
-    public function calculateScore($info)
-    {
-        // 评论数
-        $log_post_count = ($info['post_count'] == 0) ? 0 : log($info['post_count']);
-        // 查看数
-        $log_view_count = ($info['view_count'] == 0) ? 0 : log($info['view_count'], 10);
-        // 分子
-        $molecule = ($log_view_count + $info['give_count'] + $info['collection_count'] + $log_post_count);
-        // 分母
-        $denominator = pow(($info['created_at'] / 3600 / 2 + $info['published_at'] / 3600 / 2 + 1), 0.3);
-
-        if ($molecule == 0) {
-            return 0;
-        }
-
-        return $molecule / $denominator;
     }
 
 
@@ -117,6 +99,38 @@ class SyncArticleInfoToCache implements ShouldQueue
 
         return formatArticleInfo($article);
     }
+
+
+    /**
+     * 删除
+     *
+     * @param $old_column_id
+     * @param $old_column2_id
+     * @param $info
+     * @param $type
+     * @return string
+     */
+    public function getNeedDelKey($old_column_id, $old_column2_id, $info, $type)
+    {
+        $need_del_key = '';
+
+        if (empty($old_column2_id) && empty($old_column_id)) {
+            if (!empty($info['column2_id']) || !empty($info['column_id'])) {
+                $need_del_key = $type . '_articles_all';
+            }
+        } else {
+            if (!empty($old_column2_id) && $info['column2_id'] != $old_column2_id) {
+                $need_del_key = $type . '_articles:' . $old_column2_id;
+            } else if (!empty($old_column_id) && empty($old_column2_id)) {
+                if (!empty($info['column2_id']) || $old_column_id != $info['column_id']) {
+                    $need_del_key = $type . '_articles:' . $old_column_id;
+                }
+            }
+        }
+
+        return $need_del_key;
+    }
+
 
     /**
      * 脚本
@@ -143,6 +157,8 @@ local column_hot_key = KEYS[2]
 local publish_key = KEYS[3]
 local column_publish_key = KEYS[4]
 local articles_info_key = KEYS[5]
+local del_hot_key = tostring(KEYS[6])
+local del_publish_key = tostring(KEYS[7])
 
 local article_id = ARGV[1]
 local hot_score = ARGV[2]
@@ -167,6 +183,10 @@ else
 end
 
 redis.call('HSET', articles_info_key, article_id, info)
+
+redis.call('ZREM', del_hot_key, article_id)
+redis.call('ZREM', del_publish_key, article_id)
+
 LUA;
     }
 }

@@ -267,6 +267,7 @@ class BaseController extends Controller
      */
     public function formatPaginateResponse($data)
     {
+
         $data = $this->setDataItemUrl($data);
 
         $json = [

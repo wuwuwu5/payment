@@ -11,6 +11,7 @@ use App\Modules\Traits\ArticleTrait;
 use Fukuball\Jieba\Jieba;
 use Fukuball\Jieba\JiebaAnalyse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ArticlesController extends BaseController
@@ -53,9 +54,9 @@ class ArticlesController extends BaseController
     public function setDataItemUrl($data)
     {
         foreach ($data as $item) {
-            $item->edit_url = $this->getEditUrl([$item->id]);
-            $item->update_url = $this->getUpdateUrl([$item->id]);
-            $item->destory_url = $this->getDestroyUrl([$item->id]);
+            $item->edit_url = $this->getEditUrl([$item->id], true);
+            $item->update_url = $this->getUpdateUrl([$item->id], true);
+            $item->destory_url = $this->getDestroyUrl([$item->id], true);
             $item->publish_url = $this->checkRoute('admin.articles.publish', [$item->id]);
             $item->commend_url = $this->checkRoute('admin.articles.commend', [$item->id]);
         }
@@ -217,6 +218,11 @@ class ArticlesController extends BaseController
 
         // 缩略图
         $request->offsetSet('lit_pic', $request->input('cover'));
+
+        // 发布
+        if ($request->input('is_published') == 1) {
+            $request->offsetSet('published_at', now()->format('Y-m-d H:i:s'));
+        }
 
         try {
 
