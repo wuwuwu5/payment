@@ -21,7 +21,6 @@ class GeneratorServiceProvider extends ServiceProvider
     public function register()
     {
         $generators = [
-            'generate:hot_article' => \App\Modules\Article\Console\Commands\GenerateHotArticle::class,
             'load:article_info' => \App\Modules\Article\Console\Commands\LoadArticleInfo::class,
             'sync:like_article' => \App\Modules\Article\Console\Commands\SyncArticleLikes::class,
         ];

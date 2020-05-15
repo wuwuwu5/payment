@@ -41,7 +41,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapApiRoutes();
 
-        //
+        $this->mapAdminRoutes();
     }
 
     /**
@@ -92,7 +92,7 @@ class RouteServiceProvider extends ServiceProvider
             'namespace' => $this->admin_namespace,
             'prefix' => 'admin',
         ], function ($router) {
-            require module_path('admin', 'Routes/admin.php', 'app');
+            require module_path('article', 'Routes/admin.php', 'app');
         });
     }
 }
