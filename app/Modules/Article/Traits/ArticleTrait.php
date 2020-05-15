@@ -7,101 +7,12 @@ use Illuminate\Support\Facades\Redis;
 trait ArticleTrait
 {
     /**
-     * 创建储存redis数据
-     *
-     * @param $article
-     */
-    public function storeArticleInfoOnRedis($article)
-    {
-
-        $num = $article->id % 10;
-
-        // 数据
-        $info = $this->redisArticleInfo($article);
-
-        if ($article->is_published == 1 && $article->status == 1) {
-
-            // 评论数
-            $log_post_count = $article->post_count == 0 ? 0 : log($article->post_count);
-            // 查看数
-            $log_view_count = $article->view_count == 0 ? 0 : log($article->view_count, 10);
-
-            // 分子
-            $molecule = ($log_view_count + $article->give_count + $article->collection_count + $log_post_count);
-
-            // 分母
-            $denominator = pow(($info['created_at'] / 3600 / 2 + $info['published_at'] / 3600 / 2 + 1), 0.3);
-
-            // 排行
-            Redis::zadd('hot_articles_all', ($molecule / $denominator), $article->id);
-
-            // 发布时间存入redis
-            Redis::zadd('published_articles', $info['published_at'], $article->id);
-        } else {
-            // 存入
-            Redis::zadd('published_articles', -1, $article->id);
-            // 未发布
-            Redis::zadd('hot_articles_all', -1, $article->id);
-        }
-
-        // 存入文章基本数据
-        Redis::hset('articles_info:' . $num, $article->id, serialize($info));
-    }
-
-    /**
-     * 创建储存redis数据
-     *
-     * @param $article
-     */
-    public function updateArticleInfoOnRedis($article)
-    {
-        $num = $article->id % 10;
-
-        // 获取redis中的数据
-        $info = unserialize(Redis::hget('articles_info:' . $num, $article->id));
-
-        if (empty($info)) {
-            $this->storeArticleInfoOnRedis($article);
-        } else {
-            $now_info = $this->redisArticleInfo($article);
-            $info['published_at'] = $now_info['published_at'];
-
-            // redis储存
-            Redis::hset('articles_info:' . $num, $article->id, serialize($info));
-
-            // 发布排名
-            if ($article->is_published == 1) {
-                // 评论数
-                $log_post_count = $info['post_count'] == 0 ? 0 : log($info['post_count']);
-                // 查看数
-                $log_view_count = $info['view_count'] == 0 ? 0 : log($info['view_count'], 10);
-                // 分子
-                $molecule = ($log_view_count + $info['give_count'] + $info['collection_count'] + $log_post_count);
-                // 分母
-                $denominator = pow(($info['created_at'] / 3600 / 2 + $info['published_at'] / 3600 / 2 + 1), 0.3);
-
-                // 排行
-                Redis::zadd('hot_articles_all', ($molecule / $denominator), $article->id);
-
-                // 排行
-                Redis::zadd('published_articles', $now_info['published_at'], $article->id);
-            } else {
-                // 存入
-                Redis::zadd('published_articles', -1, $article->id);
-
-                // 未发布排行
-                Redis::zadd('hot_articles_all', -1, $article->id);
-            }
-        }
-    }
-
-    /**
-     * 基本信息
+     * 基本信息(基本用于新创建的数据)
      *
      * @param $article
      * @return array
      */
-    public function redisArticleInfo($article)
+    public function formatArticleInfo($article)
     {
         // 时间
         $created_at = $article->created_at->timestamp;
@@ -118,6 +29,11 @@ trait ArticleTrait
         ];
     }
 
+    /**
+     * 删除
+     *
+     * @param $article
+     */
     public function deleteArticleOnRedis($article)
     {
         $num = $article->id % 10;
@@ -132,18 +48,6 @@ trait ArticleTrait
         Redis::ZREM('hot_articles_all', $article->id);
     }
 
-    /**
-     * 获取文章缓存
-     *
-     * @param $id
-     * @return mixed
-     */
-    public function getArticleInfoOnRedis($id)
-    {
-        $num = $id % 10;
-
-        return unserialize(Redis::hget('articles_info:' . $num, $id));
-    }
 
     /**
      * 覆盖文章缓存
@@ -151,11 +55,9 @@ trait ArticleTrait
      * @param $id
      * @return mixed
      */
-    public function getArticleInfoOnRedisKey($id)
+    public function getArticleInfoOnCacheKey($id)
     {
-        $num = $id % 10;
-
-        return 'articles_info:' . $num;
+        return 'articles_info:' . $this->position($id);
     }
 
 

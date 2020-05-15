@@ -706,7 +706,7 @@ if (!function_exists('generateCategoriesTree')) {
 
     // 获取文章信息
     if (!function_exists('getArticleInfo')) {
-        function getArticleInfo($id, $field = '')
+        function getArticleInfoOnCache($id, $field = '')
         {
             $num = $id % 10;
 
@@ -719,6 +719,10 @@ if (!function_exists('generateCategoriesTree')) {
                 }
 
                 return [];
+            }
+
+            if (empty($field)) {
+                return $data;
             }
 
             return data_get($data, $field, '');

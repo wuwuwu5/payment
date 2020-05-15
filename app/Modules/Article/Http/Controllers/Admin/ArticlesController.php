@@ -3,9 +3,10 @@
 namespace App\Modules\Article\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
+use App\Modules\Admin\Models\Category;
+use App\Modules\Admin\Models\CategoryGroup;
+use App\Modules\Article\Jobs\SyncArticleInfoToCache;
 use App\Modules\Article\Models\Article;
-use App\Modules\Article\Models\Category;
-use App\Modules\Article\Models\CategoryGroup;
 use App\Modules\Traits\ArticleTrait;
 use Fukuball\Jieba\Jieba;
 use Fukuball\Jieba\JiebaAnalyse;
@@ -152,7 +153,7 @@ class ArticlesController extends BaseController
             $article->add()->create($request->only('body'));
 
             // 将基本信息存入redis
-            $this->storeArticleInfoOnRedis($article);
+            SyncArticleInfoToCache::dispatch($article)->onConnection('redis')->onQueue('sync_article');
 
             DB::commit();
             return $this->returnOkApi();
@@ -239,7 +240,7 @@ class ArticlesController extends BaseController
             $article->add()->update($request->only('body'));
 
             // 更新Redis数据
-            $this->updateArticleInfoOnRedis($article);
+            SyncArticleInfoToCache::dispatch($article, true)->onConnection('redis')->onQueue('sync_article');
 
             DB::commit();
             return $this->returnOkApi();
@@ -280,13 +281,13 @@ class ArticlesController extends BaseController
         $article->published_at = $published_at;
 
         // redis更新
-        $this->updateArticleInfoOnRedis($article);
+        SyncArticleInfoToCache::dispatch($article, true)->onConnection('redis')->onQueue('sync_article');
 
         return $this->returnApi(200, '更新成功');
     }
 
     /**
-     * 更新状态
+     * 推荐
      *
      * @param Article $article
      * @param Request $request

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Article\Console\Commands;
 
+use App\Modules\Article\Jobs\SyncArticleInfoToCache;
 use App\Modules\Article\Models\Article;
 use App\Modules\Traits\ArticleTrait;
 use Illuminate\Console\Command;
@@ -43,7 +44,7 @@ class LoadArticleInfo extends Command
     {
         Article::query()->chunk(1000, function ($articles) {
             foreach ($articles as $article) {
-                $this->storeArticleInfoOnRedis($article);
+                SyncArticleInfoToCache::dispatch($article)->onConnection('redis')->onQueue('sync_article');
             }
         });
     }
