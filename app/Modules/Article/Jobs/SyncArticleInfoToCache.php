@@ -51,7 +51,7 @@ class SyncArticleInfoToCache implements ShouldQueue
         }
 
         // 可以从redis中获取数据
-        $info = $this->is_update == true ? $this->updateGetInfo($article) : $this->formatArticleInfo($article);
+        $info = $this->is_update == true ? $this->updateGetInfo($article) : formatArticleInfo($article);
 
         // 发布
         if ($article->is_published == 1) {
@@ -64,10 +64,10 @@ class SyncArticleInfoToCache implements ShouldQueue
         // 储存
         Redis::eval($this->luaScript(), 5, ...[
             'hot_articles_all',
-            $this->getColumnKey($article, 'hot'),
+            getColumnKey($article, 'hot'),
             'published_articles',
-            $this->getColumnKey($article, 'published'),
-            $this->getArticleInfoOnCacheKey($article->id),
+            getColumnKey($article, 'published'),
+            getArticleInfoOnCacheKey($article->id),
             $article->id,
             $score,
             $published_at,
@@ -75,27 +75,6 @@ class SyncArticleInfoToCache implements ShouldQueue
         ]);
     }
 
-    /**
-     * 栏目排行文章
-     *
-     * @param $article
-     * @param string $type
-     * @return string
-     */
-    public function getColumnKey($article, $type = 'hot')
-    {
-        if (empty($article->column2_id) && empty($article->column_id)) {
-            $column_hot_key = $type . '_articles_all';
-        } else {
-            if (empty($article->column2_id)) {
-                $column_hot_key = $type . '_articles:' . $article->column_id;
-            } else {
-                $column_hot_key = $type . '_articles:' . $article->column2_id;
-            }
-        }
-
-        return $column_hot_key;
-    }
 
     /**
      * 分数
@@ -121,6 +100,7 @@ class SyncArticleInfoToCache implements ShouldQueue
         return $molecule / $denominator;
     }
 
+
     /**
      * 更新获取数据
      *
@@ -135,7 +115,7 @@ class SyncArticleInfoToCache implements ShouldQueue
             return $info;
         }
 
-        return $this->formatArticleInfo($article);
+        return formatArticleInfo($article);
     }
 
     /**

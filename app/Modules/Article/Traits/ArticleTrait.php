@@ -7,84 +7,43 @@ use Illuminate\Support\Facades\Redis;
 trait ArticleTrait
 {
     /**
-     * 基本信息(基本用于新创建的数据)
-     *
-     * @param $article
-     * @return array
-     */
-    public function formatArticleInfo($article)
-    {
-        // 时间
-        $created_at = $article->created_at->timestamp;
-        $published_at = empty($article->published_at) ? 0 : $article->published_at->timestamp;
-
-        // 数据
-        return [
-            'view_count' => $article->view_count,
-            'give_count' => $article->give_count,
-            'collection_count' => $article->collection_count,
-            'post_count' => $article->post_count,
-            'created_at' => $created_at,
-            'published_at' => $published_at,
-        ];
-    }
-
-    /**
      * 删除
      *
      * @param $article
      */
     public function deleteArticleOnRedis($article)
     {
-        $num = $article->id % 10;
-
-        // 删除
-        Redis::hdel('articles_info:' . $num, $article->id);
-
-        // 移除
-        Redis::ZREM('published_articles', $article->id);
-
-        // 移除
-        Redis::ZREM('hot_articles_all', $article->id);
+        // 储存
+        Redis::eval($this->deleteLuaScript(), 5, ...[
+            'hot_articles_all',
+            getColumnKey($article, 'hot'),
+            'published_articles',
+            getColumnKey($article, 'published'),
+            getArticleInfoOnCacheKey($article->id),
+            $article->id,
+        ]);
     }
 
-
     /**
-     * 覆盖文章缓存
+     * 脚本
      *
-     * @param $id
-     * @return mixed
-     */
-    public function getArticleInfoOnCacheKey($id)
-    {
-        return 'articles_info:' . $this->position($id);
-    }
-
-
-    /**
-     * 组装redis—key
-     *
-     * @param $key
-     * @param array $params
      * @return string
      */
-    public function formatRedisKey($key, ...$params)
+    public function deleteLuaScript()
     {
-        $sub = config('redis_key.' . $key);
+        return <<<LUA
+local all_hot_key = KEYS[1]
+local column_hot_key = KEYS[2]
+local publish_key = KEYS[3]
+local column_publish_key = KEYS[4]
+local articles_info_key = KEYS[5]
+local article_id = ARGV[1]
 
-        $last_sub = implode(':', $params);
-
-        return $sub . ':' . $last_sub;
-    }
-
-    /**
-     * 位置
-     *
-     * @param $id
-     * @return int
-     */
-    public function position($id)
-    {
-        return $id % 10;
+redis.call('hdel', articles_info_key, article_id)
+redis.call('ZREM', all_hot_key, article_id)
+redis.call('ZREM', column_hot_key, article_id)
+redis.call('ZREM', publish_key, article_id)
+redis.call('ZREM', column_publish_key, article_id)
+LUA;
     }
 }

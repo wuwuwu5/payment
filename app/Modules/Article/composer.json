@@ -1,4 +1,9 @@
 {
     "name": "vagrant/article",
-    "require": {}
+    "require": {},
+    "autoload": {
+        "files": [
+            "helpers.php"
+        ]
+    }
 }

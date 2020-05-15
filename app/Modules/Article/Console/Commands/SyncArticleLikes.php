@@ -42,8 +42,8 @@ class SyncArticleLikes extends Command
      */
     public function handle()
     {
-        $key = $this->formatRedisKey('day_give_articles_users', now()->startOfDay()->subDay()->format('Y-m-d'));
-        $key = $this->formatRedisKey('day_give_articles_users', now()->startOfDay()->format('Y-m-d'));
+        $key = formatRedisKey('day_give_articles_users', now()->startOfDay()->subDay()->format('Y-m-d'));
+        $key = formatRedisKey('day_give_articles_users', now()->startOfDay()->format('Y-m-d'));
 
         if (!Redis::exists($key)) {
             return;

@@ -46,6 +46,8 @@ class ArticlesController extends Controller
             ->inRandomOrder()
             ->first();
 
+        // 追加访问量
+
         return view('article::front.article.show', compact('article', 'next_article'));
     }
 
@@ -144,7 +146,7 @@ class ArticlesController extends Controller
             $article = getArticleInfoOnCache($id);
         }
 
-        $rand_key = $this->formatRedisKey('give_articles_users', $id);
+        $rand_key = formatRedisKey('give_articles_users', $id);
 
         // 获取排名
         $rank = Redis::zrank($rand_key, auth()->user()->id);
@@ -196,12 +198,12 @@ class ArticlesController extends Controller
             }
         }
 
-        $day_give_users_key = $this->formatRedisKey('day_give_articles_users', today()->format('Y-m-d'));
+        $day_give_users_key = formatRedisKey('day_give_articles_users', today()->format('Y-m-d'));
 
         $fields = [
             $rand_key,
             $day_give_users_key,
-            $this->getArticleInfoOnCacheKey($id),
+            getArticleInfoOnCacheKey($id),
             auth()->user()->id,
             $this->generateMark(auth()->user()->id, $id, ($give == 'give' ? 0 : 1)),
             $this->generateMark(auth()->user()->id, $id, ($give == 'give' ? 1 : 0)),

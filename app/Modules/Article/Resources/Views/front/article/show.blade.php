@@ -137,7 +137,7 @@
                                         </div>
                                         <div class="item-main">
                                             <h2>{{data_get($data, '0.title')}}</h2>
-                                            <h5>{{getArticleInfo(data_get($data, '0.id'), 'view_count')}} 人阅读</h5></div>
+                                            <h5>{{getArticleInfoOnCache(data_get($data, '0.id'), 'view_count')}} 人阅读</h5></div>
                                     </a>
                                 </div>
                             </div>
@@ -157,7 +157,7 @@
                                                     </div>
                                                     <div class="item-main">
                                                         <h2>{{$v['title']}}</h2>
-                                                        <h5>{{getArticleInfo($v['id'], 'view_count')}}
+                                                        <h5>{{getArticleInfoOnCache($v['id'], 'view_count')}}
                                                             人阅读</h5>
                                                     </div>
                                                 </a>
