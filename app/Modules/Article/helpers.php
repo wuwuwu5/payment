@@ -49,7 +49,7 @@
                     $q->frontIndex();
                 })
                 ->when($type == 'hot', function ($q) {
-                    $q->hot();
+                    $q->hotIndex();
                 })
                 ->when($type == 'rand', function ($q) {
                     $q->random();

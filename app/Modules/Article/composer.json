@@ -1,6 +1,8 @@
 {
     "name": "vagrant/article",
-    "require": {},
+    "require": {
+        "guzzlehttp/guzzle": "^6.5"
+    },
     "autoload": {
         "files": [
             "helpers.php"

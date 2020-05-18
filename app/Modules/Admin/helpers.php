@@ -677,7 +677,7 @@ if (!function_exists('generateCategoriesTree')) {
                 ->when($hot, function ($q) {
                     $q->where('value->home_top', 1);
                 })
-                ->select('id', 'nickname as name', 'pid', 'id as value', 'category_group_id', 'name as mark_name')
+                ->select('id', 'nickname as name', 'pid', 'id as value', 'category_group_id', 'name as mark_name', 'image')
                 ->get()
                 ->toArray();
         }

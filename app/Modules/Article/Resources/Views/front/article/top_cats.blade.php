@@ -22,7 +22,7 @@
                         <a class="{{($current['id'] ?? '') == ($child['id'] ?? -1) ? 'current' : ''}}"
                            href="{{route('articles.column.show', ['type' => $child['mark_name']])}}"
                            target="_blank">
-                            <i class="icon icon-allposts"></i>
+                            <i class="icon {{$child['image']}}"></i>
                             {{$child['name']}}
                         </a>
                     </li>

@@ -83,7 +83,11 @@
                         @include('article::front.article.item', compact('article'))
                     @endforeach
                 </div>
-                <div class="articles-hot"></div>
+                <div class="articles-hot">
+                    @foreach($hot_articles as $article)
+                        @include('article::front.article.item', compact('article'))
+                    @endforeach
+                </div>
                 <div class="articles-week"></div>
             </div>
             <div class="seeAll">

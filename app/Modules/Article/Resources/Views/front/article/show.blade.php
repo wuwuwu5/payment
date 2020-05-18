@@ -49,9 +49,10 @@
 
                 </div>
 
-                <div class="article-zan-fav">
-                    <div class="zan-div"
-                         type="{{ likeArticleOrNot($article->id, auth()->user()->id) ? 'give' :'cancel_give' }}">
+                @if(auth()->check())
+                    <div class="article-zan-fav">
+                        <div class="zan-div"
+                             type="{{ likeArticleOrNot($article->id, auth()->user()->id) ? 'give' :'cancel_give' }}">
                                     <span class="zan btn btn-orange" data-component="zan"
                                           data-pid="{{$article->hash_id}}"
                                           data-count="{{ getArticleInfoOnCache($article->id, 'give_count') }}">
@@ -67,18 +68,19 @@
                                         @endif
                                         <em class="count">{{ getArticleInfoOnCache($article->id, 'give_count') }}</em>
                                         </span>
+                        </div>
+                        {{--                    <div class="fav-div">--}}
+                        {{--                                <span class="fav btn btn-orange-border"--}}
+                        {{--                                      data-component="fav"--}}
+                        {{--                                      data-id="{{$article->hash_id}}"--}}
+                        {{--                                      data-original-count="{{$article->collection_count}}"--}}
+                        {{--                                      data-count="{{$article->collection_count}}"> <i class="icon-1-heart-border"></i>--}}
+                        {{--                                    <span class="txt">收藏</span>--}}
+                        {{--                                    <em>{{$article->collection_count}}</em>--}}
+                        {{--                                </span>--}}
+                        {{--                    </div>--}}
                     </div>
-{{--                    <div class="fav-div">--}}
-{{--                                <span class="fav btn btn-orange-border"--}}
-{{--                                      data-component="fav"--}}
-{{--                                      data-id="{{$article->hash_id}}"--}}
-{{--                                      data-original-count="{{$article->collection_count}}"--}}
-{{--                                      data-count="{{$article->collection_count}}"> <i class="icon-1-heart-border"></i>--}}
-{{--                                    <span class="txt">收藏</span>--}}
-{{--                                    <em>{{$article->collection_count}}</em>--}}
-{{--                                </span>--}}
-{{--                    </div>--}}
-                </div>
+                @endif
                 <div class="article-info">
                     <p>
                         <a href="text-layout.html" class="btn btn-orange-border copy-link">

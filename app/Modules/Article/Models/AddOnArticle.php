@@ -17,6 +17,14 @@ class AddOnArticle extends Model
      * @var array
      */
     protected $fillable = [
-        'body',
+        'body', 'hash_url', 'content_hash', 'source_url', 'source_name'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function article()
+    {
+        return $this->belongsTo(Article::class);
+    }
 }
