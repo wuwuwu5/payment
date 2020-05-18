@@ -64,13 +64,13 @@ class SyncArticleInfoToCache implements ShouldQueue
             $score = calculateScore($info);
             $published_at = $info['published_at'];
         } else {
-            $published_at = $score = -1;
+            $published_at = -1;
         }
 
         // 储存
         Redis::eval($this->luaScript(), 9, ...[
             'hot_articles_all',
-            'published_articles',
+            'published_articles_all',
             getColumnKey2($article, 'hot', 1),
             getColumnKey2($article, 'hot', 2),
             getColumnKey2($article, 'published', 1),
@@ -85,6 +85,7 @@ class SyncArticleInfoToCache implements ShouldQueue
             $published_at,
             serialize($info)
         ]);
+
     }
 
 

@@ -128,7 +128,7 @@
                             @endforeach
                         </ul>
                         <ul class="hot-post-list hidden">
-                            @foreach(hotArticle($current_column['id'], 10) as $key=> $article)
+                            @foreach(hotArticle($current_column['id'] ?? 0, 10) as $key=> $article)
                                 <li class="list-item-txt">
                                     <h2 class="title">
                                         <a href="{{route('articles.show', ['article' => $article['hash_id']])}}"
