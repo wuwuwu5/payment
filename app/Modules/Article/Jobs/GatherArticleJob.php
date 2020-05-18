@@ -137,6 +137,7 @@ class GatherArticleJob implements ShouldQueue
             DB::commit();
 
             // 更新Redis数据
+            SyncArticleInfoToCache::dispatch($article, true)->onConnection('redis')->onQueue('sync_article');
         } catch (\Exception $exception) {
             DB::rollBack();
         }
