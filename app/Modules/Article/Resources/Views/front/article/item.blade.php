@@ -2,7 +2,7 @@
     <div class="item-thumb">
         <a href="{{route('articles.show', ['article' => $article['hash_id']])}}" class="h-scale" target="_blank">
             <i class="thumb "
-               style="background-image:url('{{render_cover($article['cover'])}}')"></i>
+               style="background-image:url('{{render_cover($article['cover'], 'article')}}')"></i>
         </a>
     </div>
     <div class="item-content">

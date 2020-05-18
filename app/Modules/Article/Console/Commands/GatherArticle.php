@@ -41,7 +41,7 @@ class GatherArticle extends Command
     {
         $client = new Client();
 
-        $response = $client->request('GET', config('article.gather_url'));
+        $response = $client->request('GET', config('article.gather_url') . '?site=' . md5(config('app.url')));
 
         $data = $response->getBody()->getContents();
 
