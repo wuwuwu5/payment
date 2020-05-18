@@ -32,7 +32,7 @@
                                                  'list' => $item['list'],
                                              ])}}
                                         @else
-                                            {{  Form::{$form_type}(['title' => $item['name'], 'name' => $item['field'], 'value' => $item['value']])}}
+                                            {{  Form::{$form_type}(['title' => $item['name'], 'name' => $item['field'], 'value' => $item['value'],'id'=>$setting->name.$item['field']])}}
                                         @endif
                                     @endforeach
                                     <div class="layui-form-item">

@@ -1,13 +1,13 @@
 <div class="layui-form-item">
     @include('admin::components.form.label',['params'=>$params])
-    <div class="layui-input-block" id="{{ md5(array_get($params,'name','name'))}}">
+    <div class="layui-input-block" id="{{ md5(array_get($params,'id','name'))}}">
         <input  type="hidden"
                 name="{{ array_get($params,'name','name') }}"
                 value="{{array_get($params,'value','')}}"
                 lay-verify="{{array_get($params,'rq','')}}"
                 autocomplete="off" class="layui-input"/>
     <img src="{{render_cover(array_get($params,'value',''))}}" width="{{array_get($params,'width','200')}}" height="{{array_get($params,'height','200')}}" alt="">
-        <button class="layui-btn layui-btn-xs layui-btn-info btn-{{ array_get($params,'name','name') }}"  id='{{ md5(md5(array_get($params,'name','name'))) }}' data-more="0" data-type="file" data-toggle="fileupimg" data-obj="{{ md5(array_get($params,'name','name')) }}">上传文件</button>
+        <button class="layui-btn layui-btn-xs layui-btn-info btn-{{ array_get($params,'name','name') }}"  id='{{ md5(md5(array_get($params,'id','name'))) }}' data-more="0" data-type="file" data-toggle="fileupimg" data-obj="{{ md5(array_get($params,'di','name')) }}">上传文件</button>
         <p>{{array_get($params,'tips','')}}</p>
     </div>
 </div>
