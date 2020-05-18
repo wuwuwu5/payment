@@ -34,7 +34,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-27 14:27:42',
                     'updated_at' => '2020-04-27 14:27:42',
                     'deleted_at' => NULL,
-                    'creator_id' => 0,
+
                     'top_id' => 0,
                     'path' => NULL,
                     'level' => 1,
@@ -56,7 +56,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => NULL,
                     'updated_at' => '2020-04-27 14:27:42',
                     'deleted_at' => NULL,
-                    'creator_id' => 0,
+
                     'top_id' => 6,
                     'path' => '6',
                     'level' => 2,
@@ -78,7 +78,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => NULL,
                     'updated_at' => '2020-04-27 14:27:42',
                     'deleted_at' => NULL,
-                    'creator_id' => 0,
+
                     'top_id' => 6,
                     'path' => '6',
                     'level' => 2,
@@ -100,7 +100,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => NULL,
                     'updated_at' => '2020-04-27 14:27:42',
                     'deleted_at' => NULL,
-                    'creator_id' => 0,
+
                     'top_id' => 6,
                     'path' => '6',
                     'level' => 2,
@@ -122,7 +122,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => NULL,
                     'updated_at' => '2020-04-27 14:27:42',
                     'deleted_at' => NULL,
-                    'creator_id' => 0,
+
                     'top_id' => 6,
                     'path' => '6',
                     'level' => 2,
@@ -144,7 +144,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => NULL,
                     'updated_at' => '2020-04-27 14:27:42',
                     'deleted_at' => NULL,
-                    'creator_id' => 0,
+
                     'top_id' => 6,
                     'path' => '6',
                     'level' => 2,
@@ -166,7 +166,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 15:50:24',
                     'updated_at' => '2020-04-28 15:50:24',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 6,
                     'path' => '6',
                     'level' => 2,
@@ -188,7 +188,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 15:56:54',
                     'updated_at' => '2020-05-11 14:21:12',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 0,
                     'path' => NULL,
                     'level' => 1,
@@ -210,7 +210,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 15:57:12',
                     'updated_at' => '2020-05-11 14:21:22',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 55,
                     'path' => '55',
                     'level' => 2,
@@ -232,7 +232,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 15:57:31',
                     'updated_at' => '2020-05-11 14:21:28',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 55,
                     'path' => '55',
                     'level' => 2,
@@ -254,7 +254,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 16:40:23',
                     'updated_at' => '2020-04-28 16:40:23',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 6,
                     'path' => '6',
                     'level' => 2,
@@ -276,7 +276,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 16:40:52',
                     'updated_at' => '2020-04-28 16:40:52',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 6,
                     'path' => '6',
                     'level' => 2,
@@ -298,7 +298,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 16:41:24',
                     'updated_at' => '2020-04-28 16:42:29',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 6,
                     'path' => '6',
                     'level' => 2,
@@ -320,7 +320,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 16:53:14',
                     'updated_at' => '2020-04-28 16:53:14',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 0,
                     'path' => NULL,
                     'level' => 1,
@@ -342,7 +342,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 16:53:34',
                     'updated_at' => '2020-05-08 11:40:30',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 61,
                     'path' => '61',
                     'level' => 2,
@@ -364,7 +364,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 16:53:46',
                     'updated_at' => '2020-05-08 11:26:17',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 61,
                     'path' => '61',
                     'level' => 2,
@@ -386,7 +386,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 16:54:08',
                     'updated_at' => '2020-04-28 16:54:08',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 0,
                     'path' => NULL,
                     'level' => 1,
@@ -408,7 +408,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 16:57:44',
                     'updated_at' => '2020-04-28 16:57:44',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 0,
                     'path' => NULL,
                     'level' => 1,
@@ -430,7 +430,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 17:36:25',
                     'updated_at' => '2020-04-28 17:36:25',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 6,
                     'path' => '6',
                     'level' => 2,
@@ -452,7 +452,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-05-07 14:13:21',
                     'updated_at' => '2020-05-07 14:13:21',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 6,
                     'path' => '6',
                     'level' => 2,
@@ -474,7 +474,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-05-07 15:13:59',
                     'updated_at' => '2020-05-07 15:13:59',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 0,
                     'path' => NULL,
                     'level' => 1,
@@ -496,7 +496,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-05-08 13:49:34',
                     'updated_at' => '2020-05-08 13:49:34',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 6,
                     'path' => NULL,
                     'level' => 2,
@@ -518,7 +518,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-05-09 10:38:11',
                     'updated_at' => '2020-05-09 10:38:11',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 0,
                     'path' => NULL,
                     'level' => 1,
@@ -540,7 +540,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-05-11 11:07:10',
                     'updated_at' => '2020-05-11 11:07:10',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 0,
                     'path' => NULL,
                     'level' => 1,
@@ -562,7 +562,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-05-11 13:42:26',
                     'updated_at' => '2020-05-11 13:42:26',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 0,
                     'path' => NULL,
                     'level' => 1,
@@ -584,7 +584,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 15:57:31',
                     'updated_at' => '2020-05-11 14:21:33',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 55,
                     'path' => '55',
                     'level' => 2,
@@ -606,7 +606,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 15:57:31',
                     'updated_at' => '2020-05-11 14:21:38',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 55,
                     'path' => '55',
                     'level' => 2,
@@ -628,7 +628,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 15:57:31',
                     'updated_at' => '2020-05-11 14:13:54',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 55,
                     'path' => '55',
                     'level' => 2,
@@ -650,7 +650,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 15:57:31',
                     'updated_at' => '2020-05-11 14:13:58',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 55,
                     'path' => '55',
                     'level' => 2,
@@ -672,7 +672,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 15:57:31',
                     'updated_at' => '2020-05-11 14:14:02',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 55,
                     'path' => '55',
                     'level' => 2,
@@ -694,7 +694,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 15:57:31',
                     'updated_at' => '2020-05-11 14:14:06',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 55,
                     'path' => '55',
                     'level' => 2,
@@ -716,7 +716,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 15:57:31',
                     'updated_at' => '2020-05-11 14:14:09',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 55,
                     'path' => '55',
                     'level' => 2,
@@ -738,7 +738,7 @@ class CategoriesTableSeeder extends Seeder
                     'created_at' => '2020-04-28 15:57:31',
                     'updated_at' => '2020-05-11 14:14:13',
                     'deleted_at' => NULL,
-                    'creator_id' => NULL,
+
                     'top_id' => 55,
                     'path' => '55',
                     'level' => 2,

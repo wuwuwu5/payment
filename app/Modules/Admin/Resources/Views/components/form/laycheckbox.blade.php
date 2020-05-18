@@ -5,7 +5,7 @@
             @foreach ($params['list'] as $v)
                 <input
                     @if(isset($params['on_id']))
-                    {{ is_array($params['on_id']) ? in_array($v['id'], $params['on_id']) ? "checked" :"":$params['on_id']==$v['id']?'checked':'' }}
+                    {{ is_array($params['on_id']) ? (in_array($v['id'], $params['on_id']) ? "checked" :""):($params['on_id']==$v['id']?'checked':'') }}
                     @endif
                     type="checkbox" name="{{array_get($params,'name','') }}[]"
                     params-min="{{ array_get($params,'min','1') }}"
