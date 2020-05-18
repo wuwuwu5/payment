@@ -10,7 +10,7 @@
             @endphp
             @foreach($columns as $column)
                 <li>
-                    <a href="{{route('articles.column.show' ,['type' => $column['name']])}}">{{$column['nickname']}}</a>
+                    <a href="{{route('articles.column.show' ,['type' => $column['mark_name']])}}">{{$column['name']}}</a>
                 </li>
             @endforeach
             <li>正文</li>

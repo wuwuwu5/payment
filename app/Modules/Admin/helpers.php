@@ -692,7 +692,7 @@ if (!function_exists('generateCategoriesTree')) {
             }
 
             if ($column->level == 1) {
-                $column = $column->only(['id', 'nickname', 'pid', 'id as value', 'category_group_id', 'name']);
+                $column = $column->only(['id', 'nickname', 'pid', 'id as value', 'category_group_id', 'name', 'image']);
                 $column['mark_name'] = $column['name'];
                 $column['name'] = $column['nickname'];
                 $column['value'] = $column['id'];
@@ -705,12 +705,12 @@ if (!function_exists('generateCategoriesTree')) {
 
             $columns = \App\Modules\Admin\Models\Category::query()
                 ->whereIn('id', $ids)
-                ->select('id', 'nickname as name', 'pid', 'id as value', 'category_group_id', 'name as mark_name')
+                ->select('id', 'nickname as name', 'pid', 'id as value', 'category_group_id', 'name as mark_name', 'image')
                 ->orderByRaw("FIELD(`id`, " . $column->path . ")")
                 ->get()
                 ->toArray();
 
-            $column = $column->only(['id', 'nickname', 'pid', 'id as value', 'category_group_id', 'name']);
+            $column = $column->only(['id', 'nickname', 'pid', 'id as value', 'category_group_id', 'name', 'image']);
             $column['mark_name'] = $column['name'];
             $column['name'] = $column['nickname'];
             $column['value'] = $column['id'];

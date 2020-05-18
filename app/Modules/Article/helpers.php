@@ -9,10 +9,10 @@
             $article = \App\Modules\Article\Models\Article::query()
                 ->with([
                     'column' => function ($q) {
-                        $q->select('id', 'nickname', 'name', 'level', 'path', 'top_id', 'pid');
+                        $q->select('id', 'nickname as name', 'name as mark_name', 'level', 'path', 'top_id', 'pid', 'image');
                     },
                     'column2' => function ($q) {
-                        $q->select('id', 'nickname', 'name', 'level', 'path', 'top_id', 'pid');
+                        $q->select('id', 'nickname as name', 'name as mark_name', 'level', 'path', 'top_id', 'pid', 'image');
                     },
                 ])
                 ->findOrFail($id);
@@ -176,7 +176,7 @@
 
     // getColumnKey
     if (!function_exists('getColumnKey')) {
-        function getColumnKey($article, $type = 'hot')
+        function getColumnKey($article, $type = 'hot', $level = 1)
         {
             if (empty($article->column2_id) && empty($article->column_id)) {
                 $column_hot_key = $type . '_articles_all';
@@ -189,6 +189,20 @@
             }
 
             return $column_hot_key;
+        }
+    }
+
+    // getColumnKey
+    if (!function_exists('getColumnKey2')) {
+        function getColumnKey2($article, $type = 'hot', $level = 1)
+        {
+            if ($level == 1) {
+                $column_id = $article->column_id;
+            } else {
+                $column_id = $article->column2_id;
+            }
+
+            return $type . '_articles:' . $column_id;
         }
     }
 
@@ -244,6 +258,63 @@
             } else {
                 return true;
             }
+        }
+    }
+
+    // hotArticle
+    if (!function_exists('hotArticle')) {
+        function hotArticle($column_id = null, $num = 20)
+        {
+            if (empty($column_id)) {
+                $key = "hot_articles_all";
+            } else {
+                $key = "hot_articles:" . $column_id;
+            }
+
+            $ids = \Illuminate\Support\Facades\Redis::ZREVRANGE($key, 0, ($num - 1));
+
+            if (empty($ids)) {
+                return [];
+            }
+
+            $array = [];
+
+            foreach ($ids as $id) {
+                $item = getArticleInfoOnCache($id);
+                $item['hash_id'] = \ElfSundae\Laravel\Hashid\Facades\Hashid::encode($item['id']);
+
+                $array[] = $item;
+            }
+
+            return $array;
+        }
+    }
+    // publishArticle
+    if (!function_exists('publishArticle')) {
+        function publishArticle($column_id = null, $num = 20)
+        {
+            if (empty($column_id)) {
+                $key = "published_articles_all";
+            } else {
+                $key = "published_articles:" . $column_id;
+            }
+
+            $ids = \Illuminate\Support\Facades\Redis::ZREVRANGE($key, 0, ($num - 1));
+
+            if (empty($ids)) {
+                return [];
+            }
+
+            $array = [];
+
+            foreach ($ids as $id) {
+                $item = getArticleInfoOnCache($id);
+                $item['hash_id'] = \ElfSundae\Laravel\Hashid\Facades\Hashid::encode($item['id']);
+
+                $array[] = $item;
+            }
+
+            return $array;
         }
     }
 }

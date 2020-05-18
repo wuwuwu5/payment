@@ -68,7 +68,6 @@ class ArticlesController extends Controller
             return redirect()->to('/');
         }
 
-
         // 排序
         $order = $request->input('order', 'default');
 
