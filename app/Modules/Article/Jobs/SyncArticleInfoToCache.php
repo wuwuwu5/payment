@@ -54,6 +54,7 @@ class SyncArticleInfoToCache implements ShouldQueue
         $old_column2_id = $info['column2_id'];
 
         // 重新在赋值一次
+        $info['title'] = $article->title;
         $info['column_id'] = $article->column_id;
         $info['column2_id'] = $article->column2_id;
         $info['published_at'] = $article->published_at->timestamp;

@@ -160,6 +160,8 @@
 
             // 数据
             return [
+                'id' => $article->id,
+                'title' => $article->title,
                 'view_count' => $article->view_count,
                 'give_count' => $article->give_count,
                 'collection_count' => $article->collection_count,
