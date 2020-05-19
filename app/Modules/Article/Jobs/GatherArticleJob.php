@@ -72,7 +72,7 @@ class GatherArticleJob implements ShouldQueue
                 'collection_count' => rand(1, 1000),
                 'post_count' => rand(1, 1000),
                 'title' => $this->data['title'],
-                'short_title' => $this->data['title'],
+                'short_title' => description($this->data['content']),
                 'keywords' => $this->getKeywords($this->data['title']),
                 'cover' => $this->getImg(),
                 'published_at' => $this->data['crawled_at'],
