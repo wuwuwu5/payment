@@ -661,7 +661,7 @@ if (!function_exists('generateCategoriesTree')) {
 
     // 获取子栏目
     if (!function_exists('getFrontChildrenColumns')) {
-        function getFrontChildrenColumns($parent_id, $hot = false)
+        function getFrontChildrenColumns($parent_id = null, $hot = false)
         {
             $category_group = \App\Modules\Admin\Models\CategoryGroup::query()
                 ->where('name', \App\Modules\Admin\Models\CategoryGroup::FRONT_COLUMN)
@@ -673,7 +673,10 @@ if (!function_exists('generateCategoriesTree')) {
 
             return $category_group
                 ->categories()
-                ->where('pid', $parent_id)
+                ->when($parent_id > 0, function ($q) use ($parent_id) {
+                    $q->where('pid', $parent_id);
+                })
+                ->where('status', 1)
                 ->when($hot, function ($q) {
                     $q->where('value->home_top', 1);
                 })
