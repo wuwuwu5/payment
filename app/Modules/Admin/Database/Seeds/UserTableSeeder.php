@@ -23,7 +23,8 @@ class UserTableSeeder extends Seeder
                     'username'=> 'admin',
                     'nickname' => 'admin',
                     'password' =>  bcrypt('123456'),
-                    'is_admin' => 1
+                    'is_admin' => 1,
+                    'locked' => 0
                 ]
             );
         }

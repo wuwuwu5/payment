@@ -1,6 +1,9 @@
 <?php
 
 Route::group(['middleware' => ['bindings']], function () {
+    Route::get('/login', 'LoginController@showLoginForm')->name('login.show');
+    // 登录
+    Route::post('/login', 'LoginController@login')->name('login');
     // 首页
     Route::get('/', 'IndexController@index');
 
@@ -18,4 +21,8 @@ Route::group(['middleware' => ['bindings']], function () {
 
     // 标签
     Route::get('/tags/{tag}', 'ArticlesController@collection')->name('tags.show');
+    Route::middleware(['auth:web', 'bindings'])->group(function () {
+        // 退出登录
+        Route::post('/logout', 'LoginController@logout')->name('logout');
+    });
 });

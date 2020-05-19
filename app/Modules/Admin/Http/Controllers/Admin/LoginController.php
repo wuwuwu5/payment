@@ -107,7 +107,7 @@ class LoginController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     * @author 王凯
+     * @author
      */
     public function logout(Request $request)
     {
