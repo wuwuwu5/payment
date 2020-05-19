@@ -20,7 +20,7 @@ class CreatedCategoriesTable extends Migration
             $table->unsignedBigInteger('category_group_id')->comment('群组');
             $table->integer('level')->default(1)->index('level')->comment('等级');
             $table->string('path', 100)->nullable()->default('');
-            $table->string('name', 30)->default('');
+            $table->string('name', 32)->default('');
             $table->string('nickname', 50)->default('');
             $table->string('flag')->default('');
             $table->string('image', 100)->nullable()->default('')->comment('图片或者ICON');

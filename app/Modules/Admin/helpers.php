@@ -661,7 +661,7 @@ if (!function_exists('generateCategoriesTree')) {
 
     // 获取子栏目
     if (!function_exists('getFrontChildrenColumns')) {
-        function getFrontChildrenColumns($parent_id, $hot = false)
+        function getFrontChildrenColumns($parent_id = null, $hot = false)
         {
             $category_group = \App\Modules\Admin\Models\CategoryGroup::query()
                 ->where('name', \App\Modules\Admin\Models\CategoryGroup::FRONT_COLUMN)
@@ -673,11 +673,14 @@ if (!function_exists('generateCategoriesTree')) {
 
             return $category_group
                 ->categories()
-                ->where('pid', $parent_id)
+                ->when($parent_id > 0, function ($q) use ($parent_id) {
+                    $q->where('pid', $parent_id);
+                })
+                ->where('status', 1)
                 ->when($hot, function ($q) {
                     $q->where('value->home_top', 1);
                 })
-                ->select('id', 'nickname as name', 'pid', 'id as value', 'category_group_id', 'name as mark_name')
+                ->select('id', 'nickname as name', 'pid', 'id as value', 'category_group_id', 'name as mark_name', 'image')
                 ->get()
                 ->toArray();
         }
@@ -692,7 +695,7 @@ if (!function_exists('generateCategoriesTree')) {
             }
 
             if ($column->level == 1) {
-                $column = $column->only(['id', 'nickname', 'pid', 'id as value', 'category_group_id', 'name']);
+                $column = $column->only(['id', 'nickname', 'pid', 'id as value', 'category_group_id', 'name', 'image']);
                 $column['mark_name'] = $column['name'];
                 $column['name'] = $column['nickname'];
                 $column['value'] = $column['id'];
@@ -705,12 +708,12 @@ if (!function_exists('generateCategoriesTree')) {
 
             $columns = \App\Modules\Admin\Models\Category::query()
                 ->whereIn('id', $ids)
-                ->select('id', 'nickname as name', 'pid', 'id as value', 'category_group_id', 'name as mark_name')
+                ->select('id', 'nickname as name', 'pid', 'id as value', 'category_group_id', 'name as mark_name', 'image')
                 ->orderByRaw("FIELD(`id`, " . $column->path . ")")
                 ->get()
                 ->toArray();
 
-            $column = $column->only(['id', 'nickname', 'pid', 'id as value', 'category_group_id', 'name']);
+            $column = $column->only(['id', 'nickname', 'pid', 'id as value', 'category_group_id', 'name', 'image']);
             $column['mark_name'] = $column['name'];
             $column['name'] = $column['nickname'];
             $column['value'] = $column['id'];

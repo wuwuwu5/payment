@@ -13,7 +13,7 @@
 @section('content')
     <div class="crumbs container hide_sm" style="padding-top: 60px;">
         <ol class="breadcrumb">
-            <li><a href="/" title="优设网 &#8211; UISDC">首页</a></li>
+            <li><a href="/" title="">首页</a></li>
             @php
                 $type = request()->route()->parameter('type');
             @endphp
@@ -115,7 +115,7 @@
                 <div class="tabs-content">
                     <div class="tab-div">
                         <ul class="post-list">
-                            @foreach(getColumnArticles($current_column['id'] ?? 0, 'now', 5, null, $current_column['level'] ?? 0) as $key=> $article)
+                            @foreach(publishArticle($current_column['id'] ?? 0, 10) as $key=> $article)
                                 <li class="list-item-txt">
                                     <h2 class="title">
                                         <a href="{{route('articles.show', ['article' => $article['hash_id']])}}"
@@ -128,7 +128,7 @@
                             @endforeach
                         </ul>
                         <ul class="hot-post-list hidden">
-                            @foreach(getColumnArticles($current_column['id'] ?? 0, 'hot', 5, null, $current_column['level'] ?? 0) as $key=> $article)
+                            @foreach(hotArticle($current_column['id'] ?? 0, 10) as $key=> $article)
                                 <li class="list-item-txt">
                                     <h2 class="title">
                                         <a href="{{route('articles.show', ['article' => $article['hash_id']])}}"

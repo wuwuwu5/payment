@@ -112,7 +112,7 @@ trait ArticleScopeTrait
      * @param $builder
      * @return mixed
      */
-    public function scopeHot($builder)
+    public function scopeCommend($builder)
     {
         return $builder
             ->where('is_published', 1)

@@ -68,7 +68,6 @@ class ArticlesController extends Controller
             return redirect()->to('/');
         }
 
-
         // 排序
         $order = $request->input('order', 'default');
 
@@ -106,8 +105,8 @@ class ArticlesController extends Controller
             })
             ->where(function ($q) use ($current_column) {
                 $q
-                    ->where('column_id', $current_column->id)
-                    ->orWhere('column2_id', $current_column->id);
+                    ->where('column_id', $current_column->id ?? 0)
+                    ->orWhere('column2_id', $current_column->id ?? 0);
             })
             ->take(20)
             ->paginate();

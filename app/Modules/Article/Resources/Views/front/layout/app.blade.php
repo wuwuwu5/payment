@@ -10,9 +10,17 @@
     <meta name="renderer" content="webkit">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <title>{{cms_config_field('front_site', 'title')}}</title>
-    <meta content="{{cms_config_field('front_site', 'keywords')}}" name="keywords"/>
-    <meta content="{{cms_config_field('front_site', 'description')}}" name="description"/>
+    <title>@if(isset($article)){{$article->title ?? ''}}@endif{{cms_config_field('front_site', 'title')}}</title>
+    @if(isset($article) && !empty($article->keywords))
+        <meta content="{{implode(',', $article->keywords)}}" name="keywords"/>
+    @else
+        <meta content="{{cms_config_field('front_site', 'keywords')}}" name="keywords"/>
+    @endif
+    @if(isset($article))
+        <meta content="{{description($article->add->body ?? '')}}" name="description"/>
+    @else
+        <meta content="{{cms_config_field('front_site', 'description')}}" name="description"/>
+    @endif
     <meta content='{{cms_config_field('front_site', 'author')}}' name='Author'/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{render_cover(cms_config_field('front_site', 'icon'))}}" type="image/x-icon"/>
@@ -43,7 +51,7 @@
         var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器
         var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
         if (isIE) {
-            document.write('<link rel="stylesheet" href="https://www.uisdc.com/wp-content/themes/U/ui/css/ie9.css?v=2.3.8" type="text/css" media="all" />');
+            document.write('<link rel="stylesheet" href="{{asset('wp-content/themes/U/ui/css/ie9_v=2.3.8.css')}}" type="text/css" media="all" />');
         }
     </script>
     {!!  cms_config_field('front_site', 'tongji') !!}

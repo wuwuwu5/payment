@@ -571,7 +571,7 @@
         n += '<div class="login-div">', n += '<div class="info">', n += '<div class="info-thumb"> <i class="thumb" style="background-image:url(' + orz.currentUser.avatar + ');"></i> </div>', n += '<h2 class="user-name">' + orz.currentUser.name + "</h2>", n += '<h4 class="user-info">' + orz.currentUser.info + "</h4>", n += "</div>", n += '<div class="main">', n += '<div class="main-menu">', n += '<div class="item"><div class="item-content"> <a href="' + e + '"> <i class="icon-Center"></i> 个人中心 </a> </div></div>', n += '<div class="item"><div class="item-content"> <a href="' + e + '#fav"> <i class="icon-1-heart-border"></i> 我收藏的 </a> </div></div>', n += '<div class="item"><div class="item-content"> <a href="' + e + '#publish"> <i class="icon-article"></i> 我发布的 </a> </div></div>', t.edit && (n += '<div class="item"><div class="item-content"> <a href="' + t.edit + '"> <i class="icon-allposts"></i> 文章管理 </a> </div></div>'), t.comment && (n += '<div class="item"><div class="item-content"> <a href="' + t.comment + '"> <i class="icon-comm"></i> 评论管理 </a> </div></div>'), t.admin && (n += '<div class="item"><div class="item-content"> <a href="' + t.admin + '"> <i class="icon-site"></i> 后台管理 </a> </div></div>'), n += "</div>", n += '<div class="main-menu-2">', n += '<div class="item"> <a href="' + e + '#setting"> 帐户管理 </a> </div>', n += '<div class="item"> <a href="' + (t.logout + "&redirect_to=" + decodeURIComponent(location.href)) + '"> 安全退出 </a> </div>', n += "</div>", n += "</div>", n += "</div>", n += "</div>", r.append(n), r.addClass("has-children")
     }), n(document).on("userNotLogged", function () {
         r.children("a").children(".avatar").addClass("avatar-default"), n("body").append(function t() {
-            return 0 < n(".modal-login-panel").length ? "" : '<div class="modal-login-panel modal-part" id="modal_login"><div class="login_wrap"><div class="wxlogin-main"><h2> <i class="avatar"></i> 您还没有登录</h2><h4>优设启用更安全省心的 <em><i class="icon-wechat"></i> 微信扫码登录</em></h4><div class="ewm"><iframe id="wechatEwm" src="about:blank" width="288px" height="270px" frameborder="0" sandbox="allow-scripts allow-top-navigation" scrolling="no"></iframe></div><p class="wxlogin-protocol"><label class="checked"><input type="radio" name="check_protocol" checked value="yes"> <i class="ico"></i> 扫码登录即表示您同意并遵守 </label> <a class="link" href="https://www.uisdc.com/agreement" target="_blank">用户协议</a> </p></div><div class="wxlogin-intro"> <p>300万设计师聚集地！优设网是极具人气的设计师平台 <br> 2012年成立至今，一直专注于设计师的学习成长交流</p> </div></div><span class="modal-close"> <i class="icon-close"></i> </span></div>'
+            return 0 < n(".modal-login-panel").length ? "" : ''
         }())
     }), orz.click(function (t) {
         t.stopPropagation(), t.preventDefault(), orz.log(n(this).attr("class")), n(this).toggleClass("checked")
@@ -1059,7 +1059,7 @@
                         n.append(r.clone()), n.append(o.clone().attr("class", "menu").attr("id", "")), n.find('[data-component="dropdown"]').each(function () {
                             var t = e("#" + e(this).attr("data-target"));
                             t.length < 1 || (e(this).parent().addClass("has-children"), e(this).after(t.find(".section-content").eq(0).clone().addClass("sub-nav")), e(this).attr("data-component", ""))
-                        }), n.append(e('<div class="site-info">优设网是国内极具人气的设计平台 <br> 2012年成立至今，一直专注于设计师的学习成长交流</div>'))
+                        }), n.append(e(''))
                     }(), orz.click(function () {
                         return e(this).parent().hasClass("show") || e(".modal-menu .has-children").removeClass("show"), e(this).parent().toggleClass("show"), !1
                     }, ".modal-menu .has-children .link-0")
@@ -1171,7 +1171,7 @@
     function (t, e) {
         var n, r, o, i, a;
         n = jQuery, r = orz.attr("url"), o = function o() {
-            return '<div id="qr" class="qr_box modal-qr modal-show"><div class="show_qr"><h2>把好文章收藏到微信</h2><div id="url_qr"></div><p>打开微信，扫码分享<br>学设计 <span>优设网</span> 在这里</p><span class="close modal-close" data-modal-id="qr"><i class="icon-close"></i></span></div></div>'
+            return ''
         }, i = function i(t) {
             n("#url_qr").html(""), n("#url_qr").qrcode({text: t})
         }, a = function a() {

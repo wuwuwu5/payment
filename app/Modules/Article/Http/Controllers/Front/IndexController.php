@@ -18,6 +18,7 @@ class IndexController extends BaseController
     public function index(Request $request)
     {
         $articles = Article::query()->frontIndex()->take(20)->get();
+        $hot_articles = Article::query()->hotIndex()->take(20)->get();
 
         $tags = ModelHasTag::query()
             ->where('model_type', Article::class)
@@ -30,6 +31,6 @@ class IndexController extends BaseController
             ->groupBy('tag_id')
             ->get();
 
-        return view('article::front.index.index', compact('articles', 'tags'));
+        return view('article::front.index.index', compact('articles', 'tags', 'hot_articles'));
     }
 }

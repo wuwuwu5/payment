@@ -3,14 +3,14 @@
 
     <div class="crumbs container hide_sm" style="padding-top: 60px;">
         <ol class="breadcrumb">
-            <li><a href="/" title="优设网 &#8211; UISDC">首页</a></li>
+            <li><a href="/" title="">首页</a></li>
             @php
                 $columns = getArticleColumns($article->id);
                 $current = $columns[count($columns) - 1]??[];
             @endphp
             @foreach($columns as $column)
                 <li>
-                    <a href="{{route('articles.column.show' ,['type' => $column['name']])}}">{{$column['nickname']}}</a>
+                    <a href="{{route('articles.column.show' ,['type' => $column['mark_name']])}}">{{$column['name']}}</a>
                 </li>
             @endforeach
             <li>正文</li>
@@ -24,7 +24,7 @@
                 <span class="editor">
                     <a href="" target="_blank">
                         <i class="thumb"
-                           style="background-image:url('{{render_cover($article->creator->avatar ?? '', 'avatar')}}')"></i>
+                               style="background-image:url('{{render_cover($article->creator->avatar ?? '', 'avatar')}}')"></i>
                     </a>
                     编辑：
                     <a href="" target="_blank">{{ $article->creator->nickname ?? '' }}</a>
@@ -49,9 +49,10 @@
 
                 </div>
 
-                <div class="article-zan-fav">
-                    <div class="zan-div"
-                         type="{{ likeArticleOrNot($article->id, auth()->user()->id) ? 'give' :'cancel_give' }}">
+                @if(auth()->check())
+                    <div class="article-zan-fav">
+                        <div class="zan-div"
+                             type="{{ likeArticleOrNot($article->id, auth()->user()->id) ? 'give' :'cancel_give' }}">
                                     <span class="zan btn btn-orange" data-component="zan"
                                           data-pid="{{$article->hash_id}}"
                                           data-count="{{ getArticleInfoOnCache($article->id, 'give_count') }}">
@@ -67,18 +68,19 @@
                                         @endif
                                         <em class="count">{{ getArticleInfoOnCache($article->id, 'give_count') }}</em>
                                         </span>
+                        </div>
+                        {{--                    <div class="fav-div">--}}
+                        {{--                                <span class="fav btn btn-orange-border"--}}
+                        {{--                                      data-component="fav"--}}
+                        {{--                                      data-id="{{$article->hash_id}}"--}}
+                        {{--                                      data-original-count="{{$article->collection_count}}"--}}
+                        {{--                                      data-count="{{$article->collection_count}}"> <i class="icon-1-heart-border"></i>--}}
+                        {{--                                    <span class="txt">收藏</span>--}}
+                        {{--                                    <em>{{$article->collection_count}}</em>--}}
+                        {{--                                </span>--}}
+                        {{--                    </div>--}}
                     </div>
-{{--                    <div class="fav-div">--}}
-{{--                                <span class="fav btn btn-orange-border"--}}
-{{--                                      data-component="fav"--}}
-{{--                                      data-id="{{$article->hash_id}}"--}}
-{{--                                      data-original-count="{{$article->collection_count}}"--}}
-{{--                                      data-count="{{$article->collection_count}}"> <i class="icon-1-heart-border"></i>--}}
-{{--                                    <span class="txt">收藏</span>--}}
-{{--                                    <em>{{$article->collection_count}}</em>--}}
-{{--                                </span>--}}
-{{--                    </div>--}}
-                </div>
+                @endif
                 <div class="article-info">
                     <p>
                         <a href="text-layout.html" class="btn btn-orange-border copy-link">
@@ -88,7 +90,7 @@
                                    value="{{route('articles.show', ['article' => $article['hash_id']])}}"
                                    class="copy-content">
                         </a>
-                        文章为作者独立观点不代表优设网立场，<span>未经允许不得转载。</span>
+                        文章为作者独立观点不代表本站立场，<span>未经允许不得转载。</span>
                     </p>
                 </div>
                 <div class="article-tag">
@@ -102,7 +104,7 @@
                        class="flex paged-item">
                         <div class="paged-thumb">
                             <i class="thumb "
-                               style="background-image:url(https://image.uisdc.com/wp-content/uploads/2019/10/uisdc-bg-article-trans.png)">
+                               style="background-image:url('{{asset('/wp-content/themes/U/ui/img/uisdc-bg-article-trans.png')}}')">
                             </i>
                         </div>
                         <div class="paged-main">
@@ -117,7 +119,7 @@
                            class="flex paged-item">
                             <div class="paged-thumb h-scale">
                                 <i class="thumb "
-                                   style="background-image:url(https://image.uisdc.com/wp-content/uploads/2020/05/uisdc-banner-20200507-5.jpg)"></i>
+                                   style="background-image:url('{{render_cover($next_article->cover, 'article')}}')"></i>
                             </div>
                             <div class="paged-main">
                                 <h5>下一篇 <i class="icon-right"></i></h5>
@@ -143,7 +145,7 @@
                                         <div class="item-thumb h-scale">
                                             <i class="thumb "
                                                style="background-image:url(
-                                                   '{{render_cover(data_get($data, '0.cover'))}}'
+                                                   '{{render_cover(data_get($data, '0.cover'), 'article')}}'
                                                    )"></i>
                                         </div>
                                         <div class="item-main">
@@ -164,7 +166,7 @@
                                                    target="_blank">
                                                     <div class="item-thumb h-scale">
                                                         <i class="thumb " style="background-image:url(
-                                                            '{{render_cover($v['cover'])}}'
+                                                            '{{render_cover($v['cover'], 'article')}}'
                                                             )"></i>
                                                     </div>
                                                     <div class="item-main">
@@ -296,36 +298,36 @@
                 {{--                    <i class="icon-1-heart-border"></i>--}}
                 {{--                    <span>收藏</span>--}}
                 {{--                </span>--}}
-                <span class="toolkit share">
-                    <i class="icon-share"></i>
-                    <em>分享</em>
-                 <div class="hidden-sm hidden-xs share-div">
-                <h3> </h3>
-                     <ul class="share_ul">
-     <li> </li>
-                         <li class="wechat-li">
-                             <a href="#" class="share wechat_qr modal-open"
-                                data-modal-id="qr"
-                                data-url="https://www.uisdc.com/text-layout" target="_blank" title="分享到微信">
-                                 <i class="icon-wechat-1"></i>
-                             </a>
-                         </li>
-    <li class="sina-li"><a
-            href="http://service.weibo.com/share/share.php?appkey=1934882415&amp;url=https%3A%2F%2Fwww.uisdc.com%2Ftext-layout&amp;title=%E5%A5%BD%E6%96%87%EF%BC%81%E5%88%9B%E6%84%8F%E5%B9%BF%E5%91%8A%E4%B8%AD%E6%96%87%E5%AD%97%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E7%94%A8%E7%9A%84%EF%BC%9F%E6%9D%A5%E7%9C%8B%E5%B9%B3%E9%9D%A2%E9%AB%98%E6%89%8B%E7%9A%84%E8%B6%85%E5%A4%9A%E6%A1%88%E4%BE%8B%E6%BC%94%E7%A4%BA%EF%BC%81+%E5%8E%9F%E6%96%87%E6%88%B3%E2%86%92&amp;content=utf-8&amp;pic=https%3A%2F%2Fimage.uisdc.com%2Fwp-content%2Fuploads%2F2020%2F05%2Fuisdc-banner-20200507-2.jpg"
-            class="share" target="_blank" title="分享到微博"><i class="icon-sina-1"></i></a></li>
-    <li class="qq-li"><a
-            href="http://connect.qq.com/widget/shareqq/index.html?url=https%3A%2F%2Fwww.uisdc.com%2Ftext-layout&amp;title=%E5%A5%BD%E6%96%87%EF%BC%81%E5%88%9B%E6%84%8F%E5%B9%BF%E5%91%8A%E4%B8%AD%E6%96%87%E5%AD%97%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E7%94%A8%E7%9A%84%EF%BC%9F%E6%9D%A5%E7%9C%8B%E5%B9%B3%E9%9D%A2%E9%AB%98%E6%89%8B%E7%9A%84%E8%B6%85%E5%A4%9A%E6%A1%88%E4%BE%8B%E6%BC%94%E7%A4%BA%EF%BC%81+%E5%8E%9F%E6%96%87%E6%88%B3%E2%86%92&amp;summary=&amp;site=baidu&amp;pics=https%3A%2F%2Fimage.uisdc.com%2Fwp-content%2Fuploads%2F2020%2F05%2Fuisdc-banner-20200507-2.jpg"
-            class="share" target="_blank" title="分享到QQ"><i class="icon-QQ"></i></a></li>
-    <li class="qzone-li"><a
-            href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https%3A%2F%2Fwww.uisdc.com%2Ftext-layout&amp;title=%E5%88%9B%E6%84%8F%E5%B9%BF%E5%91%8A%E4%B8%AD%E6%96%87%E5%AD%97%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E7%94%A8%E7%9A%84%EF%BC%9F%E6%9D%A5%E7%9C%8B%E5%B9%B3%E9%9D%A2%E9%AB%98%E6%89%8B%E7%9A%84%E8%B6%85%E5%A4%9A%E6%A1%88%E4%BE%8B%E6%BC%94%E7%A4%BA%EF%BC%81&amp;desc=%E5%88%9B%E6%84%8F%E5%B9%BF%E5%91%8A%E4%B8%AD%E6%96%87%E5%AD%97%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E7%94%A8%E7%9A%84%EF%BC%9F%E6%9D%A5%E7%9C%8B%E5%B9%B3%E9%9D%A2%E9%AB%98%E6%89%8B%E7%9A%84%E8%B6%85%E5%A4%9A%E6%A1%88%E4%BE%8B%E6%BC%94%E7%A4%BA%EF%BC%81&amp;summary=%E5%A5%BD%E6%96%87%EF%BC%81%E5%88%9B%E6%84%8F%E5%B9%BF%E5%91%8A%E4%B8%AD%E6%96%87%E5%AD%97%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E7%94%A8%E7%9A%84%EF%BC%9F%E6%9D%A5%E7%9C%8B%E5%B9%B3%E9%9D%A2%E9%AB%98%E6%89%8B%E7%9A%84%E8%B6%85%E5%A4%9A%E6%A1%88%E4%BE%8B%E6%BC%94%E7%A4%BA%EF%BC%81+%E5%8E%9F%E6%96%87%E6%88%B3%E2%86%92&amp;site=UiiiUiii&amp;pics=https%3A%2F%2Fimage.uisdc.com%2Fwp-content%2Fuploads%2F2020%2F05%2Fuisdc-banner-20200507-2.jpg"
-            class="share" target="_blank" title="分享到QQ空间"><i class="icon-qzone"></i></a></li>
-    <li class="huaban-li"><a
-            href="http://huaban.com/bookmarklet/?url=https%3A%2F%2Fwww.uisdc.com%2Ftext-layout&amp;title=%E5%A5%BD%E6%96%87%EF%BC%81%E5%88%9B%E6%84%8F%E5%B9%BF%E5%91%8A%E4%B8%AD%E6%96%87%E5%AD%97%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E7%94%A8%E7%9A%84%EF%BC%9F%E6%9D%A5%E7%9C%8B%E5%B9%B3%E9%9D%A2%E9%AB%98%E6%89%8B%E7%9A%84%E8%B6%85%E5%A4%9A%E6%A1%88%E4%BE%8B%E6%BC%94%E7%A4%BA%EF%BC%81+%E5%8E%9F%E6%96%87%E6%88%B3%E2%86%92&amp;media=https%3A%2F%2Fimage.uisdc.com%2Fwp-content%2Fuploads%2F2020%2F05%2Fuisdc-banner-20200507-2.jpg"
-            class="share" target="_blank" title="分享到花瓣"><i class="icon-huaban"></i></a></li>
-    <li class="close-li"><span class="close"><i class="icon-close"></i><em class="txt hidden">取消</em></span></li>
-  </ul>
-</div>
-  </span>
+{{--                <span class="toolkit share">--}}
+{{--                    <i class="icon-share"></i>--}}
+{{--                    <em>分享</em>--}}
+{{--                 <div class="hidden-sm hidden-xs share-div">--}}
+{{--                <h3> </h3>--}}
+{{--                     <ul class="share_ul">--}}
+{{--     <li> </li>--}}
+{{--                         <li class="wechat-li">--}}
+{{--                             <a href="#" class="share wechat_qr modal-open"--}}
+{{--                                data-modal-id="qr"--}}
+{{--                                data-url="https://www.uisdc.com/text-layout" target="_blank" title="分享到微信">--}}
+{{--                                 <i class="icon-wechat-1"></i>--}}
+{{--                             </a>--}}
+{{--                         </li>--}}
+{{--    <li class="sina-li"><a--}}
+{{--            href="http://service.weibo.com/share/share.php?appkey=1934882415&amp;url=https%3A%2F%2Fwww.uisdc.com%2Ftext-layout&amp;title=%E5%A5%BD%E6%96%87%EF%BC%81%E5%88%9B%E6%84%8F%E5%B9%BF%E5%91%8A%E4%B8%AD%E6%96%87%E5%AD%97%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E7%94%A8%E7%9A%84%EF%BC%9F%E6%9D%A5%E7%9C%8B%E5%B9%B3%E9%9D%A2%E9%AB%98%E6%89%8B%E7%9A%84%E8%B6%85%E5%A4%9A%E6%A1%88%E4%BE%8B%E6%BC%94%E7%A4%BA%EF%BC%81+%E5%8E%9F%E6%96%87%E6%88%B3%E2%86%92&amp;content=utf-8&amp;pic=https%3A%2F%2Fimage.uisdc.com%2Fwp-content%2Fuploads%2F2020%2F05%2Fuisdc-banner-20200507-2.jpg"--}}
+{{--            class="share" target="_blank" title="分享到微博"><i class="icon-sina-1"></i></a></li>--}}
+{{--    <li class="qq-li"><a--}}
+{{--            href="http://connect.qq.com/widget/shareqq/index.html?url=https%3A%2F%2Fwww.uisdc.com%2Ftext-layout&amp;title=%E5%A5%BD%E6%96%87%EF%BC%81%E5%88%9B%E6%84%8F%E5%B9%BF%E5%91%8A%E4%B8%AD%E6%96%87%E5%AD%97%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E7%94%A8%E7%9A%84%EF%BC%9F%E6%9D%A5%E7%9C%8B%E5%B9%B3%E9%9D%A2%E9%AB%98%E6%89%8B%E7%9A%84%E8%B6%85%E5%A4%9A%E6%A1%88%E4%BE%8B%E6%BC%94%E7%A4%BA%EF%BC%81+%E5%8E%9F%E6%96%87%E6%88%B3%E2%86%92&amp;summary=&amp;site=baidu&amp;pics=https%3A%2F%2Fimage.uisdc.com%2Fwp-content%2Fuploads%2F2020%2F05%2Fuisdc-banner-20200507-2.jpg"--}}
+{{--            class="share" target="_blank" title="分享到QQ"><i class="icon-QQ"></i></a></li>--}}
+{{--    <li class="qzone-li"><a--}}
+{{--            href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https%3A%2F%2Fwww.uisdc.com%2Ftext-layout&amp;title=%E5%88%9B%E6%84%8F%E5%B9%BF%E5%91%8A%E4%B8%AD%E6%96%87%E5%AD%97%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E7%94%A8%E7%9A%84%EF%BC%9F%E6%9D%A5%E7%9C%8B%E5%B9%B3%E9%9D%A2%E9%AB%98%E6%89%8B%E7%9A%84%E8%B6%85%E5%A4%9A%E6%A1%88%E4%BE%8B%E6%BC%94%E7%A4%BA%EF%BC%81&amp;desc=%E5%88%9B%E6%84%8F%E5%B9%BF%E5%91%8A%E4%B8%AD%E6%96%87%E5%AD%97%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E7%94%A8%E7%9A%84%EF%BC%9F%E6%9D%A5%E7%9C%8B%E5%B9%B3%E9%9D%A2%E9%AB%98%E6%89%8B%E7%9A%84%E8%B6%85%E5%A4%9A%E6%A1%88%E4%BE%8B%E6%BC%94%E7%A4%BA%EF%BC%81&amp;summary=%E5%A5%BD%E6%96%87%EF%BC%81%E5%88%9B%E6%84%8F%E5%B9%BF%E5%91%8A%E4%B8%AD%E6%96%87%E5%AD%97%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E7%94%A8%E7%9A%84%EF%BC%9F%E6%9D%A5%E7%9C%8B%E5%B9%B3%E9%9D%A2%E9%AB%98%E6%89%8B%E7%9A%84%E8%B6%85%E5%A4%9A%E6%A1%88%E4%BE%8B%E6%BC%94%E7%A4%BA%EF%BC%81+%E5%8E%9F%E6%96%87%E6%88%B3%E2%86%92&amp;site=UiiiUiii&amp;pics=https%3A%2F%2Fimage.uisdc.com%2Fwp-content%2Fuploads%2F2020%2F05%2Fuisdc-banner-20200507-2.jpg"--}}
+{{--            class="share" target="_blank" title="分享到QQ空间"><i class="icon-qzone"></i></a></li>--}}
+{{--    <li class="huaban-li"><a--}}
+{{--            href="http://huaban.com/bookmarklet/?url=https%3A%2F%2Fwww.uisdc.com%2Ftext-layout&amp;title=%E5%A5%BD%E6%96%87%EF%BC%81%E5%88%9B%E6%84%8F%E5%B9%BF%E5%91%8A%E4%B8%AD%E6%96%87%E5%AD%97%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E7%94%A8%E7%9A%84%EF%BC%9F%E6%9D%A5%E7%9C%8B%E5%B9%B3%E9%9D%A2%E9%AB%98%E6%89%8B%E7%9A%84%E8%B6%85%E5%A4%9A%E6%A1%88%E4%BE%8B%E6%BC%94%E7%A4%BA%EF%BC%81+%E5%8E%9F%E6%96%87%E6%88%B3%E2%86%92&amp;media=https%3A%2F%2Fimage.uisdc.com%2Fwp-content%2Fuploads%2F2020%2F05%2Fuisdc-banner-20200507-2.jpg"--}}
+{{--            class="share" target="_blank" title="分享到花瓣"><i class="icon-huaban"></i></a></li>--}}
+{{--    <li class="close-li"><span class="close"><i class="icon-close"></i><em class="txt hidden">取消</em></span></li>--}}
+{{--  </ul>--}}
+{{--</div>--}}
+{{--  </span>--}}
             </div>
         </div>
         <div class="sidebar" data-component="sidebar-autofixed" data-autofixed=".widget-show,.widget-article-menu">
@@ -339,7 +341,7 @@
                                 <h2>{{$item->title}}</h2>
                                 <div class="item-thumb h-scale">
                                     <i class="thumb"
-                                       style="background-image:url('{{render_cover($item->cover)   }}')"></i>
+                                       style="background-image:url('{{render_cover($item->cover, 'article')   }}')"></i>
                                 </div>
                             </a>
                         </div>

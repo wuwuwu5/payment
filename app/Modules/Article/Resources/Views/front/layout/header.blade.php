@@ -10,13 +10,13 @@
             </a>
         </h1>
         <div class="site-menu fl">
-            <ul id="primary_menu" class="menu-primary">
+            <ul id="primary_menu" class="menu-primary" style="text-align: left">
                 <li id="menu-item-31935" class="item-0 current-menu-item">
                     <a href="/" class="link-0"><span>首页</span></a>
                 </li>
                 <li id="menu-item-250995" class="item-0 ">
                     @foreach(getFrontColumns() as $key => $item)
-                        <a href="/articles/{{$item['mark_name']}}" class="link-0"
+                        <a href="{{route('articles.column.show', ['type' => $item['mark_name']])}}" class="link-0"
                            data-component="dropdown"
                            data-target="dropdown_{{md5($item['id'])}}"><span>{{$item['name']}}</span>
                         </a>
@@ -30,15 +30,15 @@
             {{--                    <i class="icon-search"></i> 搜索 --}}
             {{--                </a>--}}
             {{--            </div>--}}
-{{--            <div class="login-panel fr">--}}
-{{--                <ul>--}}
-{{--                    <li id="login">--}}
-{{--                        <a href="#" class="avatar_a modal-open" data-modal-id="modal_login">--}}
-{{--                            <i class="avatar thumb"></i>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
-{{--                </ul>--}}
-{{--            </div>--}}
+            {{--            <div class="login-panel fr">--}}
+            {{--                <ul>--}}
+            {{--                    <li id="login">--}}
+            {{--                        <a href="#" class="avatar_a modal-open" data-modal-id="modal_login">--}}
+            {{--                            <i class="avatar thumb"></i>--}}
+            {{--                        </a>--}}
+            {{--                    </li>--}}
+            {{--                </ul>--}}
+            {{--            </div>--}}
         </div>
     </div>
 </div>

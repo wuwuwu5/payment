@@ -23,6 +23,7 @@ class GeneratorServiceProvider extends ServiceProvider
         $generators = [
             'load:article_info' => \App\Modules\Article\Console\Commands\LoadArticleInfo::class,
             'sync:like_article' => \App\Modules\Article\Console\Commands\SyncArticleLikes::class,
+            'gather:articles' => \App\Modules\Article\Console\Commands\GatherArticle::class,
         ];
 
         foreach ($generators as $slug => $class) {

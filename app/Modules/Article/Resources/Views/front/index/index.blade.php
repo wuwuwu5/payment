@@ -8,10 +8,6 @@
                     <div class="vitara_slide_in" id="spark_slide_homepage_new" data-img-width="970"
                          data-img-height="370"
                          data-content-width="970" data-animate="" data-speed="3000" data-event="click">
-                        <div class="slide_loading"
-                             style="height:370px;background-image:url(https://image.uisdc.com/wp-content/uploads/2020/05/our-new-world-banner.jpg);">
-                            <img src="https://image.uisdc.com/wp-content/uploads/2020/05/our-new-world-banner.jpg"
-                                 alt="slide"></div>
                         <div class="vitara_slide">
                             <ul>
                                 @foreach(getSlides('home') as $slide)
@@ -69,7 +65,7 @@
                 </ul>
                 <div class="menu-r nav-inline auto-scroll-menu">
                     <ul>
-                        @foreach(getFrontChildrenColumns(55, true) as $column)
+                        @foreach(getFrontChildrenColumns(null, true) as $column)
                             <li><a href="{{ route('articles.column.show', ['type' => $column['mark_name']]) }}"
                                    target="_blank">{{ $column['name'] }}</a>
                             </li>
@@ -83,7 +79,11 @@
                         @include('article::front.article.item', compact('article'))
                     @endforeach
                 </div>
-                <div class="articles-hot"></div>
+                <div class="articles-hot">
+                    @foreach($hot_articles as $article)
+                        @include('article::front.article.item', compact('article'))
+                    @endforeach
+                </div>
                 <div class="articles-week"></div>
             </div>
             <div class="seeAll">
@@ -177,7 +177,7 @@
                 </h2>
                 <div class="section-content">
                     <ul>
-                        @foreach(getColumnArticles( 0, 'now', 10, null, $current_column['level'] ?? 0) as $key=> $article)
+                        @foreach(hotArticle(null, 10) as $key => $article)
                             <li>
                                 <a href="{{route('articles.show', ['article' => $article['hash_id']])}}"
                                    target="_blank">
@@ -204,26 +204,26 @@
         </div>
     </div>
 
-{{--    <div class="footer-post-sets hide_sm">--}}
-{{--        <div class="container">--}}
-{{--            <section class="post-sets">--}}
-{{--                <div class="section-title">--}}
-{{--                    热门文章集合--}}
-{{--                </div>--}}
-{{--                <div class="section-content">--}}
-{{--                    @foreach($tags as $k => $tag)--}}
-{{--                        <div class="item">--}}
-{{--                            <a href="{{route('tags.show', ['tag' => $tag['tag']['hash_id'] ?? ''])}}" target="_blank">--}}
-{{--                                @if($k <= 3)--}}
-{{--                                    <i class="num btn btn-default-border">{{$k+1}}</i>--}}
-{{--                                @endif--}}
-{{--                                <strong>{{$tag['tag']['nickname'] ?? ''}}</strong> <i class="hot-icon"></i>--}}
-{{--                            </a>--}}
-{{--                        </div>--}}
-{{--                    @endforeach--}}
-{{--                </div>--}}
-{{--            </section>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+    {{--    <div class="footer-post-sets hide_sm">--}}
+    {{--        <div class="container">--}}
+    {{--            <section class="post-sets">--}}
+    {{--                <div class="section-title">--}}
+    {{--                    热门文章集合--}}
+    {{--                </div>--}}
+    {{--                <div class="section-content">--}}
+    {{--                    @foreach($tags as $k => $tag)--}}
+    {{--                        <div class="item">--}}
+    {{--                            <a href="{{route('tags.show', ['tag' => $tag['tag']['hash_id'] ?? ''])}}" target="_blank">--}}
+    {{--                                @if($k <= 3)--}}
+    {{--                                    <i class="num btn btn-default-border">{{$k+1}}</i>--}}
+    {{--                                @endif--}}
+    {{--                                <strong>{{$tag['tag']['nickname'] ?? ''}}</strong> <i class="hot-icon"></i>--}}
+    {{--                            </a>--}}
+    {{--                        </div>--}}
+    {{--                    @endforeach--}}
+    {{--                </div>--}}
+    {{--            </section>--}}
+    {{--        </div>--}}
+    {{--    </div>--}}
 
 @stop
