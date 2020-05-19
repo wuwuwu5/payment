@@ -317,5 +317,38 @@
             return $array;
         }
     }
+
+    if (!function_exists('description')) {
+
+        /**
+         * 截取中文
+         *
+         * @param $body
+         * @param int $num
+         * @return bool|mixed|string
+         */
+        function description($body, $num = 145)
+        {
+            if (empty($body)) {
+                return '';
+            }
+
+            //把一些预定义的 HTML 实体转换为字符
+            $html_string = htmlspecialchars_decode($body);
+
+            //将空格替换成空
+            $html_string = str_replace(" ", "", $html_string);
+
+            //函数剥去字符串中的 HTML、XML 以及 PHP 的标签,获取纯文本内容
+            $html_string = strip_tags($html_string);
+
+            //返回字符串中的前80字符串长度的字符
+            $html_string = mb_substr($html_string, 0, $num, "utf-8");
+
+            $html_string = str_replace("\n", " ", $html_string);
+
+            return $html_string;
+        }
+    }
 }
 

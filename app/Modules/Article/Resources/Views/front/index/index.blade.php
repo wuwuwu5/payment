@@ -8,10 +8,6 @@
                     <div class="vitara_slide_in" id="spark_slide_homepage_new" data-img-width="970"
                          data-img-height="370"
                          data-content-width="970" data-animate="" data-speed="3000" data-event="click">
-                        <div class="slide_loading"
-                             style="height:370px;background-image:url(https://image.uisdc.com/wp-content/uploads/2020/05/our-new-world-banner.jpg);">
-                            <img src="https://image.uisdc.com/wp-content/uploads/2020/05/our-new-world-banner.jpg"
-                                 alt="slide"></div>
                         <div class="vitara_slide">
                             <ul>
                                 @foreach(getSlides('home') as $slide)

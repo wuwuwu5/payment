@@ -13,7 +13,7 @@
 @section('content')
     <div class="crumbs container hide_sm" style="padding-top: 60px;">
         <ol class="breadcrumb">
-            <li><a href="/" title="优设网 &#8211; UISDC">首页</a></li>
+            <li><a href="/" title="">首页</a></li>
             @php
                 $type = request()->route()->parameter('type');
             @endphp
