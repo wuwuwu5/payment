@@ -40,7 +40,8 @@
             </div>
             <div class="form-group" style="text-align: right">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-primary" style="width: 12rem;">提交</button>
+                    <button type="submit" class="btn btn-success" style="width: 100%;height: 5rem;font-size: 2rem;">支付
+                    </button>
                 </div>
             </div>
         </form>
