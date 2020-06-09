@@ -136,6 +136,7 @@ class PayController extends Controller
             $prepayId = $result['prepay_id'];
             $jssdk = $payment->jssdk;
             $config = $jssdk->sdkConfig($prepayId);
+            $config['timeStamp'] = $config['timestamp'];
             return response()->json(['code' => 0, 'data' => $config]);
         } else {
             return response()->json(['code' => -1, 'message' => '支付失败']);
@@ -148,6 +149,8 @@ class PayController extends Controller
      */
     public function notify()
     {
+        info("有回调");
+
         $payment = \EasyWeChat::payment();
 
         $response = $payment->handlePaidNotify(function ($message, $fail) {
