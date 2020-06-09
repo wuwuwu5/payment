@@ -33,7 +33,7 @@
                     <div class="weui-cell weui-cell_active">
                         <div class="weui-cell__hd"><label class="weui-label">金额</label></div>
                         <div class="weui-cell__bd">
-                            <input class="weui-input" placeholder="请输入金额" value="" name="price"
+                            <input class="weui-input" placeholder="请输入金额" value="" type="number" name="price"
                                    pattern="[0-9]+([.]{1}[0-9]+){0,1}">
                         </div>
                     </div>
