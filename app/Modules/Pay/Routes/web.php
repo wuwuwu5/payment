@@ -24,6 +24,7 @@ Route::any('/notify', 'PayController@notify');
 Route::name('admin.')->group(function () {
     Route::middleware(['auth:admin', 'bindings'])->group(function () {
         Route::resource('/admin/orders', 'OrdersController');
+        Route::resource('/admin/post_users', 'PostUsersController');
     });
 });
 
