@@ -53,6 +53,7 @@
                         return d.class_info.nickname;
                     }
                 },
+                {field: 'phone', title: '手机号'},
                 {field: 'out_trade_no', title: '订单号'},
                 {field: 'title', title: '订单标题'},
                 {

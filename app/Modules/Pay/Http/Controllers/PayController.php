@@ -37,17 +37,17 @@ class PayController extends Controller
      */
     public function index(Request $request)
     {
-        $app = Factory::officialAccount(config('wechat.official_account.default'));
-
-        $oauth = $app->oauth;
-
-        // 未登录
-        if (empty(session('wechat_user'))) {
-
-            session(['target_url' => '/pay']);
-
-            return $oauth->redirect();
-        }
+//        $app = Factory::officialAccount(config('wechat.official_account.default'));
+//
+//        $oauth = $app->oauth;
+//
+//        // 未登录
+//        if (empty(session('wechat_user'))) {
+//
+//            session(['target_url' => '/pay']);
+//
+//            return $oauth->redirect();
+//        }
 
         $class = CategoryGroup::query()
             ->where('name', 'project')
@@ -58,7 +58,11 @@ class PayController extends Controller
 
         $level1 = $categories->filter(function ($item) {
             return $item->level == 1;
-        })->pluck('nickname', 'id');
+        })->reduce(function ($ca, $item) {
+            $array = ['label' => $item->nickname, 'value' => $item->id];
+            $ca[] = $array;
+            return $ca;
+        }, collect());
 
 
         $level2 = $categories->filter(function ($item) {
@@ -67,9 +71,12 @@ class PayController extends Controller
 
 
         foreach ($level2 as $key => $item) {
-            $level2[$key] = $item->pluck('nickname', 'id')->toArray();
+            $array = [];
+            foreach ($item as $value) {
+                $array[] = ['label' => $value->nickname, 'value' => $value->id];
+            }
+            $level2[$key] = $array;
         }
-
 
         return view('pay::pay', compact('level1', 'level2'));
     }
@@ -107,6 +114,9 @@ class PayController extends Controller
             return response()->json(['code' => -1, 'message' => '输入的金额非法']);
         }
 
+        // 手机号
+        $phone = $request->input('phone');
+
         $order = Order::create([
             'title' => $project->nickname . '_' . $class->nickname . '_' . '缴费' . '_' . $price,
             'user_id' => $user->id,
@@ -116,6 +126,7 @@ class PayController extends Controller
             'class_id' => $class->id,
             'project_id' => $project->id,
             'place_order_at' => now(),
+            'phone' => $phone,
         ]);
 
         // 微信支付实例
