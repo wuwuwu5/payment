@@ -37,17 +37,17 @@ class PayController extends Controller
      */
     public function index(Request $request)
     {
-//        $app = Factory::officialAccount(config('wechat.official_account.default'));
-//
-//        $oauth = $app->oauth;
-//
-//        // 未登录
-//        if (empty(session('wechat_user'))) {
-//
-//            session(['target_url' => '/pay']);
-//
-//            return $oauth->redirect();
-//        }
+        $app = Factory::officialAccount(config('wechat.official_account.default'));
+
+        $oauth = $app->oauth;
+
+        // 未登录
+        if (empty(session('wechat_user'))) {
+
+            session(['target_url' => '/pay']);
+
+            return $oauth->redirect();
+        }
 
         $class = CategoryGroup::query()
             ->where('name', 'project')
