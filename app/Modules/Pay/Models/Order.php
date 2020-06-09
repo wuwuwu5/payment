@@ -21,6 +21,7 @@ class Order extends Model
         'place_order_at',
         'payment_at',
         'mark',
+        'phone'
     ];
 
     /**

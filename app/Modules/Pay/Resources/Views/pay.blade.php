@@ -64,7 +64,7 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    
+
     $('#showPicker').on('click', function () {
         weui.picker(@json($level1), {
             onChange: function (result) {
