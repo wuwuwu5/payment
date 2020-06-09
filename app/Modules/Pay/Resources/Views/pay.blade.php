@@ -40,7 +40,7 @@
                     <div class="weui-cell weui-cell_active">
                         <div class="weui-cell__hd"><label class="weui-label">手机号</label></div>
                         <div class="weui-cell__bd">
-                            <input class="weui-input" placeholder="请输入手机号" value="" name="phone">
+                            <input class="weui-input" placeholder="请输入手机号" value="" type="number" name="phone">
                         </div>
                     </div>
                 </div>
