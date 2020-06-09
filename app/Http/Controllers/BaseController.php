@@ -188,7 +188,7 @@ class BaseController extends Controller
         $this->validateData($request);
 
         // 保存创建人
-        $request->offsetSet('creator_id', admin_user()->id);
+        $request->offsetSet('creator_id', admin_user()->id ?? '');
 
         $model = $this->getQuery()->fill($request->all());
 
