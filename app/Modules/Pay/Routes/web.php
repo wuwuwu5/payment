@@ -26,3 +26,6 @@ Route::name('admin.')->group(function () {
         Route::resource('/admin/orders', 'OrdersController');
     });
 });
+
+
+Route::post('/post_users', 'PostUsersController@store')->name('post_users.store');

@@ -14,6 +14,7 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         '/wechat_token',
         '/oauth_callback',
-        '/notify'
+        '/notify',
+        'post_users'
     ];
 }
