@@ -13,7 +13,7 @@
 <div class="page form_input_status js_show">
     <div class="weui-form" style="padding-top: 1rem;">
         <div class="weui-form__text-area">
-            <img src="{{asset('/static/weui/log2.jpg')}}" style="width: 100%;">
+            <img src="{{asset('/static/weui/log.png')}}" style="width: 100%;">
             <div class="weui-form__desc" style="margin-top: 1rem;"><h2>在线支付系统</h2></div>
         </div>
         <div class="weui-form__control-area">
