@@ -17,6 +17,6 @@ class AdminDatabaseSeeder extends Seeder
 //        $this->call(SettingSeed::class);
         $this->call(CategoryGroupSeed::class);
         $this->call(CategoriesTableSeeder::class);
-//        $this->call(UserTableSeeder::class);
+        $this->call(UserTableSeeder::class);
     }
 }

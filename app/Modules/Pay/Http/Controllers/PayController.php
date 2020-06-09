@@ -50,7 +50,7 @@ class PayController extends Controller
         }
 
         $class = CategoryGroup::query()
-            ->where('name', 'class')
+            ->where('name', 'project')
             ->with('categories')
             ->first();
 
