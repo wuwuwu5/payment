@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
     <title>进阶教育</title>
+    <meta name="csrf-token" content="{{csrf_token()}}">
     <link rel="stylesheet" href="{{asset('static/weui/weui.css')}}"/>
     <link rel="stylesheet" href="{{asset('static/weui/example.css')}}"/>
 </head>
@@ -58,6 +59,12 @@
     var classes = [];
     var types = @json($level2)
 
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
     $('#showPicker').on('click', function () {
         weui.picker(@json($level1), {
             onChange: function (result) {
