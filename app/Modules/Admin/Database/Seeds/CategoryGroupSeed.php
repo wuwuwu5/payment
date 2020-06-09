@@ -20,35 +20,11 @@ class CategoryGroupSeed extends Seeder
             'name' => 'menu',
             'depth' => 2,
         ]);
-        // 前端栏目管理
+        // 项目类型 1级项目 2级班型
         CategoryGroup::create([
-            'title' => '前端栏目管理',
-            'name' => 'front_column',
+            'title' => '项目类型',
+            'name' => 'class',
             'depth' => 2,
-        ]);
-        // 文章来源
-        CategoryGroup::create([
-            'title' => '文章来源',
-            'name' => 'article_source',
-            'depth' => 1,
-        ]);
-        // 文章分类
-        CategoryGroup::create([
-            'title' => '文章分类',
-            'name' => 'article',
-            'depth' => 2,
-        ]);
-        // 标签
-        CategoryGroup::create([
-            'title' => '标签',
-            'name' => 'tag',
-            'depth' => 2,
-        ]);
-        // 轮播图
-        CategoryGroup::create([
-            'title' => '轮播图',
-            'name' => 'slides',
-            'depth' => 1,
         ]);
     }
 }

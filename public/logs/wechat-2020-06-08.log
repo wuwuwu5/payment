@@ -1,0 +1,82 @@
+2020-06-08T20:53:15.112353+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Content Before Trim [{"mch_id":"1583842881","nonce_str":"UIzwBI2plcn6XBdX"},"mch_id=1583842881&nonce_str=UIzwBI2plcn6XBdX&"] 
+
+2020-06-08T20:53:15.113432+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Before UPPER [{"mch_id":"1583842881","nonce_str":"UIzwBI2plcn6XBdX"},"890ba80fa6deda5494907669490e25c5"] 
+
+2020-06-08T20:53:15.117348+08:00 > yansongda.pay.DEBUG > Requesting To Wechat Api ["https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey",{"mch_id":"1583842881","nonce_str":"UIzwBI2plcn6XBdX","sign":"890BA80FA6DEDA5494907669490E25C5"}] 
+
+2020-06-08T20:53:46.738601+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Content Before Trim [{"mch_id":"1583842881","nonce_str":"j1U3Xxa36qukdf7E"},"mch_id=1583842881&nonce_str=j1U3Xxa36qukdf7E&"] 
+
+2020-06-08T20:53:46.739520+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Before UPPER [{"mch_id":"1583842881","nonce_str":"j1U3Xxa36qukdf7E"},"90fcc86c0c13afcb9d32946784f0f723"] 
+
+2020-06-08T20:53:46.741491+08:00 > yansongda.pay.DEBUG > Requesting To Wechat Api ["https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey",{"mch_id":"1583842881","nonce_str":"j1U3Xxa36qukdf7E","sign":"90FCC86C0C13AFCB9D32946784F0F723"}] 
+
+2020-06-08T20:53:46.973316+08:00 > yansongda.pay.DEBUG > Result Of Wechat Api {"return_code":"FAIL","return_msg":"获取沙箱密钥失败，确认交易密钥是否正确"} 
+
+2020-06-08T20:53:54.822267+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Content Before Trim [{"mch_id":"1583842881","nonce_str":"WMvaTnEyVW4VCqu7"},"mch_id=1583842881&nonce_str=WMvaTnEyVW4VCqu7&"] 
+
+2020-06-08T20:53:54.823417+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Before UPPER [{"mch_id":"1583842881","nonce_str":"WMvaTnEyVW4VCqu7"},"b5663bfe84487969eb75a78d2d9ecf85"] 
+
+2020-06-08T20:53:54.824429+08:00 > yansongda.pay.DEBUG > Requesting To Wechat Api ["https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey",{"mch_id":"1583842881","nonce_str":"WMvaTnEyVW4VCqu7","sign":"B5663BFE84487969EB75A78D2D9ECF85"}] 
+
+2020-06-08T20:53:55.004924+08:00 > yansongda.pay.DEBUG > Result Of Wechat Api {"return_code":"FAIL","return_msg":"获取沙箱密钥失败，确认交易密钥是否正确"} 
+
+2020-06-08T20:58:36.174065+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Content Before Trim [{"mch_id":"1583842881","nonce_str":"kbyfGsncs2QHBfQ0"},"mch_id=1583842881&nonce_str=kbyfGsncs2QHBfQ0&"] 
+
+2020-06-08T20:58:36.176021+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Before UPPER [{"mch_id":"1583842881","nonce_str":"kbyfGsncs2QHBfQ0"},"a979efff445b4aa37aee9e9cd40d84fd"] 
+
+2020-06-08T20:58:36.179888+08:00 > yansongda.pay.DEBUG > Requesting To Wechat Api ["https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey",{"mch_id":"1583842881","nonce_str":"kbyfGsncs2QHBfQ0","sign":"A979EFFF445B4AA37AEE9E9CD40D84FD"}] 
+
+2020-06-08T20:58:36.375578+08:00 > yansongda.pay.DEBUG > Result Of Wechat Api {"return_code":"FAIL","return_msg":"获取沙箱密钥失败，确认交易密钥是否正确"} 
+
+2020-06-08T20:59:21.244207+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Content Before Trim [{"mch_id":"1583842881","nonce_str":"weiI27mbD8NK4ufu"},"mch_id=1583842881&nonce_str=weiI27mbD8NK4ufu&"] 
+
+2020-06-08T20:59:21.244799+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Before UPPER [{"mch_id":"1583842881","nonce_str":"weiI27mbD8NK4ufu"},"bc6839b6d9567fcddd7cb1c3b6abb4d5"] 
+
+2020-06-08T20:59:21.245606+08:00 > yansongda.pay.DEBUG > Requesting To Wechat Api ["https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey",{"mch_id":"1583842881","nonce_str":"weiI27mbD8NK4ufu","sign":"BC6839B6D9567FCDDD7CB1C3B6ABB4D5"}] 
+
+2020-06-08T20:59:21.458420+08:00 > yansongda.pay.DEBUG > Result Of Wechat Api {"return_code":"FAIL","return_msg":"获取沙箱密钥失败，确认交易密钥是否正确"} 
+
+2020-06-08T21:00:56.464370+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Content Before Trim [{"mch_id":"1583842881","nonce_str":"LW8hx6Vk9of5kwUC"},"mch_id=1583842881&nonce_str=LW8hx6Vk9of5kwUC&"] 
+
+2020-06-08T21:00:56.465187+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Before UPPER [{"mch_id":"1583842881","nonce_str":"LW8hx6Vk9of5kwUC"},"067f2e2e3858899e0e6192463210a7b5"] 
+
+2020-06-08T21:00:56.467653+08:00 > yansongda.pay.DEBUG > Requesting To Wechat Api ["https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey",{"mch_id":"1583842881","nonce_str":"LW8hx6Vk9of5kwUC","sign":"067F2E2E3858899E0E6192463210A7B5"}] 
+
+2020-06-08T21:00:56.658076+08:00 > yansongda.pay.DEBUG > Result Of Wechat Api {"return_code":"FAIL","return_msg":"获取沙箱密钥失败，确认交易密钥是否正确"} 
+
+2020-06-08T21:01:38.449082+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Content Before Trim [{"mch_id":"1583842881","nonce_str":"Vw9NSMyGdreMEfd0"},"mch_id=1583842881&nonce_str=Vw9NSMyGdreMEfd0&"] 
+
+2020-06-08T21:01:38.449698+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Before UPPER [{"mch_id":"1583842881","nonce_str":"Vw9NSMyGdreMEfd0"},"df4b432fe45a2b6ff79c0ef80b8a6b9d"] 
+
+2020-06-08T21:01:38.451862+08:00 > yansongda.pay.DEBUG > Requesting To Wechat Api ["https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey",{"mch_id":"1583842881","nonce_str":"Vw9NSMyGdreMEfd0","sign":"DF4B432FE45A2B6FF79C0EF80B8A6B9D"}] 
+
+2020-06-08T21:03:14.481062+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Content Before Trim [{"mch_id":"1305638280","nonce_str":"AwhLeSBWvlRzrP7L"},"mch_id=1305638280&nonce_str=AwhLeSBWvlRzrP7L&"] 
+
+2020-06-08T21:03:14.482686+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Before UPPER [{"mch_id":"1305638280","nonce_str":"AwhLeSBWvlRzrP7L"},"ebfce3f010879c2975516a7d0310ae6b"] 
+
+2020-06-08T21:03:14.485240+08:00 > yansongda.pay.DEBUG > Requesting To Wechat Api ["https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey",{"mch_id":"1305638280","nonce_str":"AwhLeSBWvlRzrP7L","sign":"EBFCE3F010879C2975516A7D0310AE6B"}] 
+
+2020-06-08T21:03:36.327786+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Content Before Trim [{"mch_id":"1583842881","nonce_str":"5XVaUhtpL8Bg54Ot"},"mch_id=1583842881&nonce_str=5XVaUhtpL8Bg54Ot&"] 
+
+2020-06-08T21:03:36.328459+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Before UPPER [{"mch_id":"1583842881","nonce_str":"5XVaUhtpL8Bg54Ot"},"76e99050cdc65c20587f5817f3042109"] 
+
+2020-06-08T21:03:36.331011+08:00 > yansongda.pay.DEBUG > Requesting To Wechat Api ["https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey",{"mch_id":"1583842881","nonce_str":"5XVaUhtpL8Bg54Ot","sign":"76E99050CDC65C20587F5817F3042109"}] 
+
+2020-06-08T21:03:36.533006+08:00 > yansongda.pay.DEBUG > Result Of Wechat Api {"return_code":"FAIL","return_msg":"获取沙箱密钥失败，确认交易密钥是否正确"} 
+
+2020-06-08T21:12:30.120663+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Content Before Trim [{"mch_id":"1583842881","nonce_str":"R363JplQCRCILUfJ"},"mch_id=1583842881&nonce_str=R363JplQCRCILUfJ&"] 
+
+2020-06-08T21:12:30.121638+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Before UPPER [{"mch_id":"1583842881","nonce_str":"R363JplQCRCILUfJ"},"6ace5c5d9b33083788328fd1cb5149cc"] 
+
+2020-06-08T21:12:30.126220+08:00 > yansongda.pay.DEBUG > Requesting To Wechat Api ["https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey",{"mch_id":"1583842881","nonce_str":"R363JplQCRCILUfJ","sign":"6ACE5C5D9B33083788328FD1CB5149CC"}] 
+
+2020-06-08T21:12:30.379409+08:00 > yansongda.pay.DEBUG > Result Of Wechat Api {"return_code":"FAIL","return_msg":"获取沙箱密钥失败，确认交易密钥是否正确"} 
+
+2020-06-08T21:17:12.587800+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Content Before Trim [{"mch_id":"1583842881","nonce_str":"8wS7KmUtTuTCyI2h"},"mch_id=1583842881&nonce_str=8wS7KmUtTuTCyI2h&"] 
+
+2020-06-08T21:17:12.588636+08:00 > yansongda.pay.DEBUG > Wechat Generate Sign Before UPPER [{"mch_id":"1583842881","nonce_str":"8wS7KmUtTuTCyI2h"},"c4ad501900f79da5281d0c6c51236638"] 
+
+2020-06-08T21:17:12.592557+08:00 > yansongda.pay.DEBUG > Requesting To Wechat Api ["https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey",{"mch_id":"1583842881","nonce_str":"8wS7KmUtTuTCyI2h","sign":"C4AD501900F79DA5281D0C6C51236638"}] 
+
+2020-06-08T21:17:12.823237+08:00 > yansongda.pay.DEBUG > Result Of Wechat Api {"return_code":"FAIL","return_msg":"获取沙箱密钥失败，确认交易密钥是否正确"} 
+
