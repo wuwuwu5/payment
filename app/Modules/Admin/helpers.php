@@ -88,7 +88,7 @@ if (!function_exists('user')) {
 if (!function_exists('admin')) {
     function admin()
     {
-        return \App\Modules\Admin\Models\User::where('id', 1)->first();
+        return \App\Modules\Admin\Models\User::where('id', auth()->user()->id)->first();
 
     }
 }
