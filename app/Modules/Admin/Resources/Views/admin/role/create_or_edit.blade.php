@@ -2,7 +2,7 @@
 @section('content')
     <div class="layui-form " id="layuiadmin-form" style="background-color: #fff">
         @csrf
-        @if(isset($hshow))
+        @if(isset($show))
             @method('PUT')
         @endif
         {{ Form::LayText(['name'=>'cn_name','title'=>'角色名称','value'=>$show->cn_name ?? '','rq'=>'rq']) }}
