@@ -5,6 +5,7 @@ namespace App\Modules\Admin\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Jedrzej\Pimpable\PimpableTrait;
+use Spatie\Permission\Guard;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -64,5 +65,11 @@ class User extends Authenticatable
     public function setPasswordAttribute($value)
     {
         return bcrypt($value);
+    }
+
+
+    protected function getDefaultGuardName(): string
+    {
+        return 'admin';
     }
 }
