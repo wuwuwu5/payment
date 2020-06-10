@@ -21,13 +21,13 @@
                 <div class="weui-cells weui-cells_form">
                     <div class="weui-cell weui-cell_active">
                         <div class="weui-cell__hd"><label class="weui-label">项目</label></div>
-                        <div class="weui-cell__bd" id="showPicker" style="color: rgba(0,0,0,0.5)">请选择项目</div>
+                        <div class="weui-cell__bd" id="showPicker">请选择项目</div>
                         <input type="hidden" value="" name="project_id">
                     </div>
 
                     <div class="weui-cell weui-cell_active">
                         <div class="weui-cell__hd"><label class="weui-label">班型</label></div>
-                        <div class="weui-cell__bd" id="showClass" style="color: rgba(0,0,0,0.5)">请选择班型</div>
+                        <div class="weui-cell__bd" id="showClass">请选择班型</div>
                         <input type="hidden" value="" name="class_id">
                     </div>
                     <div class="weui-cell weui-cell_active">
